@@ -27,7 +27,7 @@ class Users(db.Model):
     first_name = db.Column(db.String(50))
     last_name = db.Column(db.String(50))
     phone = db.Column(db.String(15))
-    date_created = db.Column(db.DateTine, nullable = False)
+    date_created = db.Column(db.DateTime, nullable = False)
     last_login = db.Column(db.DateTime)
 
     #Function that sets password and will hash it

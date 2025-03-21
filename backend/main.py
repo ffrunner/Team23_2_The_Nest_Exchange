@@ -1,7 +1,7 @@
 from flask import request, jsonify, session
 from werkzeug.security import check_password_hash
 from config import app, db
-from models import Contact, Users
+from models import Users
 
 @app.route("/login", methods=["POST"])
 def login():
