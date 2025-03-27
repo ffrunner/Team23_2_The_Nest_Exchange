@@ -22,7 +22,7 @@ async def sign_up(user:CreateUser, db: Session = Depends(get_db)):
         if db_user:
             raise HTTPException(status_code=400, detail="User already exists")
         else:
-            db_user = User(id=user.id, email=user.email, username=user.username, password_hash=user.password_hash, role=user.role, first_name=user.first_name, last_name=user.last_name, phone=user.phone)
+            db_user = User(email=user.email, username=user.username, password_hash=user.password_hash, role=user.role, first_name=user.first_name, last_name=user.last_name, phone=user.phone)
             db.add(db_user)
             db.commit()
             return {"msg" : "Successfully signed up!"}
