@@ -13,6 +13,17 @@ class CreateUser(BaseModel):
     last_name: str
     phone: str
 
+#Data to get from user when logging them in   
+class LoginUser(BaseModel):
+    email: str
+    password: str 
+
+#Data to get from user when changing their password
+class ChangePassword(BaseModel):
+    email: str 
+    current_password: str 
+    new_password: str  
+
    
 
 
