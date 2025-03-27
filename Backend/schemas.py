@@ -5,7 +5,6 @@ from pydantic import BaseModel
 
 #Data to get from user when signing up must match these data types/structure. Ex: Won't allow an int for a name
 class CreateUser(BaseModel):
-    id: int 
     email: str
     username: str 
     password_hash: str
