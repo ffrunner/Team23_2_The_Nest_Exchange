@@ -1,5 +1,5 @@
 from config import Base
-from sqlalchemy import Column, Integer, DateTime, Text, VARCHAR
+from sqlalchemy import Column, Integer, Text, VARCHAR, TIMESTAMP
 
 
 #Set up SQLAlchemy models based on postgresql database. These models are the ones used to perform queries. 
@@ -13,5 +13,5 @@ class User(Base):
     first_name = Column(VARCHAR(50), index=True)
     last_name = Column(VARCHAR(50), index=True)
     phone = Column(VARCHAR(15), index=True)
-    date_created = Column(DateTime, nullable = False, index=True)
-    last_login = Column(DateTime, nullable=False, index=True)
+    date_created = Column(TIMESTAMP, nullable = False, index=True)
+    last_login = Column(TIMESTAMP, nullable=False, index=True)
