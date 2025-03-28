@@ -1,0 +1,101 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('visit-banner.jpg') no-repeat center center fixed;
+    background-size: container; 
+    background-color: white;
+  }
+
+  .login-logo {
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Vertically center items */
+    margin: 20px; /* Optional: add margin to the container */
+  }
+  
+  .login-logo img {
+    background: url('/KSU Logo.png') no-repeat center center fixed;
+    position: absolute;
+    top: 10px; 
+    left: 20px; 
+    width: 100px; 
+    height: auto; 
+  }
+
+  .login-logo h1 {
+    position: absolute;
+    top: 16px; 
+    left: 110px; 
+    width: auto;
+    height: auto;
+    color: #000;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 2em;
+    text-align: center;
+  }
+
+  .content {
+    margin-top: 80px; 
+    height: calc(100vh - 80px); 
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+  }
+  
+.sign-up-container {
+    background-color:  #D9D9D9;
+    padding: 30px;
+    max-width: 400px;
+    margin: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  .login-container h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #000;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 3em;
+    text-align: center;
+  }
+  
+  .login-container input {
+    width: 75%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  .login-container button {
+    display: block;
+    width: 50%; 
+    padding: 12px;
+    margin: 10px auto; 
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1em;
+    text-align: center;
+  }
+  
+  .login-container button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .login-container a {
+    display: block;
+    margin-top: 10px;
+  }
