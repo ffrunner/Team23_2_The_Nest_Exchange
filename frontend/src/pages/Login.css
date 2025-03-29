@@ -10,12 +10,7 @@ body {
     background-color: white;
   }
 
-  .login-logo {
-    display: flex; /* Use flexbox for layout */
-    align-items: center; /* Vertically center items */
-    margin: 20px; /* Optional: add margin to the container */
-  }
-  
+
   .login-logo img {
     background: url('/KSU Logo.png') no-repeat center center fixed;
     position: absolute;
