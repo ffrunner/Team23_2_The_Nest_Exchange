@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Login.css'; 
 
 const Login = () => {
@@ -56,9 +57,12 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Sign in</button>
-        <button type="button">Sign up</button>
-        <a href="#">Forget Password?</a>
+          <button type="submit">Sign in</button>
+                    {/* Wrap the button with Link */}
+                    <Link to="/signup" style={{ textDecoration: 'none' }}>
+                        <button type="button">Sign up</button>
+                    </Link>
+                    <a href="#">Forget Password?</a>
       </form>
     </div>
   </>
