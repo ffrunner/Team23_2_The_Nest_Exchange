@@ -53,7 +53,7 @@ const SignUp = () => {
             <form onSubmit={handleSubmit}>
                 <input
                     type="email"
-                    placeholder="KSU Email"
+                    placeholder= "Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
