@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './SignUp.css'; // Assuming a separate CSS file
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [name, setName] = useState('');
+    const [role, setRole] = useState(''); 
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,7 +21,7 @@ const SignUp = () => {
         // Reset error before proceeding
         setError('');
         
-        const userData = { email, password };
+        const userData = { email, password, name, role };
 
         try {
             const response = await fetch('http://localhost:8000/signup', {
@@ -44,16 +48,16 @@ const SignUp = () => {
     return (
         <>
         <div className="login-logo">
-        <img src="/KSU Logo.png" alt="KSU Logo" style={{ width: '100px', height: 'auto' }} />
-          <h1>The Nest Exchange</h1>
-          </div>
+            <img src="/KSU Logo.png" alt="KSU Logo" style={{ width: '100px', height: 'auto' }} />
+            <h1>The Nest Exchange</h1>
+        </div>
         <div className="sign-up-container">
             <h2>Sign up</h2>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <input
                     type="email"
-                    placeholder= "Email"
+                    placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -72,9 +76,26 @@ const SignUp = () => {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                 />
+                <input
+                    type="text"
+                    placeholder="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                />
+                <select
+                    id="role"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    required
+                >
+                    <option value="" disabled>Select Role</option> {/* Placeholder Option */}
+                    <option value="student">Student</option>
+                    <option value="admin">Admin</option>
+                </select>
                 <button type="submit">Sign up</button>
             </form>
-        </div>\
+        </div>
         </>
     );
 };

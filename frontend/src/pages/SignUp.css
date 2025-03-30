@@ -50,13 +50,14 @@ body {
     background-color:  #D9D9D9;
     padding: 30px;
     max-width: 400px;
+    height: 500px;
     margin: auto;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     text-align: center;
   }
   
-  .login-container h2 {
+  .sign-up-container h2 {
     margin-top: 0;
     margin-bottom: 20px;
     color: #000;
@@ -66,7 +67,8 @@ body {
     text-align: center;
   }
   
-  .login-container input {
+  .sign-up-container input,
+  .sign-up-container select {
     width: 75%;
     padding: 10px;
     margin: 10px 0;
@@ -75,27 +77,27 @@ body {
     text-align: center;
   }
   
-  .login-container button {
-    display: block;
-    width: 50%; 
-    padding: 12px;
-    margin: 10px auto; 
-    border: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1em;
-    text-align: center;
+  .sign-up-container input:focus, 
+  .sign-up-container select:focus {
+    border-color: #ffc629; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 5px rgba(255, 198, 41, 0.5); /* Optional, for a glow effect */
+}
+  .sign-up-container button {
+    background-color: #007bff; /* Button background color */
+    color: white; /* Button text color */
+    padding: 12px; /* Button padding */
+    border: none; /* No border on button */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
   }
   
-  .login-container button:hover {
+  .sign-up-container button:hover {
     background-color: #0056b3;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
   
-  .login-container a {
+  .sign-up-container a {
     display: block;
     margin-top: 10px;
   }
