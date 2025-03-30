@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from schemas import CreateUser, LoginUser, ChangePassword
 from config import get_db
-from model import User
+from model import User, Claim, Item, Category, Claim, ListingPhoto, Listing
+from schemas import ItemCreate, ItemUpdate, ClaimCreate, ListingPhotoCreate
 from sqlalchemy.orm import Session
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, UploadFile, File
 from passlib.context import CryptContext
+from typing import List, Optional
 
 
 
@@ -62,3 +64,81 @@ async def change_password(user:ChangePassword, db: Session = Depends(get_db)):
             return{"Msg": "Current password is incorrect"}
     else: 
         raise HTTPException(status_code=404, detail="Incorrect email")
+
+
+
+# Lister Functionalities
+
+@app.post("/items/", response_model=Item)
+def create_item(item: ItemCreate, db: Session = Depends(get_db)):
+    db_item = Item(**item.dict())
+    db.add(db_item)
+    db.commit()
+    db.refresh(db_item)
+    return db_item
+
+@app.put("/items/{item_id}", response_model=Item)
+def update_item(item_id: int, item: ItemUpdate, db: Session = Depends(get_db)):
+    db_item = db.query(Item).filter(Item.id == item_id).first()
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Item not found")
+    
+    for key, value in item.dict(exclude_unset=True).items():
+        setattr(db_item, key, value)
+
+    db.commit()
+    db.refresh(db_item)
+    return db_item
+
+@app.delete("/items/{item_id}", status_code=204)
+def delete_item(item_id: int, db: Session = Depends(get_db)):
+    db_item = db.query(Item).filter(Item.id == item_id).first()
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Item not found")
+
+    db.delete(db_item)
+    db.commit()
+    return
+
+@app.post("/items/{item_id}/photos/", response_model=ListingPhoto)
+async def upload_item_photo(item_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
+    photo_url = f"/path/to/storage/{file.filename}"  # Change to your storage logic
+    with open(photo_url, "wb") as buffer:
+        buffer.write(await file.read())
+
+    db_listing_photo = ListingPhoto(item_id=item_id, photo_url=photo_url)
+    db.add(db_listing_photo)
+    db.commit()
+    db.refresh(db_listing_photo)
+    return db_listing_photo
+
+@app.get("/items/{item_id}/claims/")
+def get_item_claims(item_id: int, db: Session = Depends(get_db)):
+    claims = db.query(Claim).filter(Claim.item_id == item_id).all()
+    return claims
+
+# Claimer Functionalities
+
+@app.get("/items/search/")
+def search_items(keyword: str, db: Session = Depends(get_db)):
+    items = db.query(Item).filter(Item.title.ilike(f"%{keyword}%")).all()  # Flexible search by title
+    return items
+
+@app.get("/items/filter/")
+def filter_items(category_id: Optional[int] = None, tags: Optional[List[str]] = None, db: Session = Depends(get_db)):
+    query = db.query(Item)
+    if category_id:
+        query = query.filter(Item.category_id == category_id)
+    if tags:
+        # Implement tag filtering logic here (assuming a tags relationship)
+        # Example implementation would depend on your actual tag configuration
+        query = query.filter(Item.tags.any(tag.in_(tags)))  # Customize this as needed
+    return query.all()
+
+@app.post("/claims/", response_model=Claim)
+def create_claim(claim: ClaimCreate, db: Session = Depends(get_db)):
+    db_claim = Claim(**claim.dict())
+    db.add(db_claim)
+    db.commit()
+    db.refresh(db_claim)
+    return db_claim
