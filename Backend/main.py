@@ -142,3 +142,4 @@ def create_claim(claim: ClaimCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_claim)
     return db_claim
+
