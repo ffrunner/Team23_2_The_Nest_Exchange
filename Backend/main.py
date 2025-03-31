@@ -160,3 +160,70 @@ def create_claim(claim: ClaimCreate, db: Session = Depends(get_db)):
     db.refresh(db_claim)
     return db_claim
 
+# Admin Functionalities
+
+@app.delete("/admin/listings/{listing_id}", status_code=200)
+async def remove_listing(listing_id: int, db: Session = Depends(get_db)):
+    db_listing = db.query(Listing).filter(Listing.id == listing_id).first()
+    if not db_listing:
+        raise HTTPException(status_code=404, detail="Listing not found")
+    db.delete(db_listing)
+    db.commit()
+    return {"msg": "Listing removed"}
+
+@app.put("/admin/reports/{report_id}", status_code=200)
+async def respond_report(report_id: int, action: str, db: Session = Depends(get_db)):
+    db_report = db.query(Report).filter(Report.id == report_id).first()
+    if not db_report:
+        raise HTTPException(status_code=404, detail="Report not found")
+    db_report.status = action
+    db.commit()
+    db.refresh(db_report)
+    return {"msg": "Report status updated", "report": db_report.__dict__}
+
+@app.get("/admin/usage", status_code=200)
+async def view_usage_reports(db: Session = Depends(get_db)):
+    total_listings = db.query(Listing).count()
+    total_items = db.query(Item).count()
+    total_claims = db.query(Claim).count()
+    total_reports = db.query(Report).count()
+    return {
+        "total_listings": total_listings,
+        "total_items": total_items,
+        "total_claims": total_claims,
+        "total_reports": total_reports
+    }
+
+@app.post("/admin/categories", response_model=Category)
+async def add_category(name: str, db: Session = Depends(get_db)):
+    new_category = Category(name=name)
+    db.add(new_category)
+    db.commit()
+    db.refresh(new_category)
+    return new_category
+
+@app.put("/admin/categories/{category_id}", response_model=Category)
+async def edit_category(category_id: int, name: str, db: Session = Depends(get_db)):
+    db_category = db.query(Category).filter(Category.id == category_id).first()
+    if not db_category:
+        raise HTTPException(status_code=404, detail="Category not found")
+    db_category.name = name
+    db.commit()
+    db.refresh(db_category)
+    return db_category
+
+@app.get("/admin/support", status_code=200)
+async def view_support_messages(db: Session = Depends(get_db)):
+    messages = db.query(SupportMessage).all()
+    return messages
+
+@app.put("/admin/support/{message_id}", status_code=200)
+async def respond_support_message(message_id: int, response_text: str, db: Session = Depends(get_db)):
+    db_message = db.query(SupportMessage).filter(SupportMessage.id == message_id).first()
+    if not db_message:
+        raise HTTPException(status_code=404, detail="Support message not found")
+    db_message.response = response_text
+    db_message.status = "responded"
+    db.commit()
+    db.refresh(db_message)
+    return db_message
