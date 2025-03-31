@@ -37,11 +37,13 @@ const SignUp = () => {
 
             if (response.ok) {
                 alert("Sign-up successful!");
+                navigate('/');
             } else {
                 alert("Sign-up failed.");
             }
         } catch (error) {
             console.error("Error:", error);
+            setError("An error occurred. Please try again.");
         }
     };
 

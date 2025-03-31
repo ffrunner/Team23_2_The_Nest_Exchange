@@ -6,6 +6,7 @@ import './App.css'
 import Login from './pages/Login';
 import { Routes, Route } from 'react-router-dom'
 import SignUp from './pages/SignUp'
+import ForgotPassword from './pages/ForgotPassword'
 
 function App() {
   //const [count, setCount] = useState(0)
@@ -15,6 +16,7 @@ function App() {
     <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         {/* Optionally add a 404 page handling */}
         {/* <Route path="*" element={<NotFound />} /> */}
     </Routes>

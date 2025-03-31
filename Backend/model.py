@@ -1,6 +1,5 @@
 from config import Base
-from sqlalchemy import Column, Integer, Text, VARCHAR, TIMESTAMP, Boolean, ForeignKey, String, UniqueConstraint, CheckConstraint
-
+from sqlalchemy import Column, Integer, Text, VARCHAR, TIMESTAMP, Boolean, ForeignKey, String, UniqueConstraint, CheckConstraint # type: ignore
 
 #Set up SQLAlchemy models based on postgresql database. These models are the ones used to perform queries. 
 class User(Base):

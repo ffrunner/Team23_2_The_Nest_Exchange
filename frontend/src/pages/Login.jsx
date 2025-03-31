@@ -62,7 +62,9 @@ const Login = () => {
                     <Link to="/signup" style={{ textDecoration: 'none' }}>
                         <button type="button">Sign up</button>
                     </Link>
-                    <a href="#">Forget Password?</a>
+                    <Link to="/forgot-password" style={{ textDecoration: 'none' }}>
+                        <button type="button">Forgot Password?</button>
+                    </Link>
       </form>
     </div>
   </>
