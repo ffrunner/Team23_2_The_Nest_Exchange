@@ -7,11 +7,18 @@ from sqlalchemy.orm import Session
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File
 from passlib.context import CryptContext
 from typing import List, Optional
-
+import redis
+import json
 
 
 #Setting up application with FastAPI
 app = FastAPI()
+
+#Redis cache setup
+redis_client = redis.StrictRedis(
+    host='thenestexchangeredis-vu1unq.serverless.use2.cache.amazonaws.com:6379',
+     port=6379, db=0
+)
 
 #Setting hash up
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -75,6 +82,7 @@ def create_item(item: ItemCreate, db: Session = Depends(get_db)):
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
+    redis_client.delete("items")  # Invalidate general items cache
     return db_item
 
 @app.put("/items/{item_id}", response_model=Item)
@@ -88,6 +96,7 @@ def update_item(item_id: int, item: ItemUpdate, db: Session = Depends(get_db)):
 
     db.commit()
     db.refresh(db_item)
+    redis_client.delete(f"item:{item_id}")
     return db_item
 
 @app.delete("/items/{item_id}", status_code=204)
@@ -98,6 +107,7 @@ def delete_item(item_id: int, db: Session = Depends(get_db)):
 
     db.delete(db_item)
     db.commit()
+    redis_client.delete(f"item:{item_id}")
     return
 
 @app.post("/items/{item_id}/photos/", response_model=ListingPhoto)
@@ -114,8 +124,15 @@ async def upload_item_photo(item_id: int, file: UploadFile = File(...), db: Sess
 
 @app.get("/items/{item_id}/claims/")
 def get_item_claims(item_id: int, db: Session = Depends(get_db)):
+    cached_claims = redis_client.get(f"claims:item:{item_id}")
+
+    if cached_claims:
+        return {"cached": True, "claims": json.loads(cached_claims)}
+    
     claims = db.query(Claim).filter(Claim.item_id == item_id).all()
-    return claims
+
+    redis_client.setex(f"claims:item:{item_id}", 3600, json.dumps([claim.__dict__ for claim in claims]))
+    return {"cached": False, "claims": claims}
 
 # Claimer Functionalities
 
