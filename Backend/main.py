@@ -8,11 +8,23 @@ from passlib.context import CryptContext
 from typing import List, Optional 
 import redis 
 import json 
-
+from fastapi.middleware.cors import CORSMiddleware
 
 
 #Setting up application with FastAPI
 app = FastAPI()
+
+#can add more origins. We'll need to add the actual link to nestexchange
+origins = [
+    "http://localhost:8000"
+]
+app.add_middleware(
+    CORSMiddleware, 
+    allow_origins=origins,
+    allow_credentials=True, 
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 #Redis cache setup
 redis_client = redis.StrictRedis(
