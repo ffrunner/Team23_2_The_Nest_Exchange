@@ -8,6 +8,7 @@
     background: url('visit-banner.jpg') no-repeat center center fixed;
     background-size: container; 
     background-color: white;
+    font-family: 'Montserrat', sans-serif;
   }
 
   .content {
@@ -19,15 +20,72 @@
   }
   
 .login-container {
-    background-color:  #D9D9D9;
-    padding: 30px;
-    max-width: 400px;
-    margin: auto;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    text-align: center;
+  background-color: #D9D9D9;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  width: 350px;
+  text-align: center;
   }
+
+  .input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 5px;
+    display: block;
+}
   
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1em;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+  border-color: #e0a800;
+}
+
+.password-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.password-container input {
+  flex: 1;
+}
+
+.password-container .toggle-password {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+  color: #666;
+}
+
+/* Forgot password link */
+.forgot-password {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: black;
+  text-decoration: none;
+  text-align: right;
+}
+
+
   .login-container h2 {
     margin-top: 0;
     margin-bottom: 20px;
@@ -37,30 +95,24 @@
     font-size: 3em;
     text-align: center;
   }
+
+  .forgot-password:hover {
+    text-decoration: underline;
+}
   
-  .login-container input {
-    width: 75%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    text-align: center;
-  }
-  
-  .login-container button {
-    display: block;
-    width: 50%; 
+.login-button {
+    width: 100%;
     padding: 12px;
-    margin: 10px auto; 
-    border: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: 'Montserrat', sans-serif;
     font-size: 1em;
-    text-align: center;
-  }
+    font-weight: bold;
+    color: #fff;
+    background-color:  #007bff; /* Teal background */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
   
   .Login-container button:hover {
     background-color: #0056b3;
@@ -71,3 +123,19 @@
     display: block;
     margin-top: 10px;
   }
+
+  .register-text {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.register-link {
+    color: black; 
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link:hover {
+    text-decoration: underline;
+}
