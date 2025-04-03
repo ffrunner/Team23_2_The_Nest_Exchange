@@ -1,28 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './Home.css'; // Assuming you have a CSS file for styles
+import './Home.css';
 
 const Home = () => {
-    const categories = [
-        { title: "Academic Materials", image: "/path/to/academic-materials.jpg", link: "/academic-materials" },
-        { title: "Textbooks", image: "/path/to/textbooks.jpg", link: "/textbooks" },
-        { title: "Technology", image: "/path/to/technology.jpg", link: "/technology" },
-        { title: "Furniture", image: "/path/to/furniture.jpg", link: "/furniture" },
-    ];
+  // Dynamically add a class to the body element
+  useEffect(() => {
+    document.body.classList.add('home-body'); // Add the class for Home page
+    return () => {
+      document.body.classList.remove('home-body'); // Remove the class when unmounted
+    };
+  }, []);
 
-    return (
-        <div className="home-page-container">
-            <h1>The Nest Exchange</h1>
-            <div className="categories-container">
-                {categories.map((category, index) => (
-                    <Link key={index} to={category.link} className="category-card">
-                        <img src={category.image} alt={`${category.title}`} />
-                        <h3>{category.title}</h3>
-                    </Link>
-                ))}
-            </div>
+  const categories = [
+    { title: "Academic Materials", image: "school-pencil-case-equipment.jpg", link: "/academic-materials" },
+    { title: "Textbooks", image: "Textbooks.jpg", link: "/textbooks" },
+    { title: "Technology", image: "Technology.jpeg", link: "/technology" },
+    { title: "Furniture", image: "Furniture.jpeg", link: "/furniture" },
+  ];
+
+  return (
+
+    <div className="home-page">
+        <div className="login-page">
+        <div className="login-logo">
+          <img src="/KSU Logo.png" alt="KSU Logo" style={{ width: '100px', height: 'auto' }} />
+          <h1>The Nest Exchange</h1>
         </div>
-    );
+      <div className="homePageContainer">
+        <div className="categoriesContainer">
+          {categories.map((category, index) => (
+            <Link key={index} to={category.link} className="categoryCard">
+              <img src={category.image} alt={`${category.title}`} />
+              <h3>{category.title}</h3>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+    </div>
+  );
 };
 
 export default Home;
