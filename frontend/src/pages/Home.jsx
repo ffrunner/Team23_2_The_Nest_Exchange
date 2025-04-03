@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './Home.css';
+import '../css/Home.css';
 
 const Home = () => {
   // Dynamically add a class to the body element
