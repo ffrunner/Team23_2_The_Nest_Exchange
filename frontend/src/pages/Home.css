@@ -1,0 +1,43 @@
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif; /* Consistent font */
+}
+
+.home-page-container {
+    text-align: center; /* Center-aligns text for the page */
+    padding: 20px; /* Add some padding */
+}
+
+.categories-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow cards to wrap on smaller screens */
+    justify-content: space-around; /* Space out cards */
+    padding: 20px; /* Padding around the container */
+}
+
+.category-card {
+    background-color: #fff; /* White background for the card */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    text-decoration: none; /* Remove underline from links */
+    margin: 10px; /* Margin between cards */
+    width: 200px; /* Fixed width for cards */
+    transition: transform 0.2s, box-shadow 0.2s; /* Smooth transitions for effects */
+}
+
+.category-card:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+.category-card img {
+    width: 100%; /* Make the image take up the full width of the card */
+    border-top-left-radius: 8px; /* Round top corners */
+    border-top-right-radius: 8px; /* Round top corners */
+}
+
+.category-title {
+    margin: 10px; /* Margin for spacing */
+    font-weight: bold; /* Make title bold */
+    text-align: center; /* Center align text */
+    color: #333;}
