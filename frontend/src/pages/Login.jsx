@@ -45,10 +45,6 @@ const Login = () => {
   return (
     <>
       <div className="login-page">
-        <div className="login-logo">
-          <img src="/KSU Logo.png" alt="KSU Logo" style={{ width: '100px', height: 'auto' }} />
-          <h1>The Nest Exchange</h1>
-        </div>
         <div className="login-container">
           <h2>Login</h2>
           <form onSubmit={handleSubmit}>

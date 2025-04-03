@@ -54,10 +54,6 @@ const SignUp = () => {
 
     return (
         <>
-        <div className="login-logo">
-            <img src="/KSU Logo.png" alt="KSU Logo" style={{ width: '100px', height: 'auto' }} />
-            <h1>The Nest Exchange</h1>
-        </div>
         <div className="sign-up-container">
             <h2>Sign up</h2>
             {error && <p style={{ color: 'red' }}>{error}</p>}

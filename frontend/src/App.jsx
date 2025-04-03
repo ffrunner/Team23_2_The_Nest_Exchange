@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import NavBar from './components/NavBar';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import ForgotPassword from './pages/ForgotPassword';
@@ -8,6 +9,8 @@ import './css/App.css';
 
 function App() {
     return (
+        <div>
+        <NavBar /> {/* Include the NavBar component */}
         <main className="main-content">
             <Routes>
                 <Route path="/" element={<Login />} />
@@ -18,6 +21,7 @@ function App() {
                 {/* <Route path="*" element={<NotFound />} /> */}
             </Routes>
         </main>
+        </div> 
     );
 }
 

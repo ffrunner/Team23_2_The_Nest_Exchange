@@ -21,11 +21,6 @@ const Home = () => {
   return (
 
     <div className="home-page">
-        <div className="login-page">
-        <div className="login-logo">
-          <img src="/KSU Logo.png" alt="KSU Logo" style={{ width: '100px', height: 'auto' }} />
-          <h1>The Nest Exchange</h1>
-        </div>
       <div className="homePageContainer">
         <div className="categoriesContainer">
           {categories.map((category, index) => (
@@ -36,7 +31,6 @@ const Home = () => {
           ))}
         </div>
       </div>
-    </div>
     </div>
   );
 };
