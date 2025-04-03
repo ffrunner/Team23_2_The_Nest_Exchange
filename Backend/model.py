@@ -1,5 +1,7 @@
 from config import Base
-from sqlalchemy import Column, Integer, Text, VARCHAR, TIMESTAMP, Boolean, ForeignKey, String, UniqueConstraint, CheckConstraint # type: ignore
+from sqlalchemy import Column, Integer, Text, VARCHAR, TIMESTAMP, Boolean, ForeignKey, String, UniqueConstraint, CheckConstraint, Enum
+import enum
+
 
 #Set up SQLAlchemy models based on postgresql database. These models are the ones used to perform queries. 
 class User(Base):
@@ -88,6 +90,30 @@ class Claim(Base):
             name='claims_claim_status_check'
         ),
     )
+
+class ReportStatus(enum.Enum):
+    pending = "pending"
+    valid = "valid"
+    invalid = "invalid"
+
+class Report(Base):
+    __tablename__ = "reports"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    listing_id = Column(Integer, nullable=False)
+    reason = Column(Text, nullable=False)
+    reported_by = Column(Integer, nullable=False)
+    status = Column(Enum(ReportStatus), default=ReportStatus.pending)
+
+class SupportMessage(Base):
+    __tablename__ = "support_messages"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, nullable=False)
+    message = Column(Text, nullable=False)
+    response = Column(Text, nullable=True)
+    status = Column(String(50), default="pending")
+
 
 
     lister = relationship("User", foreign_keys=[lister_id], back_populates="listed_claims")
