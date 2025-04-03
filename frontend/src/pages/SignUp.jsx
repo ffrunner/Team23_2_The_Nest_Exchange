@@ -21,7 +21,12 @@ const SignUp = () => {
         // Reset error before proceeding
         setError('');
         
-        const userData = { email, password, name, role };
+        const userData = { 
+            email, 
+            password_hash: password,  // Match the field expected by the backend
+            name, 
+            role 
+        };
 
         try {
             const response = await fetch('http://localhost:8000/signup', {
@@ -31,15 +36,15 @@ const SignUp = () => {
                 },
                 body: JSON.stringify(userData),
             });
-
+        
             const data = await response.json();
-            console.log(data);
-
+            console.log("Response Data:", data);  // Check the response
+        
             if (response.ok) {
                 alert("Sign-up successful!");
-                navigate('/');
+                navigate('/'); // Redirect to login page
             } else {
-                alert("Sign-up failed.");
+                setError(data.detail || "Sign-up failed.");
             }
         } catch (error) {
             console.error("Error:", error);

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Home.css';
+import './Home.css'; // Assuming you have a CSS file for styles
 
 const Home = () => {
     const categories = [
@@ -12,16 +12,12 @@ const Home = () => {
 
     return (
         <div className="home-page-container">
-            <div className="login-logo">
-                <img src="/KSU Logo.png" alt="KSU Logo" style={{ width: '100px', height: 'auto' }} />
-                <h1>The Nest Exchange</h1>
-            </div>
-            <p>Explore our resources:</p>
+            <h1>The Nest Exchange</h1>
             <div className="categories-container">
                 {categories.map((category, index) => (
                     <Link key={index} to={category.link} className="category-card">
                         <img src={category.image} alt={`${category.title}`} />
-                        <h3 className="category-title">{category.title}</h3>
+                        <h3>{category.title}</h3>
                     </Link>
                 ))}
             </div>
@@ -29,4 +25,4 @@ const Home = () => {
     );
 };
 
-export default HomePage;
+export default Home;

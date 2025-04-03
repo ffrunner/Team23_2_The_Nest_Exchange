@@ -1,43 +1,56 @@
 body {
     margin: 0;
-    font-family: 'Montserrat', sans-serif; /* Consistent font */
+    font-family: 'Montserrat', sans-serif; 
+    background-color: white
+}
+
+.main-content {
+    background-color: white; /* Ensures sections of your app have a white background */
+    min-height: 100vh; /* Ensures it covers the full height of the viewport */
 }
 
 .home-page-container {
-    text-align: center; /* Center-aligns text for the page */
-    padding: 20px; /* Add some padding */
+    padding: 20px;
+    text-align: center; 
+}
+
+h1 {
+    font-size: 3em; /* Large title size */
+    margin-bottom: 20px; /* Space below title */
+    color: #333; /* Dark text for contrast */
 }
 
 .categories-container {
     display: flex;
-    flex-wrap: wrap; /* Allow cards to wrap on smaller screens */
-    justify-content: space-around; /* Space out cards */
-    padding: 20px; /* Padding around the container */
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+    background-color: white;
 }
 
 .category-card {
-    background-color: #fff; /* White background for the card */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    text-decoration: none; /* Remove underline from links */
-    margin: 10px; /* Margin between cards */
-    width: 200px; /* Fixed width for cards */
-    transition: transform 0.2s, box-shadow 0.2s; /* Smooth transitions for effects */
+    background-color: #f9f9f9; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-decoration: none; 
+    margin: 10px; 
+    width: 220px; 
+    transition: transform 0.3s, box-shadow 0.3s; 
 }
 
 .category-card:hover {
-    transform: translateY(-5px); /* Lift effect on hover */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+    transform: scale(1.05); 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
 }
 
 .category-card img {
-    width: 100%; /* Make the image take up the full width of the card */
-    border-top-left-radius: 8px; /* Round top corners */
-    border-top-right-radius: 8px; /* Round top corners */
+    width: 100%; 
+    border-top-left-radius: 8px; 
+    border-top-right-radius: 8px; 
 }
 
 .category-title {
-    margin: 10px; /* Margin for spacing */
-    font-weight: bold; /* Make title bold */
-    text-align: center; /* Center align text */
-    color: #333;}
+    margin: 10px; 
+    font-weight: bold; 
+    color: #333; 
+}
