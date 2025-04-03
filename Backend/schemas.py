@@ -1,6 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional
-
+from typing import List, Optional 
 
 #Pydantic Models used for data management (requests and responses) 
 
@@ -47,3 +46,5 @@ class ListingPhotoCreate(BaseModel):
     item_id: int
     photo_url: str
 
+
+   

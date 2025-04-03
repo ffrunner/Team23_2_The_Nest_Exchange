@@ -1,7 +1,7 @@
 from config import Base
-from sqlalchemy import Column, Integer, Text, VARCHAR, TIMESTAMP, Boolean, ForeignKey, String, UniqueConstraint, CheckConstraint, Enum
-import enum
-
+from sqlalchemy import Column, Integer, Text, VARCHAR, TIMESTAMP, Boolean, ForeignKey, String, UniqueConstraint, CheckConstraint, Enum 
+from sqlalchemy.orm import relationship 
+import enum 
 
 #Set up SQLAlchemy models based on postgresql database. These models are the ones used to perform queries. 
 class User(Base):
@@ -116,6 +116,5 @@ class SupportMessage(Base):
 
 
 
-    lister = relationship("User", foreign_keys=[lister_id], back_populates="listed_claims")
-    claimer = relationship("User", foreign_keys=[claimer_id], back_populates="claimed_claims")
-
+    #lister = relationship("User", foreign_keys=[lister_id], back_populates="listed_claims")
+    #claimer = relationship("User", foreign_keys=[claimer_id], back_populates="claimed_claims")
