@@ -17,7 +17,7 @@ app = FastAPI()
 #can add more origins. We'll need to add the actual link to nestexchange
 origins = [
     "http://localhost:8000",
-    "http://localhost:5173/"
+    "http://localhost:5173"
 ]
 app.add_middleware(
     CORSMiddleware, 
