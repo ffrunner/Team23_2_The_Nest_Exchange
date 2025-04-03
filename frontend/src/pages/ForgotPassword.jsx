@@ -39,10 +39,6 @@ const ForgotPassword = () => {
 
     return (
         <>
-        <div className="login-logo">
-        <img src="/KSU Logo.png" alt="KSU Logo" style={{ width: '100px', height: 'auto' }} />
-          <h1>The Nest Exchange</h1>
-          </div>
         <div className="reset-container">
             <h2>Forgot Password?</h2>
             {message && <p style={{ color: 'green' }}>{message}</p>}

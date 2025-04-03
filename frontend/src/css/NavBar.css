@@ -1,21 +1,140 @@
-.login-page .loginLogo {
+/* Navbar container */
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Space between logo and right-side elements */
+    align-items: center; /* Vertically align items */
+    padding: 10px 20px;
+    background-color: #fff; /* White background */
+    border-bottom: 2px solid #f0f0f0; /* Optional: Add a border for separation */
+    position: fixed; /* Fix the navbar at the top of the screen */
+    top: 0; /* Align to the top of the viewport */
+    left: 0; /* Align to the left of the viewport */
+    width: 100%; /* Make the navbar span the full width of the screen */
+    z-index: 1000; /* Ensure the navbar stays above other content */
+}
+
+/* Logo and title */
+.navbar .login-logo {
     display: flex;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #fff;
-    border-bottom: 2px solid #f0f0f0;
 }
 
-.login-page .loginLogo img {
-    width: 50px;
-    height: auto;
-    margin-right: 10px;
+.navbar h1 {
+    color: #000; /* Black text color */
+    font-family: 'Montserrat', sans-serif; /* Font family */
+    font-weight: 800; /* Bold font weight */
+    font-size: 1.5em; /* Font size */
+    margin-left: 10px; /* Space between logo and text */
 }
 
-.login-page .loginLogo h1 {
-    color: #000;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 800;
+/* Right container (search and menu) */
+.navbar .right-container {
+    display: flex;
+    align-items: center; /* Vertically align search and menu */
+    gap: 10px; /* Add spacing between search and menu */
+}
+
+/* Search container */
+.navbar .searchContainer {
+    display: flex;
+    align-items: center;
+    position: relative; /* Position relative for absolute input placement */
+}
+
+.navbar .searchContainer button {
+    background: none;
+    border: none;
+    cursor: pointer;
     font-size: 1.5em;
+    color: #000;
+}
+
+.navbar .searchContainer form {
+    position: absolute;
+    left: 40px; /* Adjust position relative to the button */
+    display: flex;
+    align-items: center;
+}
+
+.navbar .searchContainer .searchInput {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    width: 200px; /* Width of the expanded search bar */
+    transition: all 0.3s ease; /* Smooth transition */
+}
+
+/* Menu button */
+.navbar .menuButton {
+    display: flex;
+    align-items: center;
+    background-color: #ffc107; /* Yellow background */
+    color: black; /* Black text */
+    padding: 10px 20px; /* Padding for the button */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    font-family: 'Montserrat', sans-serif; /* Font family */
+    font-size: 1em; /* Font size */
+    font-weight: bold; /* Bold text */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
+}
+
+.navbar .menuButton:hover {
+    background-color: #e0a800; /* Darker yellow on hover */
+}
+
+.navbar .menuButton .menuIcon {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 20px; /* Width of the icon */
+    height: 15px; /* Height of the icon */
+    margin-right: 10px; /* Space between icon and text */
+}
+
+.navbar .menuButton .menuIcon div {
+    background-color: black; /* Black lines for the icon */
+    height: 3px; /* Thickness of the lines */
+    width: 100%; /* Full width */
+    border-radius: 2px; /* Rounded edges for the lines */
+}
+
+/* Full-width dropdown menu */
+.menuOverlay {
+    position: absolute;
+    top: 60px; /* Adjust based on your navbar height */
+    left: 0;
+    width: 100%; /* Full width of the screen */
+    background-color: #f5f5f5; /* Light gray background */
+    border-top: 2px solid #e0e0e0; /* Optional: Add a border for separation */
+    z-index: 999; /* Ensure it appears above other content */
+    display: flex;
+    justify-content: center; /* Center the menu items */
+    padding: 10px 0; /* Add padding for spacing */
+}
+
+.menuOverlay nav ul {
+    display: flex;
+    list-style: none;
     margin: 0;
+    padding: 0;
+    gap: 40px; /* Space between menu items */
+}
+
+.menuOverlay nav ul li {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.menuOverlay nav ul li a {
+    text-decoration: none;
+    color: black;
+    transition: color 0.3s ease; /* Smooth hover effect */
+}
+
+.menuOverlay nav ul li a:hover {
+    color: #ffc107; /* Yellow text on hover */
 }
