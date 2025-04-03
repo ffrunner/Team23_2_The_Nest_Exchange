@@ -17,6 +17,7 @@
 .navbar .login-logo {
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 .navbar h1 {
@@ -51,7 +52,7 @@
 
 .navbar .searchContainer form {
     position: absolute;
-    left: 40px; /* Adjust position relative to the button */
+    left: 30px;
     display: flex;
     align-items: center;
 }
@@ -61,55 +62,58 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1em;
-    width: 200px; /* Width of the expanded search bar */
-    transition: all 0.3s ease; /* Smooth transition */
+    width: 200px; 
+    transition: all 0.3s ease;
 }
 
 /* Menu button */
 .navbar .menuButton {
     display: flex;
     align-items: center;
-    background-color: #ffc107; /* Yellow background */
-    color: black; /* Black text */
-    padding: 10px 20px; /* Padding for the button */
-    border: none; /* Remove border */
-    border-radius: 4px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor */
+    background-color: #ffc107; 
+    color: black; 
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px; 
+    cursor: pointer; 
     font-family: 'Montserrat', sans-serif; /* Font family */
     font-size: 1em; /* Font size */
     font-weight: bold; /* Bold text */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
+    margin-right: 35px;
+    z-index: 1100; 
+    position: relative;
 }
 
 .navbar .menuButton:hover {
-    background-color: #e0a800; /* Darker yellow on hover */
+    background-color: #e0a800; 
 }
 
 .navbar .menuButton .menuIcon {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 20px; /* Width of the icon */
-    height: 15px; /* Height of the icon */
-    margin-right: 10px; /* Space between icon and text */
+    width: 20px;
+    height: 15px; 
+    margin-right: 10px; 
 }
 
 .navbar .menuButton .menuIcon div {
-    background-color: black; /* Black lines for the icon */
-    height: 3px; /* Thickness of the lines */
-    width: 100%; /* Full width */
-    border-radius: 2px; /* Rounded edges for the lines */
+    background-color: black;
+    height: 3px;
+    width: 100%; 
+    border-radius: 2px; 
 }
 
 /* Full-width dropdown menu */
 .menuOverlay {
     position: absolute;
-    top: 60px; /* Adjust based on your navbar height */
+    top: 60px;
     left: 0;
-    width: 100%; /* Full width of the screen */
-    background-color: #f5f5f5; /* Light gray background */
-    border-top: 2px solid #e0e0e0; /* Optional: Add a border for separation */
-    z-index: 999; /* Ensure it appears above other content */
+    width: 100%; 
+    background-color: #f5f5f5;
+    border-top: 2px solid #e0e0e0; 
+    z-index: 999; 
     display: flex;
     justify-content: center; /* Center the menu items */
     padding: 10px 0; /* Add padding for spacing */
