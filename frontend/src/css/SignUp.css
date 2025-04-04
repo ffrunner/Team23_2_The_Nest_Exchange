@@ -43,9 +43,14 @@
   .sign-up-container input,
   .sign-up-container select {
     width: 75%;
-    padding: 10px;
+    padding: 12px;
+    color: #000;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     margin: 10px 0;
-    border: 1px solid #ccc;
+    background-color: #f9f9f9;
     border-radius: 4px;
     text-align: center;
   }

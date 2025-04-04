@@ -1,6 +1,5 @@
 {
   "name": "fronted",
-  "homepage": "https://ffrunner.github.io/Team23_2_The_Nest_Exchange",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,12 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "preview": "vite preview"
   },
   "dependencies": {
-    "gh-pages": "^6.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.0"
