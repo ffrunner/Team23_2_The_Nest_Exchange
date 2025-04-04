@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import ForgotPassword from './pages/ForgotPassword';
 import Home from './pages/Home'; // Ensure you import the Home component
+import Profile from './pages/Profile'; // Ensure you import the Profile component
 import './css/App.css';
 
 function App() {
@@ -19,13 +20,14 @@ function App() {
             {!hideNavBarAndSearch.includes(location.pathname) && <NavBar />}
 
             <Logo />
-            
+
             <main className="main-content">
                 <Routes>
                     <Route path="/" element={<Login />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/home" element={<Home />} /> 
+                    <Route path="/profile" element={<Profile />} />
                 </Routes>
             </main>
         </div> 

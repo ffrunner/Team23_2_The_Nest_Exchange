@@ -53,7 +53,7 @@ const NavBar = () => {
                     <nav>
                         <ul>
                             <li><Link to="/home">Home</Link></li>
-                            <li><Link to="/dashboard">Dashboard</Link></li>
+                            <li><Link to="/profile">My Profile</Link></li>
                             <li><Link to="/settings">Settings</Link></li>
                             <li><Link to="/admin">Admin</Link></li>
                         </ul>
