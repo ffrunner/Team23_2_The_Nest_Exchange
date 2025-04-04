@@ -39,7 +39,7 @@ const Login = () => {
         {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="input-group">
-            <label>Username</label>
+            <label>Email</label>
             <input
               type="email"
               placeholder="example@gmail.com"
