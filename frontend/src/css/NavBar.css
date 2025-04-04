@@ -70,6 +70,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
     z-index: 1100; /* Ensure it stays above other elements */
     position: relative;
+    margin-right: 40px; /* Push the menu button to the left */
 }
 
 .navbar .menuButton:hover {

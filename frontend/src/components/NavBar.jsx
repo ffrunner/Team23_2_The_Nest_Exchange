@@ -25,11 +25,11 @@ const NavBar = () => {
         <div className="navbar">
             <div className="right-container">
                 <div className="searchContainer">
-                    <button onClick={handleSearchToggle} className="search-button">
+                    <button onClick={handleSearchToggle}>
                         <i className="fas fa-search"></i>
                     </button>
                     {isSearchOpen && (
-                        <form onSubmit={handleSearch} className="search-form">
+                        <form onSubmit={handleSearch}>
                             <input
                                 type="text"
                                 name="search"
@@ -39,6 +39,7 @@ const NavBar = () => {
                         </form>
                     )}
                 </div>
+                {/* Menu Button */}
                 <button className="menuButton" onClick={handleMenuToggle}>
                     <div className="menuIcon">
                         <div></div>

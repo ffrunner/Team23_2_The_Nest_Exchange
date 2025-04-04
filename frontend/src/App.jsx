@@ -15,18 +15,19 @@ function App() {
 
     return (
         <div>
-        <Logo />
-        {!hideNavBarAndSearch.includes(location.pathname) && <NavBar />}
-        <main className="main-content">
-            <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/home" element={<Home />} /> {/* Add the Home route */}
-                {/* Optionally add a 404 page handling */}
-                {/* <Route path="*" element={<NotFound />} /> */}
-            </Routes>
-        </main>
+
+            {!hideNavBarAndSearch.includes(location.pathname) && <NavBar />}
+
+            <Logo />
+            
+            <main className="main-content">
+                <Routes>
+                    <Route path="/" element={<Login />} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/home" element={<Home />} /> 
+                </Routes>
+            </main>
         </div> 
     );
 }
