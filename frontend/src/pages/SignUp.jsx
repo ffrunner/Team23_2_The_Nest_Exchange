@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import 
+import axios from 'axios';
 import '../css/SignUp.css'; // Assuming a separate CSS file
 
 const SignUp = () => {
@@ -8,8 +8,9 @@ const SignUp = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [name, setName] = useState('');
-    const [role, setRole] = useState(''); 
+    const [role, setRole] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false); // Loading state
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -21,7 +22,8 @@ const SignUp = () => {
 
         // Reset error before proceeding
         setError('');
-        
+        setIsLoading(true);
+
         const userData = { 
             email, 
             password_hash: password,  // Match the field expected by the backend
@@ -30,26 +32,23 @@ const SignUp = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:8000/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userData),
-            });
-        
-            const data = await response.json();
-            console.log("Response Data:", data);  // Check the response
-        
-            if (response.ok) {
+            const response = await axios.post(
+                `${process.env.REACT_APP_API_URL}/signup`, // Use environment variable
+                userData,
+                { headers: { 'Content-Type': 'application/json' } }
+            );
+
+            if (response.status === 200) {
                 alert("Sign-up successful!");
                 navigate('/'); // Redirect to login page
             } else {
-                setError(data.detail || "Sign-up failed.");
+                setError(response.data.detail || "Sign-up failed.");
             }
         } catch (error) {
             console.error("Error:", error);
             setError("An error occurred. Please try again.");
+        } finally {
+            setIsLoading(false); // Reset loading state
         }
     };
 
@@ -97,7 +96,9 @@ const SignUp = () => {
                     <option value="student">Student</option>
                     <option value="admin">Admin</option>
                 </select>
-                <button type="submit">Sign up</button>
+                <button type="submit" disabled={isLoading}>
+                    {isLoading ? 'Signing up...' : 'Sign up'}
+                </button>
             </form>
         </div>
         </>
