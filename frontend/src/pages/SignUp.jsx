@@ -1,59 +1,62 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import '../css/SignUp.css'; // Assuming a separate CSS file
+import './SignUp.css'; // Assuming a separate CSS file
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [name, setName] = useState('');
-    const [role, setRole] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [username, setUsername] = useState('');
+    const [phone, setPhone] = useState('');
+    const [role, setRole] = useState(''); 
     const [error, setError] = useState('');
-    const [isLoading, setIsLoading] = useState(false); // Loading state
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (password !== confirmPassword) {
-            setError("Passwords do not match!");
-            return;
-        }
-
-        // Reset error before proceeding
         setError('');
-        setIsLoading(true);
-
+        
         const userData = { 
             email, 
-            password_hash: password,  // Match the field expected by the backend
-            name, 
+            password: password_hash,  // Match the field expected by the backend
+            firstName: first_name, 
+            lastName : last_name,
+            username, 
+            phone,
             role 
         };
 
         try {
-            const response = await axios.post(
-                `${process.env.REACT_APP_API_URL}/signup`, // Use environment variable
-                userData,
-                { headers: { 'Content-Type': 'application/json' } }
-            );
-
-            if (response.status === 200) {
+            const response = await fetch('http://localhost:8000/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+        
+            const data = await response.json();
+            console.log("Response Data:", data);  // Check the response
+        
+            if (response.ok) {
                 alert("Sign-up successful!");
-                navigate('/'); // Redirect to login page
+                navigate('http://localhost:8000/login'); // Redirect to login page
             } else {
-                setError(response.data.detail || "Sign-up failed.");
+                setError(data.detail || "Sign-up failed.");
             }
         } catch (error) {
             console.error("Error:", error);
             setError("An error occurred. Please try again.");
-        } finally {
-            setIsLoading(false); // Reset loading state
         }
     };
 
     return (
         <>
+        <div className="login-logo">
+            <img src="/KSU Logo.png" alt="KSU Logo" style={{ width: '100px', height: 'auto' }} />
+            <h1>The Nest Exchange</h1>
+        </div>
         <div className="sign-up-container">
             <h2>Sign up</h2>
             {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -72,18 +75,33 @@ const SignUp = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
+             
                 <input
-                    type="password"
-                    placeholder="Confirm Password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    type="text"
+                    placeholder="first_name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                     required
                 />
                 <input
                     type="text"
-                    placeholder="Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    placeholder="last_name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     required
                 />
                 <select
@@ -96,9 +114,7 @@ const SignUp = () => {
                     <option value="student">Student</option>
                     <option value="admin">Admin</option>
                 </select>
-                <button type="submit" disabled={isLoading}>
-                    {isLoading ? 'Signing up...' : 'Sign up'}
-                </button>
+                <button type="submit">Sign up</button>
             </form>
         </div>
         </>
