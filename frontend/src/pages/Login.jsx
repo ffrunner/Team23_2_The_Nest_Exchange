@@ -15,6 +15,7 @@ const Login = () => {
   return (
     <div className="login-page">
       <div className="login-container">
+        <h2 className="login-title">Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label>Username</label>
@@ -36,13 +37,7 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-              <button
-                type="button"
-                className="toggle-password"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-              
-              </button>
+
             </div>
             <Link to="/forgot-password" className="forgot-password">
               Forget password?
