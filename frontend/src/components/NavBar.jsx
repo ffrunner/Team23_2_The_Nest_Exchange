@@ -39,7 +39,6 @@ const NavBar = () => {
                         </form>
                     )}
                 </div>
-                {/* Menu Button */}
                 <button className="menuButton" onClick={handleMenuToggle}>
                     <div className="menuIcon">
                         <div></div>
@@ -53,7 +52,7 @@ const NavBar = () => {
                 <div className="menuOverlay">
                     <nav>
                         <ul>
-                            <li><Link to="/">Home</Link></li>
+                            <li><Link to="/home">Home</Link></li>
                             <li><Link to="/dashboard">Dashboard</Link></li>
                             <li><Link to="/settings">Settings</Link></li>
                             <li><Link to="/admin">Admin</Link></li>
