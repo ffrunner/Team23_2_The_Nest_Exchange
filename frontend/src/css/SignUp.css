@@ -19,25 +19,20 @@
   }
   
 .sign-up-container {
-  position: relative;
-    background-color:  #D9D9D9;
-    padding: 30px;
-    max-width: 400px;
-    height: 500px;
-    margin: auto;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    text-align: center;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #D9D9D9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
   }
   
   .sign-up-container h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    color: #000;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 800;
-    font-size: 3em;
     text-align: center;
+    color: #333;
+    margin-bottom: 20px;
   }
   
   .sign-up-container input,
@@ -63,28 +58,53 @@
 }
 
   .sign-up-container button {
-    position: absolute; /* Or use fixed if you want it to stay in place while scrolling */
-    bottom: 20px; /* Distance from the bottom of the container/page */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%); /* Adjust for the button's width to truly center it */
-    padding: 12px 24px;
-    font-size: 1em;
-    font-weight: bold;
-    color: #fff;
-    background-color: #007bff; /* Button background color */
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 4px;
+    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 
   }
   
-  .sign-up-container button:hover {
+  .sign-up-container button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.sign-up-container button:hover:not(:disabled) {
     background-color: #0056b3;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .sign-up-container a {
-    display: block;
-    margin-top: 10px;
-  }
+}
+
+/* Error message styling */
+.sign-up-container p {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Placeholder option styling */
+.sign-up-container select option[disabled] {
+    color: #aaa;
+}
+
+/* Add responsive design */
+@media (max-width: 500px) {
+    .sign-up-container {
+        padding: 15px;
+        margin: 20px;
+    }
+
+    .sign-up-container h2 {
+        font-size: 18px;
+    }
+
+    .sign-up-container input,
+    .sign-up-container select,
+    .sign-up-container button {
+        font-size: 14px;
+    }
+}

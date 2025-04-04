@@ -7,8 +7,11 @@ const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [name, setName] = useState('');
+    const [userName, setUserName] = useState('');
     const [role, setRole] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [phone, setPhone] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false); // Loading state
     const navigate = useNavigate();
@@ -27,8 +30,11 @@ const SignUp = () => {
         const userData = { 
             email, 
             password_hash: password,  // Match the field expected by the backend
-            name, 
-            role 
+            username: userName,          // Backend expects "username" instead of "name"
+            role, 
+            first_name: firstName, 
+            last_name: lastName, 
+            phone 
         };
 
         try {
@@ -81,9 +87,30 @@ const SignUp = () => {
                 />
                 <input
                     type="text"
-                    placeholder="Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Username"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="First Name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Last Name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     required
                 />
                 <select

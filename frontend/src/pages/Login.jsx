@@ -1,21 +1,42 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../css/Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Email:', email, 'Password:', password);
+
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/login`, // Use your backend login endpoint
+        { email, password },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+
+      if (response.status === 200) {
+        // Redirect to the home page on successful login
+        navigate('/');
+      } else {
+        setError(response.data.detail || 'Invalid credentials');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('An error occurred. Please try again.');
+    }
   };
 
   return (
     <div className="login-page">
       <div className="login-container">
         <h2 className="login-title">Login</h2>
+        {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label>Username</label>
@@ -37,7 +58,6 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-
             </div>
             <Link to="/forgot-password" className="forgot-password">
               Forget password?

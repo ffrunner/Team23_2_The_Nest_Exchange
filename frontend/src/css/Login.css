@@ -41,6 +41,8 @@
 }
   
 .input-group input {
+  font-family: 'Montserrat', sans-serif;
+  color: #000;
   width: 95%;
   padding: 12px;
   font-size: 1em;
