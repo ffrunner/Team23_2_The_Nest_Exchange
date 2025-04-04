@@ -19,6 +19,7 @@
   }
   
 .sign-up-container {
+  position: relative;
     background-color:  #D9D9D9;
     padding: 30px;
     max-width: 400px;
@@ -55,13 +56,22 @@
     outline: none; /* Remove default outline */
     box-shadow: 0 0 5px rgba(255, 198, 41, 0.5); /* Optional, for a glow effect */
 }
+
   .sign-up-container button {
+    position: absolute; /* Or use fixed if you want it to stay in place while scrolling */
+    bottom: 20px; /* Distance from the bottom of the container/page */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for the button's width to truly center it */
+    padding: 12px 24px;
+    font-size: 1em;
+    font-weight: bold;
+    color: #fff;
     background-color: #007bff; /* Button background color */
-    color: white; /* Button text color */
-    padding: 12px; /* Button padding */
-    border: none; /* No border on button */
-    border-radius: 4px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
   }
   
   .sign-up-container button:hover {

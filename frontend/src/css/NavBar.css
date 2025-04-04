@@ -108,7 +108,7 @@
 /* Full-width dropdown menu */
 .menuOverlay {
     position: absolute;
-    top: 60px;
+    top: 100%; /* Position the menu directly below the menu button */
     left: 0;
     width: 100%; 
     background-color: #f5f5f5;
