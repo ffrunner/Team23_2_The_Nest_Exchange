@@ -1,7 +1,7 @@
 /* Navbar container */
 .navbar {
     display: flex;
-    justify-content: space-between; /* Space between logo and right-side elements */
+    justify-content: flex-end; /* Align right-side elements (search and menu) to the right */
     align-items: center; /* Vertically align items */
     padding: 10px 20px;
     background-color: #fff; /* White background */
@@ -13,26 +13,11 @@
     z-index: 1000; /* Ensure the navbar stays above other content */
 }
 
-/* Logo and title */
-.navbar .login-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.navbar h1 {
-    color: #000; /* Black text color */
-    font-family: 'Montserrat', sans-serif; /* Font family */
-    font-weight: 800; /* Bold font weight */
-    font-size: 1.5em; /* Font size */
-    margin-left: 10px; /* Space between logo and text */
-}
-
 /* Right container (search and menu) */
 .navbar .right-container {
     display: flex;
     align-items: center; /* Vertically align search and menu */
-    gap: 10px; /* Add spacing between search and menu */
+    gap: 15px; /* Add spacing between search and menu */
 }
 
 /* Search container */
@@ -52,9 +37,12 @@
 
 .navbar .searchContainer form {
     position: absolute;
-    left: 30px;
-    display: flex;
-    align-items: center;
+    top: 40px; /* Position the search input below the button */
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Add shadow for better visibility */
+    padding: 5px;
+    border-radius: 4px;
 }
 
 .navbar .searchContainer .searchInput {
@@ -62,7 +50,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1em;
-    width: 200px; 
+    width: 200px;
     transition: all 0.3s ease;
 }
 
@@ -70,23 +58,22 @@
 .navbar .menuButton {
     display: flex;
     align-items: center;
-    background-color: #ffc107; 
-    color: black; 
+    background-color: #ffc107; /* Yellow background */
+    color: black; /* Black text */
     padding: 10px 20px;
     border: none;
-    border-radius: 4px; 
-    cursor: pointer; 
+    border-radius: 4px;
+    cursor: pointer;
     font-family: 'Montserrat', sans-serif; /* Font family */
     font-size: 1em; /* Font size */
     font-weight: bold; /* Bold text */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
-    margin-right: 35px;
-    z-index: 1100; 
+    z-index: 1100; /* Ensure it stays above other elements */
     position: relative;
 }
 
 .navbar .menuButton:hover {
-    background-color: #e0a800; 
+    background-color: #e0a800; /* Darker yellow on hover */
 }
 
 .navbar .menuButton .menuIcon {
@@ -94,15 +81,15 @@
     flex-direction: column;
     justify-content: space-between;
     width: 20px;
-    height: 15px; 
-    margin-right: 10px; 
+    height: 15px;
+    margin-right: 10px; /* Space between icon and text */
 }
 
 .navbar .menuButton .menuIcon div {
     background-color: black;
     height: 3px;
-    width: 100%; 
-    border-radius: 2px; 
+    width: 100%;
+    border-radius: 2px;
 }
 
 /* Full-width dropdown menu */
@@ -110,10 +97,10 @@
     position: absolute;
     top: 100%; /* Position the menu directly below the menu button */
     left: 0;
-    width: 100%; 
-    background-color: #f5f5f5;
-    border-top: 2px solid #e0e0e0; 
-    z-index: 999; 
+    width: 100%; /* Full width */
+    background-color: #f5f5f5; /* Light gray background */
+    border-top: 2px solid #e0e0e0; /* Optional: Add a border for separation */
+    z-index: 999; /* Ensure it stays above other elements */
     display: flex;
     justify-content: center; /* Center the menu items */
     padding: 10px 0; /* Add padding for spacing */

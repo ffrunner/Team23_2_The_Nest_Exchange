@@ -1,0 +1,19 @@
+.login-logo {
+    position: absolute;
+    top: 10px;
+    left: 10px; /* Position the logo at the top left */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Add spacing between the image and text */
+}
+
+.login-logo img {
+    width: 100px;
+    height: auto;
+}
+
+.login-logo h1 {
+    font-size: 1.5rem;
+    color: #333; /* Adjust text color */
+    margin: 0;
+}

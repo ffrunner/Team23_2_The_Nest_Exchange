@@ -23,17 +23,13 @@ const NavBar = () => {
 
     return (
         <div className="navbar">
-            <div className="login-logo">
-                <img src="/KSU Logo.png" alt="KSU Logo" style={{ width: '100px', height: 'auto' }} />
-                <h1>The Nest Exchange</h1>
-            </div>
             <div className="right-container">
                 <div className="searchContainer">
-                    <button onClick={handleSearchToggle}>
+                    <button onClick={handleSearchToggle} className="search-button">
                         <i className="fas fa-search"></i>
                     </button>
                     {isSearchOpen && (
-                        <form onSubmit={handleSearch}>
+                        <form onSubmit={handleSearch} className="search-form">
                             <input
                                 type="text"
                                 name="search"
