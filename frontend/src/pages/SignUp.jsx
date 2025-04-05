@@ -29,8 +29,8 @@ const SignUp = () => {
 
         const userData = { 
             email, 
-            password_hash: password,  // Match the field expected by the backend
-            username: userName,          // Backend expects "username" instead of "name"
+            username: userName, 
+            password_hash: password,           
             role, 
             first_name: firstName, 
             last_name: lastName, 
@@ -39,7 +39,7 @@ const SignUp = () => {
 
         try {
             const response = await axios.post(
-                `${process.env.REACT_APP_API_URL}/signup`, // Use environment variable
+                `${process.env.REACT_APP_API_URL="http://127.0.0.1:8000"}/signup`, // Use environment variable
                 userData,
                 { headers: { 'Content-Type': 'application/json' } }
             );

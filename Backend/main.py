@@ -17,10 +17,6 @@ app = FastAPI()
 origins = [
     "http://localhost:8000",
     "http://localhost:5173",
-<<<<<<< HEAD
-=======
-    "https://thenestexchange.amazonaws.com"
->>>>>>> 6483bebd0a3485f1252b2200bae5c86441658990
 ]
 
 app.add_middleware(
