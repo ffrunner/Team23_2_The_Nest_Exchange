@@ -1,0 +1,54 @@
+.dashboard-container {
+    display: flex;
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  .sidebar {
+    width: 200px;
+    background-color: #f1f1f1;
+    padding: 20px;
+    height: 100vh;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    margin: 20px 0;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .main-content {
+    flex-grow: 1;
+    padding: 30px;
+  }
+  
+  .profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+  
+  .profile img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+  
+  .activity-cards {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .card {
+    background-color: #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    width: 120px;
+    text-align: center;
+  }
+  

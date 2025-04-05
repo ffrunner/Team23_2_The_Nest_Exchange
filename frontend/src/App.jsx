@@ -7,6 +7,7 @@ import SignUp from './pages/SignUp';
 import ForgotPassword from './pages/ForgotPassword';
 import Home from './pages/Home'; // Ensure you import the Home component
 import Profile from './pages/Profile'; // Ensure you import the Profile component
+import Dashboard from './pages/Dashboard';
 import './css/App.css';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/home" element={<Home />} /> 
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
                 </Routes>
             </main>
         </div> 
