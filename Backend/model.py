@@ -90,6 +90,8 @@ class Claim(Base):
             name='claims_claim_status_check'
         ),
     )
+    lister = relationship("User", foreign_keys=[lister_id], back_populates="listed_claims")
+    claimer = relationship("User", foreign_keys=[claimer_id], back_populates="claimed_claims")
 
 class ReportStatus(enum.Enum):
     pending = "pending"
@@ -116,5 +118,4 @@ class SupportMessage(Base):
 
 
 
-    #lister = relationship("User", foreign_keys=[lister_id], back_populates="listed_claims")
-    #claimer = relationship("User", foreign_keys=[claimer_id], back_populates="claimed_claims")
+    
