@@ -8,7 +8,7 @@ from typing import List, Optional
 import redis 
 import json 
 from fastapi.middleware.cors import CORSMiddleware
-
+from fastapi.responses import JSONResponse
 
 #Setting up application with FastAPI
 app = FastAPI()
@@ -54,20 +54,21 @@ async def sign_up(user:CreateUser, db: Session = Depends(get_db)):
             db_user = User(email=user.email, username=user.username, password_hash=user.password_hash, role=user.role, first_name=user.first_name, last_name=user.last_name, phone=user.phone)
             db.add(db_user)
             db.commit()
-            return {"msg" : "Successfully signed up!"}
+            return JSONResponse(content="Successfully signed up!")
     except Exception as e: 
-        return {e}
-
+        raise HTTPException(status_code=500, detail=f"Server error occurred:{str(e)}")
+        
 @app.post("/login")
 async def login(user:LoginUser, db: Session = Depends(get_db)):
     #If user is found in db, can try to login. If not, will print user not found 
     db_user = db.query(User).filter(User.email == user.email).first()
     if db_user:
             if pwd_context.verify(user.password, db_user.password_hash):
-                return{"msg" : "Successfully logged in!"}
+                return JSONResponse(content="Successfully logged in!")
+            
             #NEED TO TAKE USER TO FRONT END FORM/HOME PAGE
             else:
-                return{"msg" : "Invalid credentials"}
+                return JSONResponse(content="Invalid credentials")
     else: 
         raise HTTPException(status_code=404, detail="User not found")
     
@@ -79,11 +80,12 @@ async def change_password(user:ChangePassword, db: Session = Depends(get_db)):
         if pwd_context.verify(user.current_password, db_user.password_hash):
             db_user.password_hash = pwd_context.hash(user.new_password)
             db.commit()
-            return{"Msg": "Successfully changed password!"}
+            return JSONResponse(content="Successfully changed password!")
         else:
-            return{"Msg": "Current password is incorrect"}
+            return JSONResponse(content="Current password is incorrect")
     else: 
         raise HTTPException(status_code=404, detail="Incorrect email")
+
 
 
 # Lister Functionalities
