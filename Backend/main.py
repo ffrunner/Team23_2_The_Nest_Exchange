@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import os
 
+
 #Setting up application with FastAPI
 app = FastAPI()
 

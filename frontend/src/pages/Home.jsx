@@ -33,7 +33,8 @@ const Home = () => {
   
       // Use the category value directly without formatting
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/listings?category=${category}`);
-      setListings(response.data); // Update listings state with fetched data
+      console.log("Fetched listings:", response.data.listings); // Debug: Log fetched listings
+      setListings(response.data.listings);
     } catch (err) {
       console.error(err);
       setError("Failed to fetch listings. Please try again.");
@@ -66,24 +67,29 @@ const Home = () => {
 
         {/* Listings Section */}
         {isContainerOpen && (
-          <div className="listingsContainer">
-            <button className="closeButton" onClick={closeContainer}>
-              Close
-            </button>
-            {selectedCategory && <h2>Listings for {selectedCategory}</h2>}
-            {error && <p className="error">{error}</p>}
-            {listings.length > 0 ? (
-              listings.map((listing) => (
-                <div key={listing.id} className="listingCard">
-                  <h3>{listing.title}</h3>
-                  <p>{listing.description}</p>
-                </div>
-              ))
-            ) : (
-              selectedCategory && !error && <p>No listings found for this category.</p>
-            )}
-          </div>
-        )}
+  <div className="listingsContainer">
+    <button className="closeButton" onClick={closeContainer}>
+      Close
+    </button>
+    {selectedCategory && <h2>Listings for {selectedCategory}</h2>}
+    {error && <p className="error">{error}</p>}
+    {listings.length > 0 ? (
+      listings.map((listing) => (
+        <div key={listing.id} className="listingCard">
+          <img
+            src={listing.photo || "https://via.placeholder.com/200"}
+            alt={listing.title}
+            className="listingPhoto"
+          />
+          <h3>{listing.title}</h3>
+          <p>{listing.description}</p>
+        </div>
+      ))
+    ) : (
+      selectedCategory && !error && <p>No listings found for this category.</p>
+    )}
+  </div>
+)}
       </div>
     </div>
   );

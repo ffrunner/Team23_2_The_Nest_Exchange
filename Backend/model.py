@@ -34,8 +34,13 @@ class Listing(Base):
     item_id = Column(Integer, ForeignKey("items.id"), nullable=False)  # Foreign key to items table
     category_id = Column(Integer, ForeignKey("categories.id"), nullable=True)  # Add this column
     
+    item = relationship("Item", back_populates="listings")
+
 
     def to_dict(self):
+        
+        photo_url = f"/uploads/{self.item.photos[0].photo_url.split('/')[-1]}" if self.item and self.item.photos else None
+
         return {
             "id": self.id,
             "title": self.title,
@@ -44,6 +49,7 @@ class Listing(Base):
             "lister_id": self.lister_id,
             "item_id": self.item_id,
             "category_id": self.category_id,
+            "photo": photo_url
     }
 
 class ListingPhoto(Base):
@@ -71,7 +77,7 @@ class Item(Base):
     claimer_id = Column(Integer, ForeignKey('users.id'), nullable=True) 
 
     # Relationships
-    listing = relationship("Listing", back_populates="item", uselist=False)  # One-to-one relationship
+    listings = relationship("Listing", back_populates="item")  # One-to-one relationship
     lister = relationship("User", foreign_keys=[lister_id], back_populates="listed_items")
     claimer = relationship("User", foreign_keys=[claimer_id], back_populates="claimed_items")
     category = relationship("Category", back_populates="items")  
