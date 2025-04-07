@@ -25,7 +25,6 @@ class User(Base):
 class Listing(Base):
     __tablename__ = "listings"
     
-    __tablename__ = "listings"
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(255), nullable=False)

@@ -46,5 +46,34 @@ class ListingPhotoCreate(BaseModel):
     item_id: int
     photo_url: str
 
+class ItemResponse(BaseModel):
+    id: int
+    title: str
+    description: Optional[str]
+    category_id: Optional[int]
+    lister_id: int
+    is_active: bool
+    is_claimed: bool
 
+    class Config:
+        orm_mode = True
    
+class ListingResponse(BaseModel):
+    id: int
+    title: str
+    description: Optional[str]
+    is_active: bool
+    lister_id: int
+    item_id: int
+
+    class Config:
+        orm_mode = True
+
+
+# Pydantic schema for Category
+class CategoryResponse(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True

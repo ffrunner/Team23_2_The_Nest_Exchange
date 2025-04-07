@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File
-from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ClaimCreate
+from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ClaimCreate, ItemResponse, ListingResponse
 from config import get_db
 from model import User, Item, ListingPhoto, Claim, Listing, Report, Category, SupportMessage
 from sqlalchemy.orm import Session
@@ -200,23 +200,27 @@ def get_item_claims(item_id: int, db: Session = Depends(get_db)):
     redis_client.setex(f"claims:item:{item_id}", 3600, json.dumps([claim.__dict__ for claim in claims]))
     return {"cached": False, "claims": claims}
 
-# Claimer Functionalities
-
-@app.get("/items/search/")
-def search_items(keyword: str, db: Session = Depends(get_db)):
-    items = db.query(Item).filter(Item.title.ilike(f"%{keyword}%")).all()  # Flexible search by title
+@app.get("/items/", response_model=List[ItemResponse])
+def get_items(db: Session = Depends(get_db)):
+    items = db.query(Item).all()
     return items
 
-@app.get("/items/filter/")
-def filter_items(category_id: Optional[int] = None, tags: Optional[List[str]] = None, db: Session = Depends(get_db)):
-    query = db.query(Item)
-    if category_id:
-        query = query.filter(Item.category_id == category_id)
-    if tags:
-        # Implement tag filtering logic here (assuming a tags relationship)
-        # Example implementation would depend on your actual tag configuration
-        query = query.filter(Item.tags.any(tags.in_(tags)))  # Customize this as needed
-    return query.all()
+@app.get("/listings/", response_model=List[ListingResponse])
+def get_listings(category: str, db: Session = Depends(get_db)):
+    listings = db.query(Listing).filter(Listing.category_id == category).all()
+    return listings
+
+# Claimer Functionalities
+
+@app.get("/items/search/", response_model=List[ItemResponse])
+def search_items(keyword: str, db: Session = Depends(get_db)):
+    items = db.query(Item).filter(Item.title.ilike(f"%{keyword}%")).all()
+    return items
+
+@app.get("/items/filter/", response_model=List[ItemResponse])
+def filter_items(category_id: int, db: Session = Depends(get_db)):
+    items = db.query(Item).filter(Item.category_id == category_id).all()
+    return items
 
 @app.post("/claims/")
 def create_claim(claim: ClaimCreate, db: Session = Depends(get_db)):
