@@ -9,9 +9,12 @@ import redis
 import json 
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+import os
 
 #Setting up application with FastAPI
 app = FastAPI()
+
+UPLOAD_DIRECTORY = "./uploads" 
 
 #can add more origins. We'll need to add the actual link to nestexchange
 origins = [
@@ -29,8 +32,9 @@ app.add_middleware(
 
 #Redis cache setup
 redis_client = redis.StrictRedis(
-    host='thenestexchangeredis-vu1unq.serverless.use2.cache.amazonaws.com:6379',
-     port=6379, db=0
+    host='localhost',
+    port=6379,
+    db=0
 )
 
 #Setting hash up
@@ -92,7 +96,7 @@ async def change_password(user:ChangePassword, db: Session = Depends(get_db)):
 
 @app.post("/items/")
 def create_item(item: ItemCreate, db: Session = Depends(get_db)):
-    db_item = Item(**item.dict())
+    db_item = Item(title = item.title, description = item.description, category_id = item.category_id, lister_id = item.lister_id)
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
@@ -101,16 +105,29 @@ def create_item(item: ItemCreate, db: Session = Depends(get_db)):
         
 @app.put("/items/{item_id}")
 def update_item(item_id: int, item: ItemUpdate, db: Session = Depends(get_db)):
+    # Fetch the item from the database
     db_item = db.query(Item).filter(Item.id == item_id).first()
     if not db_item:
         raise HTTPException(status_code=404, detail="Item not found")
     
+    # Validate category_id if provided
+    if item.category_id is not None:
+        category = db.query(Category).filter(Category.id == item.category_id).first()
+        if not category:
+            raise HTTPException(status_code=400, detail="Invalid category_id")
+    
+    # Apply updates
     for key, value in item.dict(exclude_unset=True).items():
         setattr(db_item, key, value)
 
+    # Commit changes to the database
     db.commit()
     db.refresh(db_item)
-    redis_client.delete(f"item:{item_id}")
+    
+    # Invalidate cache
+    #redis_client.delete(f"item:{item_id}")
+    #redis_client.delete("items")
+    
     return db_item
       
 @app.delete("/items/{item_id}", status_code=204)
@@ -119,17 +136,41 @@ def delete_item(item_id: int, db: Session = Depends(get_db)):
     if not db_item:
         raise HTTPException(status_code=404, detail="Item not found")
 
+    # Delete related records (e.g., photos, claims)
+    db.query(ListingPhoto).filter(ListingPhoto.item_id == item_id).delete()
+    db.query(Claim).filter(Claim.item_id == item_id).delete()
+
+    # Delete the item
     db.delete(db_item)
     db.commit()
-    redis_client.delete(f"item:{item_id}")
+
+    # Invalidate cache
+    try:
+        redis_client.delete(f"item:{item_id}")
+    except Exception as e:
+        print(f"Redis error: {e}")
+
     return
 
 @app.post("/items/{item_id}/photos/")
 async def upload_item_photo(item_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
-    photo_url = f"/path/to/storage/{file.filename}"  # Change to your storage logic
-    with open(photo_url, "wb") as buffer:
-        buffer.write(await file.read())
+    # Validate item_id
+    db_item = db.query(Item).filter(Item.id == item_id).first()
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Item not found")
 
+    # Ensure the upload directory exists
+    os.makedirs(UPLOAD_DIRECTORY, exist_ok=True)
+
+    # Save the file
+    photo_url = os.path.join(UPLOAD_DIRECTORY, file.filename)
+    try:
+        with open(photo_url, "wb") as buffer:
+            buffer.write(await file.read())
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
+
+    # Save the photo record in the database
     db_listing_photo = ListingPhoto(item_id=item_id, photo_url=photo_url)
     db.add(db_listing_photo)
     db.commit()
