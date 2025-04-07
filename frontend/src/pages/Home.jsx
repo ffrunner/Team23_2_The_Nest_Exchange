@@ -7,6 +7,7 @@ const Home = () => {
   const [listings, setListings] = useState([]); // State for fetched listings
   const [selectedCategory, setSelectedCategory] = useState(null); // State for the selected category
   const [error, setError] = useState(null); // State for errors
+  const [isContainerOpen, setIsContainerOpen] = useState(false); // State for new container visibility
 
   // Dynamically add a class to the body element
   useEffect(() => {
@@ -17,10 +18,10 @@ const Home = () => {
   }, []);
 
   const categories = [
-    { title: "Academic Materials", image: "school-pencil-case-equipment.jpg", link: "/academic-materials" },
-    { title: "Textbooks", image: "Textbooks.jpg", link: "/textbooks" },
-    { title: "Technology", image: "Technology.jpeg", link: "/technology" },
-    { title: "Furniture", image: "Furniture.jpeg", link: "/furniture" },
+    { title: "Academic Materials", image: "school-pencil-case-equipment.jpg", link: "Academic Materials" },
+    { title: "Textbooks", image: "Textbooks.jpg", link: "Textbooks" },
+    { title: "Technology", image: "Technology.jpeg", link: "Technology" },
+    { title: "Furniture", image: "Furniture.jpeg", link: "Furniture" },
   ];
 
   // Function to fetch listings for a category
@@ -28,11 +29,22 @@ const Home = () => {
     try {
       setError(null); // Reset error state
       setSelectedCategory(category); // Set the selected category
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/listings?category=${category}`);      setListings(response.data); // Update listings state with fetched data
+      setIsContainerOpen(true); // Open the new container
+  
+      // Use the category value directly without formatting
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/listings?category=${category}`);
+      setListings(response.data); // Update listings state with fetched data
     } catch (err) {
       console.error(err);
       setError("Failed to fetch listings. Please try again.");
     }
+  };
+
+   // Function to close the container
+   const closeContainer = () => {
+    setIsContainerOpen(false);
+    setListings([]);
+    setSelectedCategory(null);
   };
   
   return (
@@ -53,20 +65,25 @@ const Home = () => {
         </div>
 
         {/* Listings Section */}
-        <div className="listingsContainer">
-          {selectedCategory && <h2>Listings for {selectedCategory}</h2>}
-          {error && <p className="error">{error}</p>}
-          {listings.length > 0 ? (
-            listings.map((listing) => (
-              <div key={listing.id} className="listingCard">
-                <h3>{listing.title}</h3>
-                <p>{listing.description}</p>
-              </div>
-            ))
-          ) : (
-            selectedCategory && !error && <p>No listings found for this category.</p>
-          )}
-        </div>
+        {isContainerOpen && (
+          <div className="listingsContainer">
+            <button className="closeButton" onClick={closeContainer}>
+              Close
+            </button>
+            {selectedCategory && <h2>Listings for {selectedCategory}</h2>}
+            {error && <p className="error">{error}</p>}
+            {listings.length > 0 ? (
+              listings.map((listing) => (
+                <div key={listing.id} className="listingCard">
+                  <h3>{listing.title}</h3>
+                  <p>{listing.description}</p>
+                </div>
+              ))
+            ) : (
+              selectedCategory && !error && <p>No listings found for this category.</p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

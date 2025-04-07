@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, UploadFile, File
+from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Query
 from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ClaimCreate, ItemResponse, ListingResponse
 from config import get_db
 from model import User, Item, ListingPhoto, Claim, Listing, Report, Category, SupportMessage
@@ -205,15 +205,22 @@ def get_items(db: Session = Depends(get_db)):
     items = db.query(Item).all()
     return items
 
-@app.get("/listings/", response_model=List[ListingResponse])
-def get_listings(category: int, db: Session = Depends(get_db)):
-    listings = (
-        db.query(Listing)
-        .join(Item, Listing.item_id == Item.id)
-        .filter(Item.category_id == category)
-        .all()
-    )
-    return listings
+@app.get("/listings")
+def get_listings(category: str = Query(None), db: Session = Depends(get_db)):
+    # Validate the category
+    if category:
+        category_obj = db.query(Category).filter(Category.name == category).first()
+        if not category_obj:
+            raise HTTPException(status_code=422, detail="Invalid category")
+
+        # Fetch listings for the category
+        listings = db.query(Listing).filter(Listing.category_id == category_obj.id).all()
+    else:
+        # Fetch all listings if no category is provided
+        listings = db.query(Listing).all()
+
+    # Return the listings
+    return {"listings": [listing.to_dict() for listing in listings]}
 
 # Claimer Functionalities
 

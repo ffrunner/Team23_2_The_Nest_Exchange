@@ -37,6 +37,17 @@ class Listing(Base):
     # Relationships
     item = relationship("Item", back_populates="listing")
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "is_active": self.is_active,
+            "lister_id": self.lister_id,
+            "item_id": self.item_id,
+            "category_id": self.category_id,
+    }
+
 class ListingPhoto(Base):
     __tablename__ = "listing_photos"
 
