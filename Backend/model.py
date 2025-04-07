@@ -34,8 +34,6 @@ class Listing(Base):
     item_id = Column(Integer, ForeignKey("items.id"), nullable=False)  # Foreign key to items table
     category_id = Column(Integer, ForeignKey("categories.id"), nullable=True)  # Add this column
     
-    # Relationships
-    item = relationship("Item", back_populates="listing")
 
     def to_dict(self):
         return {

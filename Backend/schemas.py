@@ -28,7 +28,7 @@ class ChangePassword(BaseModel):
 class ItemCreate(BaseModel):
     title: str
     description: Optional[str] = None
-    category_id: Optional[int] = None
+    category_id: int
     lister_id: int
 
 class ItemUpdate(BaseModel):
@@ -66,8 +66,7 @@ class ListingResponse(BaseModel):
     lister_id: int
     item_id: int
 
-    class Config:
-        orm_mode = True
+    
 
 
 # Pydantic schema for Category

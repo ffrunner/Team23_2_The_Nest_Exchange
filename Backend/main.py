@@ -106,7 +106,8 @@ def create_item(item: ItemCreate, db: Session = Depends(get_db)):
         title=item.title,
         description=item.description,
         lister_id=item.lister_id,
-        item_id=db_item.id,  # Link the listing to the item
+        item_id=db_item.id,
+        category_id=db_item.category_id,  # Link the listing to the item
         is_active=True  # Default to active
     )
     db.add(db_listing)
@@ -207,17 +208,20 @@ def get_items(db: Session = Depends(get_db)):
 
 @app.get("/listings")
 def get_listings(category: str = Query(None), db: Session = Depends(get_db)):
-    # Validate the category
+    print(f"Received category: {category}")  # Debug: Check the category parameter
     if category:
         category_obj = db.query(Category).filter(Category.name == category).first()
+        print(f"Category object: {category_obj}")  # Debug: Check the category object
         if not category_obj:
             raise HTTPException(status_code=422, detail="Invalid category")
 
         # Fetch listings for the category
         listings = db.query(Listing).filter(Listing.category_id == category_obj.id).all()
+        print(f"Listings for category: {listings}")  # Debug: Check the listings
     else:
         # Fetch all listings if no category is provided
         listings = db.query(Listing).all()
+        print(f"All listings: {listings}")  # Debug: Check all listings
 
     # Return the listings
     return {"listings": [listing.to_dict() for listing in listings]}
