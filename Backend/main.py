@@ -96,12 +96,23 @@ async def change_password(user:ChangePassword, db: Session = Depends(get_db)):
 
 @app.post("/items/")
 def create_item(item: ItemCreate, db: Session = Depends(get_db)):
-    db_item = Item(title = item.title, description = item.description, category_id = item.category_id, lister_id = item.lister_id)
+    db_item = Item(title = item.title, description = item.description, category_id = item.category_id, lister_id = item.lister_id,is_active=True,  # Default to active
+        is_claimed=False)
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
-    redis_client.delete("items")  # Invalidate general items cache
-    return db_item
+    #redis_client.delete("items")  # Invalidate general items cache
+    db_listing = Listing(
+        title=item.title,
+        description=item.description,
+        lister_id=item.lister_id,
+        item_id=db_item.id,  # Link the listing to the item
+        is_active=True  # Default to active
+    )
+    db.add(db_listing)
+    db.commit()
+    db.refresh(db_listing)
+    return db_item, db_listing  
         
 @app.put("/items/{item_id}")
 def update_item(item_id: int, item: ItemUpdate, db: Session = Depends(get_db)):

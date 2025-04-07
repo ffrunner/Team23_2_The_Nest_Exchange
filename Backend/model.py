@@ -25,13 +25,17 @@ class User(Base):
 class Listing(Base):
     __tablename__ = "listings"
     
+    __tablename__ = "listings"
+
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(255), nullable=True)
+    title = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
-    is_active = Column(Boolean, nullable=True)
-    claimed_by = Column(Integer, nullable=True, index=True)
-    lister_id = Column(Integer, nullable=False, index=True)
-    item_id = Column(Integer, nullable=False, index=True)
+    is_active = Column(Boolean, default=True)
+    lister_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    item_id = Column(Integer, ForeignKey("items.id"), nullable=False)  # Foreign key to items table
+
+    # Relationships
+    item = relationship("Item", back_populates="listing")
 
 class ListingPhoto(Base):
     __tablename__ = "listing_photos"
@@ -46,17 +50,18 @@ class ListingPhoto(Base):
 class Item(Base):
     __tablename__ = "items"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)  
-    is_claimed = Column(Boolean, default=False)  
-    created_at = Column(TIMESTAMP, default=None) 
-    title = Column(String(255), nullable=False)  
-    description = Column(Text, nullable=True)  
-    category_id = Column(Integer, ForeignKey('categories.id'), nullable=True)  
-    is_active = Column(Boolean, default=True)  
-    lister_id = Column(Integer, ForeignKey('users.id'), nullable=True)  
-    claimer_id = Column(Integer, ForeignKey('users.id'), nullable=True)  
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    is_claimed = Column(Boolean, default=False)
+    created_at = Column(TIMESTAMP, default=None)
+    title = Column(String(255), nullable=False)
+    description = Column(Text, nullable=True)
+    category_id = Column(Integer, ForeignKey('categories.id'), nullable=True)
+    is_active = Column(Boolean, default=True)
+    lister_id = Column(Integer, ForeignKey('users.id'), nullable=True)
+    claimer_id = Column(Integer, ForeignKey('users.id'), nullable=True) 
 
     # Relationships
+    listing = relationship("Listing", back_populates="item", uselist=False)  # One-to-one relationship
     lister = relationship("User", foreign_keys=[lister_id], back_populates="listed_items")
     claimer = relationship("User", foreign_keys=[claimer_id], back_populates="claimed_items")
     category = relationship("Category", back_populates="items")  
