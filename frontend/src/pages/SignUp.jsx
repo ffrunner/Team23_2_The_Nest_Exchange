@@ -18,46 +18,53 @@ const SignUp = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+      
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+        console.log('API URL:', API_URL);
+      
         if (password !== confirmPassword) {
-            setError("Passwords do not match!");
-            return;
+          setError("Passwords do not match!");
+          return;
         }
-
-        // Reset error before proceeding
+      
         setError('');
         setIsLoading(true);
-
+      
         const userData = { 
-            email, 
-            username: userName, 
-            password_hash: password,           
-            role, 
-            first_name: firstName, 
-            last_name: lastName, 
-            phone 
+          email, 
+          username: userName, 
+          password_hash: password,           
+          role, 
+          first_name: firstName, 
+          last_name: lastName, 
+          phone 
         };
-
+      
+        console.log('Submitting user data:', userData);
+      
         try {
-            const response = await axios.post(
-                `${process.env.REACT_APP_API_URL="http://127.0.0.1:8000"}/signup`, // Use environment variable
-                userData,
-                { headers: { 'Content-Type': 'application/json' } }
-            );
-
-            if (response.status === 200) {
-                alert("Sign-up successful!");
-                navigate('/'); // Redirect to login page
-            } else {
-                setError(response.data.detail || "Sign-up failed.");
-            }
+          const response = await axios.post(
+            `${API_URL}/signup`,
+            userData,
+            { headers: { 'Content-Type': 'application/json' } }
+          );
+      
+          console.log('Response:', response);
+      
+          if (response.status === 201) { // Check for 201 Created
+            alert("Sign-up successful!");
+            navigate('/'); // Redirect to login page
+          } else {
+            setError(response.data.detail || "Sign-up failed.");
+          }
         } catch (error) {
-            console.error("Error:", error);
-            setError("An error occurred. Please try again.");
+          console.error("Error:", error.response || error.message);
+          setError(error.response?.data?.detail || "An error occurred. Please try again.");
         } finally {
-            setIsLoading(false); // Reset loading state
+          setIsLoading(false);
         }
-    };
-
+      };
+      
     return (
         <>
         <div className="sign-up-container">

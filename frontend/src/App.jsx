@@ -5,8 +5,8 @@ import Logo from './components/Logo';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import ForgotPassword from './pages/ForgotPassword';
-import Home from './pages/Home'; // Ensure you import the Home component
-import Profile from './pages/Profile'; // Ensure you import the Profile component
+import Home from './pages/Home'; 
+import Profile from './pages/Profile'; 
 import './css/App.css';
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
                     <Route path="/" element={<Login />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
-                    <Route path="/home" element={<Home />} /> 
+                    #<Route path="/home" element={<Home />} /> 
                     <Route path="/profile" element={<Profile />} />
                 </Routes>
             </main>

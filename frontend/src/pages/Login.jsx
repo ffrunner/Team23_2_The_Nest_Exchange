@@ -12,17 +12,27 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    console.log('API URL:', API_URL);
+  
+    // Define the userData object
+    const userData = {
+      email: email,
+      password: password,
+    };
+  
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/login`, // Use your backend login endpoint
-        { email, password },
+        `${API_URL}/login`,
+        userData,
         { headers: { 'Content-Type': 'application/json' } }
       );
-
+  
       if (response.status === 200) {
         // Redirect to the home page on successful login
-        navigate('/');
+        console.log('Login successful, redirecting...');
+        navigate('/home'); 
       } else {
         setError(response.data.detail || 'Invalid credentials');
       }
