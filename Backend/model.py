@@ -32,7 +32,8 @@ class Listing(Base):
     is_active = Column(Boolean, default=True)
     lister_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     item_id = Column(Integer, ForeignKey("items.id"), nullable=False)  # Foreign key to items table
-
+    category_id = Column(Integer, ForeignKey("categories.id"), nullable=True)  # Add this column
+    
     # Relationships
     item = relationship("Item", back_populates="listing")
 
@@ -50,6 +51,7 @@ class Item(Base):
     __tablename__ = "items"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    category_id = Column(Integer, ForeignKey('categories.id'), nullable=True)
     is_claimed = Column(Boolean, default=False)
     created_at = Column(TIMESTAMP, default=None)
     title = Column(String(255), nullable=False)

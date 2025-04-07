@@ -206,8 +206,13 @@ def get_items(db: Session = Depends(get_db)):
     return items
 
 @app.get("/listings/", response_model=List[ListingResponse])
-def get_listings(category: str, db: Session = Depends(get_db)):
-    listings = db.query(Listing).filter(Listing.category_id == category).all()
+def get_listings(category: int, db: Session = Depends(get_db)):
+    listings = (
+        db.query(Listing)
+        .join(Item, Listing.item_id == Item.id)
+        .filter(Item.category_id == category)
+        .all()
+    )
     return listings
 
 # Claimer Functionalities
