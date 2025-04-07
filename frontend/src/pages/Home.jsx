@@ -77,7 +77,7 @@ const Home = () => {
       listings.map((listing) => (
         <div key={listing.id} className="listingCard">
           <img
-            src={listing.photo || "https://via.placeholder.com/200"}
+            src={listing.photo || "/static/images/placeholder.jpg"}
             alt={listing.title}
             className="listingPhoto"
           />
