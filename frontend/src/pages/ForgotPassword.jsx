@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import '../css/ForgotPassword.module.css'; 
+import axios from 'axios';
+import styles from '../css/ForgotPassword.module.css'; // Import the CSS module
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -13,24 +13,22 @@ const ForgotPassword = () => {
             setError('Please enter your email.');
             return;
         }
-        
+
         const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-    console.log('API URL:', API_URL);
+        console.log('API URL:', API_URL);
 
         setError('');
         try {
             const response = await axios.post(
-                `${API_URL}/login`,
-                userData,
+                `${API_URL}/forgot-password`,
+                { email },
                 { headers: { 'Content-Type': 'application/json' } }
-              );
+            );
 
-            const data = await response.json();
-
-            if (response.ok) {
+            if (response.status === 200) {
                 setMessage('A password reset link has been sent to your email.');
             } else {
-                setError(data.detail || "An error occurred.");
+                setError(response.data.detail || 'An error occurred.');
             }
         } catch (err) {
             console.error(err);
@@ -39,26 +37,26 @@ const ForgotPassword = () => {
     };
 
     return (
-        <div className="forgot-password-page">
-            <div className="reset-container">
-                <h2>Forgot Password?</h2>
+        <div className={styles.content}>
+            <div className={styles.resetContainer}>
+                <h2 className={styles.heading}>Reset Your Password</h2>
                 {message && <p style={{ color: 'green' }}>{message}</p>}
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 <form onSubmit={handleReset}>
                     <input
                         type="email"
-                        id="email"
                         placeholder="Enter your email"
+                        className={styles.input}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
-                    <button type="submit">Reset</button>
+                    <button type="submit" className={styles.button}>Reset</button>
+                    <a href="/login" className={styles.link}>Back to Login</a>
                 </form>
             </div>
         </div>
     );
 };
-
 
 export default ForgotPassword;
