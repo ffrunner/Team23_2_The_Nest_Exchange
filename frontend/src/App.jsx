@@ -7,6 +7,7 @@ import SignUp from './pages/SignUp';
 import ForgotPassword from './pages/ForgotPassword';
 import Home from './pages/Home'; 
 import Profile from './pages/Profile'; 
+import Admin from './pages/Admin'; // Import the Admin page
 import './css/App.css';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     #<Route path="/home" element={<Home />} /> 
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/admin" element={<Admin />} /> 
                 </Routes>
             </main>
         </div> 
