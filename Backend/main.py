@@ -103,7 +103,7 @@ async def login(response: Response, user:LoginUser, db: Session = Depends(get_db
             if pwd_context.verify(user.password, db_user.password_hash):
                 session_id = str(uuid4())
                 redis_client.set(f"session:{session_id}", json.dumps({"id":db_user.id , "email": db_user.email, "password_hash": db_user.password_hash, "role":db_user.role}), ex=3600)
-                response.set_cookie(key="session_id",value=session_id, httponly=True)
+                response.set_cookie(key="session_id",value=session_id, httponly=False)
                 return JSONResponse(content="Successfully logged in!")
             else:
                 return JSONResponse(content="Invalid credentials")
