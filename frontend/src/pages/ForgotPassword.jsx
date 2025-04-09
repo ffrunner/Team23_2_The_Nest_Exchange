@@ -14,15 +14,16 @@ const ForgotPassword = () => {
             return;
         }
         
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    console.log('API URL:', API_URL);
+
         setError('');
         try {
-            const response = await fetch('http://localhost:8000/forgot-password', { // Adjust to your API endpoint
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email }),
-            });
+            const response = await axios.post(
+                `${API_URL}/login`,
+                userData,
+                { headers: { 'Content-Type': 'application/json' } }
+              );
 
             const data = await response.json();
 
@@ -38,25 +39,26 @@ const ForgotPassword = () => {
     };
 
     return (
-        <>
-        <div className="reset-container">
-            <h2>Forgot Password?</h2>
-            {message && <p style={{ color: 'green' }}>{message}</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <form onSubmit={handleReset}>
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <button type="submit">Reset</button>
-            </form>
+        <div className="forgot-password-body">
+            <div className="reset-container">
+                <h2>Forgot Password?</h2>
+                {message && <p style={{ color: 'green' }}>{message}</p>}
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                <form onSubmit={handleReset}>
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                    <button type="submit">Reset</button>
+                </form>
+            </div>
         </div>
-    </>
     );
 };
+
 
 export default ForgotPassword;
