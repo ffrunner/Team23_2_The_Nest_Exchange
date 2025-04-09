@@ -73,15 +73,16 @@
   }
 
   .listingCard {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-  }
-  
+  width: 80%; /* Reduce the width of the card */
+  max-width: 400px; /* Set a maximum width */
+  margin: 10px auto; /* Center the card and reduce the margin */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px; /* Reduce padding */
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
   .listingCard h3 {
     margin: 0 0 10px;
     font-size: 1.5em;
@@ -112,3 +113,5 @@
     border-radius: 8px 8px 0 0; /* Rounded corners for the top of the card */
     margin-bottom: 10px;
   }
+
+  
