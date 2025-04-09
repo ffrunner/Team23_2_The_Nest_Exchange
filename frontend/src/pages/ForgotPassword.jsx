@@ -39,7 +39,7 @@ const ForgotPassword = () => {
     };
 
     return (
-        <div className="forgot-password-body">
+        <div className="forgot-password-page">
             <div className="reset-container">
                 <h2>Forgot Password?</h2>
                 {message && <p style={{ color: 'green' }}>{message}</p>}

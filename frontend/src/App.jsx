@@ -8,6 +8,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import Home from './pages/Home'; 
 import Profile from './pages/Profile'; 
 import Admin from './pages/Admin'; // Import the Admin page
+import HomeNew from './pages/HomeNew'; // Import the new Home page`
 import './css/App.css';
 
 function App() {
@@ -25,9 +26,10 @@ function App() {
             <main className="main-content">
                 <Routes>
                     <Route path="/" element={<Login />} />
+                    <Route path="/homeNew" element={<HomeNew />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
-                    #<Route path="/home" element={<Home />} /> 
+                    <Route path="/home" element={<Home />} /> 
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/admin" element={<Admin />} /> 
                 </Routes>
