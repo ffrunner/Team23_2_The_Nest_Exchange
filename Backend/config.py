@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-
+from pydantic_settings import BaseSettings
 
 
 #Declare base with SQLAlchemy
@@ -23,3 +23,17 @@ def get_db():
         yield db
     finally: 
         db.close()
+
+#Setting up email system 
+#class Settings(BaseSettings):
+    #SMTP_HOST: str 
+    #SMTP_PORT: int
+    #SMTP_USER: str
+    #SMTP_PASSWORD: str 
+    #SMTP_FROM_EMAIL: str 
+    #SMTP_FROM_NAME: str
+
+    #class Config: 
+       # env_file = ".env"
+    
+#settings = Settings()
