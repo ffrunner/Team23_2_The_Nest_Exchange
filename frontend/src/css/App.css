@@ -5,6 +5,11 @@
   text-align: center;
 }
 
+.main-content {
+  padding-top: 60px; /* Add padding equal to the navbar height */
+  box-sizing: border-box;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

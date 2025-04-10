@@ -1,5 +1,5 @@
 .login-logo {
-    position: absolute;
+    position: fixed;
     top: -10px;
     left: 10px; /* Position the logo at the top left */
     display: flex;

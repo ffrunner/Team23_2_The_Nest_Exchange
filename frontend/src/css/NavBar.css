@@ -1,16 +1,18 @@
 /* Navbar container */
 .navbar {
+    position: fixed; /* Fix the navbar at the top */
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width */
+    height: 80px; /* Set a fixed height */
+    z-index: 1000; /* Ensure it stays above other content */
+    background-color: #fff;
+    border-bottom: 2px solid #f0f0f0;
     display: flex;
-    justify-content: flex-end; /* Align right-side elements (search and menu) to the right */
+    justify-content: space-between; /* Space between left and right elements */
     align-items: center; /* Vertically align items */
     padding: 10px 20px;
-    background-color: #fff; /* White background */
-    border-bottom: 2px solid #f0f0f0; /* Optional: Add a border for separation */
-    position: fixed; /* Fix the navbar at the top of the screen */
-    top: 0; /* Align to the top of the viewport */
-    left: 0; /* Align to the left of the viewport */
-    width: 100%; /* Make the navbar span the full width of the screen */
-    z-index: 1000; /* Ensure the navbar stays above other content */
+    box-sizing: border-box;
 }
 
 /* Right container (search and menu) */
@@ -18,6 +20,7 @@
     display: flex;
     align-items: center; /* Vertically align search and menu */
     gap: 15px; /* Add spacing between search and menu */
+    margin-left: auto;
 }
 
 /* Search container */
@@ -58,7 +61,7 @@
 .navbar .menuButton {
     display: flex;
     align-items: center;
-    background-color: #ffc107; /* Yellow background */
+    background-color: #ffc629; /* Yellow background */
     color: black; /* Black text */
     padding: 10px 20px;
     border: none;
@@ -70,7 +73,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
     z-index: 1100; /* Ensure it stays above other elements */
     position: relative;
-    margin-right: 40px; /* Push the menu button to the left */
+    margin-left: auto; /* Push the menu button to the right */
 }
 
 .navbar .menuButton:hover {
@@ -128,5 +131,5 @@
 }
 
 .menuOverlay nav ul li a:hover {
-    color: #ffc107; /* Yellow text on hover */
+    color: #ffc629; /* Yellow text on hover */
 }

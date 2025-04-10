@@ -1,77 +1,52 @@
-body, h1, h2, h3, p, ul {
+html, body {
     margin: 0;
-    padding: 0;
-    list-style: none;
-    font-family: Arial, sans-serif;
-}
-
-body {
-    line-height: 1.6;
+    
+    font-family: 'Montserrat', sans-serif;
     background-color: #f4f4f9;
-}
-
-/* Header styling */
-header {
-    background-color: #ffffff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.logo {
-    font-size: 1.5em;
-    font-weight: bold;
-}
-
-nav ul {
-    display: flex;
-    gap: 15px;
-}
-
-nav a {
-    text-decoration: none;
     color: #333;
-    padding: 5px 10px;
-    transition: background-color 0.3s;
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
-nav a:hover {
-    background-color: #f0f0f0;
-    border-radius: 5px;
-}
-
-button a {
-    text-decoration: none;
-    color: white;
-}
-
-/* Hero section styling */
+/* Hero Section */
 .hero {
     background-color: #eaeaea;
     text-align: center;
-    padding: 60px 20px;
+    padding: 50px 20px;
+    height: 50vh;
+    display: flex;
+    flex-direction: column; /* Keep content stacked vertically */
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 10px;
 }
 
 .hero h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: #333;
 }
 
 .hero p {
-    font-size: 1.2em;
-    margin-bottom: 20px;
+    font-size: 1.5em;
+    margin-bottom: 30px;
+    color: #555;
 }
 
 .hero button {
-    background-color: #f9a826;
-    color: white;
+    display: inline-flex; /* Ensure buttons are inline-flex */
+    justify-content: center;
+    align-items: center;
+    background-color: #ffc629;
+    color: #2D2926;
     border: none;
-    padding: 10px 20px;
-    margin: 0 5px;
+    padding: 15px 30px;
+    margin: 0 10px; /* Add horizontal spacing between buttons */
     cursor: pointer;
-    font-size: 1em;
+    font-size: 1.2em;
+    border-radius: 5px;
     transition: background-color 0.3s;
 }
 
@@ -79,56 +54,155 @@ button a {
     background-color: #e08d00;
 }
 
-/* Main content styling */
-main {
-    padding: 20px;
+.hero button a {
+    text-decoration: none;
+    color: white;
 }
 
-section {
-    margin-bottom: 40px;
-}
-
-#about, #how-it-works, #featured-items, #testimonials {
+/* About Section */
+.about {
     background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    text-align: center;
 }
 
-h2 {
-    font-size: 1.8em;
+.about h2 {
+    font-size: 2em;
     margin-bottom: 10px;
 }
 
-.item {
+.about p {
+    font-size: 1.2em;
+    color: #555;
+}
+
+/* How It Works Section */
+.how-it-works {
+    background-color: #ffffff;
+    padding: 30px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    text-align: center; /* Center the text inside the section */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content horizontally */
+    font-family: 'Montserrat', sans-serif;
+}
+
+.how-it-works ol {
+    padding-left: 0; /* Remove default padding */
+    list-style-position: inside; /* Ensure list numbers are inside the container */
+    text-align: center; /* Center the text */
+}
+
+.how-it-works li {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    color: #555;
+}
+
+/* Featured Items Section */
+.featured-items {
+    background-color: #ffffff;
+    padding: 30px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    text-align: center;
+}
+
+.featured-items h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.featured-items .item {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    padding: 20px;
 }
 
-.item img {
-    max-width: 100%;
+.featured-items .item img {
+    max-width: 150px;
     height: auto;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.featured-items .item h3 {
+    font-size: 1.5em;
     margin-bottom: 10px;
 }
 
-blockquote {
-    font-style: italic;
-    margin-top: 10px;
+.featured-items .item p {
+    font-size: 1em;
+    margin-bottom: 15px;
+    color: #555;
 }
 
-/* Footer styling */
-footer {
+.featured-items .item button {
+    background-color: #f9a826;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.featured-items .item button:hover {
+    background-color: #e08d00;
+}
+
+/* Testimonials Section */
+.testimonials {
+    background-color: #ffffff;
+    padding: 30px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
     text-align: center;
-    padding: 20px;
+}
+
+.testimonials h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.testimonials blockquote {
+    font-style: italic;
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+
+/* Footer */
+footer {
     background-color: #333;
     color: white;
+    text-align: center;
+    padding: 20px;
+    width: auto; /* Ensure the footer spans the full width */
+    box-sizing: border-box;
+    margin-top: auto; /* Push the footer to the bottom when content is short */
 }
 
 footer a {
     color: #f9a826;
     text-decoration: none;
+    margin: 0 5px;
 }
 
 footer a:hover {
