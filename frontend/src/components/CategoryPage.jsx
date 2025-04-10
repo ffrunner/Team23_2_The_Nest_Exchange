@@ -16,9 +16,12 @@ const CategoryPage = () => {
   const fetchItems = async () => {
     try {
       setError(null);
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/items/filter/`, {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/items/filter/`,
+        {withCredentials:true},
+        {
         params: { category_id: categoryName }, // Assuming categoryName is the category ID
-      });
+        });
       setItems(response.data);
     } catch (err) {
       console.error(err);
