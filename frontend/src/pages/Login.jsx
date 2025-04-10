@@ -44,6 +44,7 @@ const Login = () => {
 
   return (
     <div className="login-page">
+      
       <div className="login-container">
         <h2 className="login-title">Login</h2>
         {error && <p className="error-message">{error}</p>}
