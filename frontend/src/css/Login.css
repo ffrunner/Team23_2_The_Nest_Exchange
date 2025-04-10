@@ -11,7 +11,7 @@
     font-family: 'Montserrat', sans-serif;
   }
 
-  .login-page .content {
+  .content {
     margin-top: 80px; 
     height: calc(100vh - 80px); 
     display: flex;
@@ -19,7 +19,7 @@
     align-items: center; 
   }
   
-  .login-page .login-container {
+  .login-container {
   background-color: #D9D9D9;
   padding: 30px;
   border-radius: 16px;
@@ -28,19 +28,19 @@
   text-align: center;
   }
 
-  .login-page .input-group {
+  .input-group {
     margin-bottom: 20px;
     text-align: left;
   }
 
-  .login-page .input-group label {
+  .input-group label {
     font-size: 0.9em;
     color: #666;
     margin-bottom: 5px;
     display: block;
 }
   
-.login-page .input-group input {
+.input-group input {
   font-family: 'Montserrat', sans-serif;
   color: #000;
   width: 95%;
@@ -53,22 +53,22 @@
   transition: border-color 0.3s ease;
 }
 
-.login-page .input-group input:focus {
+.input-group input:focus {
   border-color: #e0a800;
   box-shadow: 0 0 5px #e0a800;
 }
 
-.login-page .password-container {
+.password-container {
   display: flex;
   align-items: center;
   position: relative;
 }
 
-.login-page .password-container input {
+.password-container input {
   flex: 1;
 }
 
-.login-page .password-container .password {
+.password-container .password {
   position: absolute;
   right: 10px;
   background: none;
@@ -78,7 +78,7 @@
   color: #666;
 }
 
-.login-page .forgot-password {
+.forgot-password {
   display: block;
   margin-top: 5px;
   font-size: 0.9em;
@@ -88,11 +88,11 @@
   float: left; /* Move the link to the left */
 }
 
-.login-page .forgot-password:hover {
+.forgot-password:hover {
   text-decoration: underline;
 }
 
-.login-page .login-container h2 {
+.login-container h2 {
     margin-top: 0;
     margin-bottom: 20px;
     color: #000;
@@ -103,7 +103,7 @@
   }
 
   
-  .login-page .login-button {
+  .login-button {
     width: 100%;
     padding: 12px;
     font-size: 1em;
@@ -117,28 +117,28 @@
     margin-top: 20px;
 }
   
-.login-page .Login-container button:hover {
+.Login-container button:hover {
     background-color: #0056b3;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
   
-  .login-page .login-container a {
+  .login-container a {
     display: block;
     margin-top: 10px;
   }
 
-  .login-page .register-text {
+  .register-text {
     margin-top: 20px;
     font-size: 0.9em;
     color: #666;
 }
 
-.login-page .register-link {
+.register-link {
     color: black; 
     text-decoration: none;
     font-weight: bold;
 }
 
-.login-page .register-link:hover {
+.register-link:hover {
     text-decoration: underline;
 }
