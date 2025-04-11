@@ -48,6 +48,12 @@ const NestExchange = () => {
         setSelectedCategory(null);
     };
 
+    const [isListItemOpen, setIsListItemOpen] = useState(false); // State for the "List an Item" container
+
+    const toggleListItemContainer = () => {
+        setIsListItemOpen(!isListItemOpen);
+    };
+
     return (
         <div>
             <main>
@@ -103,9 +109,34 @@ const NestExchange = () => {
                             )}
                         </div>
                     )}
-                    <button className="list-item-button">
-                    <Link to="/list-item">List an Item</Link>
-                </button>
+                    {/* "List an Item" Button */}
+                    <button className="list-item-button" onClick={toggleListItemContainer}>
+                    List an Item
+                    </button>
+                    {/* "List an Item" Container */}
+                    {isListItemOpen && (
+                        <div className="list-item-container">
+                            <h3>List an Item</h3>
+                            <form>
+                                <label>
+                                    Title:
+                                    <input type="text" name="title" placeholder="Enter item title" />
+                                </label>
+                                <label>
+                                    Description:
+                                    <textarea name="description" placeholder="Enter item description"></textarea>
+                                </label>
+                                <label>
+                                    Image URL:
+                                    <input type="text" name="image" placeholder="Enter image URL" />
+                                </label>
+                                <button type="submit">Submit</button>
+                                <button type="button" onClick={toggleListItemContainer}>
+                                    Cancel
+                                </button>
+                            </form>
+                        </div>
+                    )}
                 </div>
     
                 <div className="how-it-works">
