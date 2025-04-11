@@ -14,7 +14,7 @@ import './css/App.css';
 function App() {
     const location = useLocation();
     
-    const hideNavBarAndSearch = ["/", "/signup", "/forgot-password"];
+    const hideNavBarAndSearch = ["/login", "/signup", "/forgot-password"];
 
     return (
         <div>
@@ -25,11 +25,10 @@ function App() {
 
             <main className="main-content">
                 <Routes>
-                    <Route path="/" element={<Login />} />
-                    <Route path="/homeNew" element={<HomeNew />} />
+                    <Route path="/" element={<HomeNew />} />
+                    <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
-                    <Route path="/home" element={<Home />} /> 
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/admin" element={<Admin />} /> 
                 </Routes>
