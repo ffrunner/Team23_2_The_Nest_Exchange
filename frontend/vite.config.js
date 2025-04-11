@@ -8,4 +8,3 @@ export default defineConfig({
   },
 });
 
-console.log('VITE_API_URL:', process.env.VITE_API_URL);
