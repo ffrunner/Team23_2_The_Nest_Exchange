@@ -51,7 +51,7 @@ const SignUp = () => {
       
           console.log('Response:', response);
       
-          if (response.status === 201) { // Check for 201 Created
+          if (response.status === 200) { // Check for 200 Created
             alert("Sign-up successful!");
             navigate('/'); // Redirect to login page
           } else {
