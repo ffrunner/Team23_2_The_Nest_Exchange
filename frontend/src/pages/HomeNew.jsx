@@ -61,14 +61,9 @@ const NestExchange = () => {
     const handleListItemSubmit = async (event) => {
         event.preventDefault();
 
-        const formData = new FormData();
+        
         const title = event.target.title.value;
         const description = event.target.description.value;
-        const image = event.target.image.files[0];
-
-        formData.append("title", title);
-        formData.append("description", description);
-        formData.append("file", image);
 
         try {
             // First, create the item in the database
