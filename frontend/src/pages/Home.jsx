@@ -32,7 +32,10 @@ const Home = () => {
       setIsContainerOpen(true); // Open the new container
   
       // Use the category value directly without formatting
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/listings?category=${category}`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/listings?category=${category}`,
+        { withCredentials: true}
+      );
       console.log("Fetched listings:", response.data.listings); // Debug: Log fetched listings
       setListings(response.data.listings);
     } catch (err) {
