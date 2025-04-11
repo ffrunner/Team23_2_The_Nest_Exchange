@@ -65,13 +65,15 @@ const NestExchange = () => {
 
         formData.append("title", title);
         formData.append("description", description);
-        formData.append("file", image);
+        formData.append("category_id", category_id);
+        {/*formData.append("file", image);*/}
 
         try {
             // First, create the item in the database
             const itemResponse = await axios.post(`${import.meta.env.VITE_API_URL}/items`, {
                 title,
                 description,
+                category_id,
             });
 
             const itemId = itemResponse.data.id;
@@ -88,7 +90,7 @@ const NestExchange = () => {
             );
 
             console.log("Item created successfully:", itemResponse.data);
-            console.log("Photo uploaded successfully:", photoResponse.data);
+            {/*console.log("Photo uploaded successfully:", photoResponse.data);*/}
 
             // Close the form and reset the state
             toggleListItemContainer();
