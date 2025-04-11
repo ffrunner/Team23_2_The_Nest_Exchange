@@ -18,6 +18,7 @@ const CategoryPage = () => {
       setError(null);
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/items/filter/`, {
         params: { category_id: categoryName }, // Assuming categoryName is the category ID
+        withCredentials: true,
       });
       setItems(response.data);
     } catch (err) {
@@ -31,6 +32,7 @@ const CategoryPage = () => {
       setError(null);
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/items/search/`, {
         params: { keyword: searchKeyword },
+        withCredentials: true,
       });
       setItems(response.data);
     } catch (err) {
