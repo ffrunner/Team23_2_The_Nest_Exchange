@@ -5,7 +5,7 @@ from model import User, Item, ListingPhoto, Claim, Listing, Report, Category, Su
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from typing import List, Optional 
-import redis 
+from redis import StrictRedis
 import json 
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -48,9 +48,10 @@ app.add_middleware(
 )
 
 #Redis cache setup
-redis_client = redis.StrictRedis(
-    host='localhost',
+redis_client = StrictRedis(
+    host="localhost",
     port=6379,
+    decode_responses=True,
     db=0
 )
 
@@ -60,6 +61,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 #function to set up session authentication
 def get_current_user (request:Request):
     session_id = request.cookies.get("session_id")
+    print(f"Session id: {session_id}")
     if not session_id:
         raise HTTPException(status_code=401, detail="Not authenticated")
     user_data = redis_client.get(f"session:{session_id}")
@@ -102,8 +104,14 @@ async def login(response: Response, user:LoginUser, db: Session = Depends(get_db
     if db_user:
             if pwd_context.verify(user.password, db_user.password_hash):
                 session_id = str(uuid4())
-                redis_client.set(f"session:{session_id}", json.dumps({"id":db_user.id , "email": db_user.email, "role":db_user.role}), ex=3600)
-                response.set_cookie(key="session_id",value=session_id, httponly=True, secure=False, samesite="Lax")
+                user_data = {
+                    "id":db_user.id,
+                    "email":db_user.email,
+                    "role":db_user.role
+                }
+                redis_client.set(f"session:{session_id}", json.dumps(user_data), ex=3600)
+                print(f"stored session in redis: {user_data}")
+                response.set_cookie(key="session_id",value=session_id, httponly=True, secure=False, samesite="Lax", path="/")
                 return JSONResponse(content="Successfully logged in!")
             else:
                 return JSONResponse(content="Invalid credentials")
@@ -111,12 +119,14 @@ async def login(response: Response, user:LoginUser, db: Session = Depends(get_db
         raise HTTPException(status_code=404, detail="User not found")
 
 @app.post("/logout")
-async def logout(request: Request):
+async def logout(response: Response, request: Request):
     session_id = request.cookies.get("session_id")
-    if session_id:
-        redis_client.delete(f"session:{session_id}")
-    response = JSONResponse(content="Successfully logged out!")
-    return response
+    if not session_id: 
+        raise HTTPException(status_code=400, detail="Not logged in")
+    
+    redis_client.delete(f"session:{session_id}")
+    response.delete_cookie("session_id", path="/")
+    return JSONResponse(content="Successfully logged out!")
 
 @app.post("/changepassword")
 async def change_password(user:ChangePassword, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
@@ -153,9 +163,9 @@ async def change_password(user:ChangePassword, db: Session = Depends(get_db), cu
 # Lister Functionalities
 
 @app.post("/items/")
-def create_item(item: ItemCreate, db: Session = Depends(get_db),current_user:dict = Depends(get_current_user)):
-    if not isinstance(current_user, dict) or "id" not in current_user:
-        raise HTTPException(status_code=401, detail="Invalid or missing user session")
+def create_item(item: ItemCreate, db: Session = Depends(get_db),current_user:dict = Depends(get_current_user)): 
+    #if not isinstance(current_user, dict) or "id" not in current_user:
+        #raise HTTPException(status_code=401, detail="Invalid or missing user session")
     
     db_item = Item(title = item.title, description = item.description, category_id = item.category_id, lister_id = current_user["id"],is_active=True,  # Default to active
         is_claimed=False)
@@ -279,7 +289,7 @@ def get_item_claims(item_id: int, db: Session = Depends(get_db), current_user: d
 
 @app.get("/items/", response_model=List[ItemResponse])
 def get_items(db: Session = Depends(get_db), current_user:dict=Depends(get_current_user)):
-    if not isinstance(current_user, dict):
+    if not current_user or not isinstance(current_user, dict) or "id" not in current_user:
         raise HTTPException(status_code=401, detail="Invalid or missing user session")
     
     items = db.query(Item).all()
@@ -437,3 +447,4 @@ async def respond_support_message(message_id: int, response_text: str, db: Sessi
     db.commit()
     db.refresh(db_message)
     return db_message
+
