@@ -51,15 +51,13 @@ class Listing(Base):
             "category_id": self.category_id,
             "photo": photo_url
     }
+    
 
 class ListingPhoto(Base):
     __tablename__ = "listing_photos"
-
-    id = Column(Integer, primary_key=True, autoincrement=True)  
-    item_id = Column(Integer, ForeignKey('items.id'), nullable=False)  
-    photo_url = Column(Text, nullable=False)  
-
-    # Relationship to the Item model
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    item_id = Column(Integer, ForeignKey('items.id'), nullable=False)
+    photo_url = Column(Text, nullable=False)
     item = relationship("Item", back_populates="photos")
 
 class Item(Base):

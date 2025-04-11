@@ -138,11 +138,11 @@ const NestExchange = () => {
                             {listings.length > 0 ? (
                                 listings.map((listing) => (
                                     <div key={listing.id} className="listingCard">
-                                        <img
+                                       {/*<img
                                             src={listing.photo || "/static/images/placeholder.jpg"}
                                             alt={listing.title}
                                             className="listingPhoto"
-                                        />
+                                        />*/}
                                         <h3>{listing.title}</h3>
                                         <p>{listing.description}</p>
                                     </div>
@@ -179,10 +179,13 @@ const NestExchange = () => {
             </select>
         </label>
         <input type="hidden" name="lister_id" value="123" /> {/* Replace 123 with the logged-in user's ID */}
-        <label>
-            Image:
-            <input type="file" name="image" accept="image/*" required />
-        </label>
+        {/* Comment out the image input field */}
+    {/* 
+    <label>
+        Image:
+        <input type="file" name="image" accept="image/*" required />
+    </label>
+    */}
         <button type="submit">Submit</button>
         <button type="button" onClick={toggleListItemContainer}>
             Cancel
