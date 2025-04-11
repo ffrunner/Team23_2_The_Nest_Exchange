@@ -84,7 +84,7 @@ const NestExchange = () => {
             const itemId = itemResponse.data.id;
 
             // Then, upload the photo for the item
-             const photoResponse = await axios.post(
+            /* const photoResponse = await axios.post(
                 `${import.meta.env.VITE_API_URL}/items/${itemId}/photos/`,
                 formData,
                 {
@@ -93,9 +93,9 @@ const NestExchange = () => {
                 }
             );
 
+            
+            console.log("Photo uploaded successfully:", photoResponse.data);*/
             console.log("Item created successfully:", itemResponse.data);
-            console.log("Photo uploaded successfully:", photoResponse.data);
-
             // Close the form and reset the state
             toggleListItemContainer();
         } catch (error) {
