@@ -299,7 +299,7 @@ footer a:hover {
 }
 
 .list-item-container {
-    background-color: #ffffff;
+    background-color: #ccc;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -320,6 +320,7 @@ footer a:hover {
 }
 
 .list-item-container label {
+    display: flex;
     font-size: 1em;
     color: #555;
 }
@@ -331,6 +332,8 @@ footer a:hover {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1em;
+    background-color: #ffffff; /* Set the background color to white */
+    color: #333; 
 }
 
 .list-item-container button {

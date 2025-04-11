@@ -54,6 +54,49 @@ const NestExchange = () => {
         setIsListItemOpen(!isListItemOpen);
     };
 
+    // Function to handle form submission for listing an item
+    const handleListItemSubmit = async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData();
+        const title = event.target.title.value;
+        const description = event.target.description.value;
+        const image = event.target.image.files[0];
+
+        formData.append("title", title);
+        formData.append("description", description);
+        formData.append("file", image);
+
+        try {
+            // First, create the item in the database
+            const itemResponse = await axios.post(`${import.meta.env.VITE_API_URL}/items`, {
+                title,
+                description,
+            });
+
+            const itemId = itemResponse.data.id;
+
+            // Then, upload the photo for the item
+            const photoResponse = await axios.post(
+                `${import.meta.env.VITE_API_URL}/items/${itemId}/photos/`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            console.log("Item created successfully:", itemResponse.data);
+            console.log("Photo uploaded successfully:", photoResponse.data);
+
+            // Close the form and reset the state
+            toggleListItemContainer();
+        } catch (error) {
+            console.error("Error creating item or uploading photo:", error);
+        }
+    };
+
     return (
         <div>
             <main>
@@ -116,26 +159,36 @@ const NestExchange = () => {
                     {/* "List an Item" Container */}
                     {isListItemOpen && (
                         <div className="list-item-container">
-                            <h3>List an Item</h3>
-                            <form>
-                                <label>
-                                    Title:
-                                    <input type="text" name="title" placeholder="Enter item title" />
-                                </label>
-                                <label>
-                                    Description:
-                                    <textarea name="description" placeholder="Enter item description"></textarea>
-                                </label>
-                                <label>
-                                    Image URL:
-                                    <input type="text" name="image" placeholder="Enter image URL" />
-                                </label>
-                                <button type="submit">Submit</button>
-                                <button type="button" onClick={toggleListItemContainer}>
-                                    Cancel
-                                </button>
-                            </form>
-                        </div>
+                        <h3>List an Item</h3>
+                        <form onSubmit={handleListItemSubmit}>
+                <label>
+            Title:
+            <input type="text" name="title" placeholder="Enter item title" required />
+        </label>
+        <label>
+            Description:
+            <textarea name="description" placeholder="Enter item description" required></textarea>
+        </label>
+        <label>
+            Category:
+            <select name="category_id" required>
+                <option value="1">Academic Materials</option>
+                <option value="2">Textbooks</option>
+                <option value="3">Technology</option>
+                <option value="4">Furniture</option>
+            </select>
+        </label>
+        <input type="hidden" name="lister_id" value="123" /> {/* Replace 123 with the logged-in user's ID */}
+        <label>
+            Image:
+            <input type="file" name="image" accept="image/*" required />
+        </label>
+        <button type="submit">Submit</button>
+        <button type="button" onClick={toggleListItemContainer}>
+            Cancel
+        </button>
+    </form>
+</div>
                     )}
                 </div>
     
