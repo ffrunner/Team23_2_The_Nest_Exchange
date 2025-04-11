@@ -32,7 +32,10 @@ const NestExchange = () => {
             setIsContainerOpen(true); // Open the new container
 
             // Use the category value directly without formatting
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/listings?category=${category}`);
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_URL}/listings?category=${category}`,
+                { withCredentials: true }
+            );
             console.log("Fetched listings:", response.data.listings); // Debug: Log fetched listings
             setListings(response.data.listings);
         } catch (err) {
@@ -69,10 +72,14 @@ const NestExchange = () => {
 
         try {
             // First, create the item in the database
-            const itemResponse = await axios.post(`${import.meta.env.VITE_API_URL}/items`, {
-                title,
-                description,
-            });
+            const itemResponse = await axios.post(
+                `${import.meta.env.VITE_API_URL}/items`,
+                {
+                    title,
+                    description,
+                },
+                { withCredentials: true }
+            );
 
             const itemId = itemResponse.data.id;
 
@@ -81,9 +88,8 @@ const NestExchange = () => {
                 `${import.meta.env.VITE_API_URL}/items/${itemId}/photos/`,
                 formData,
                 {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
+                    headers: { "Content-Type": "multipart/form-data" },
+                    withCredentials: true,
                 }
             );
 
