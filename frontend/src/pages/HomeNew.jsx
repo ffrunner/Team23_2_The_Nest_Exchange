@@ -64,11 +64,11 @@ const NestExchange = () => {
         const formData = new FormData();
         const title = event.target.title.value;
         const description = event.target.description.value;
-        // const image = event.target.image.files[0];
+        const image = event.target.image.files[0];
 
         formData.append("title", title);
         formData.append("description", description);
-        // formData.append("file", image);
+        formData.append("file", image);
 
         try {
             // First, create the item in the database
@@ -84,17 +84,17 @@ const NestExchange = () => {
             const itemId = itemResponse.data.id;
 
             // Then, upload the photo for the item
-            // const photoResponse = await axios.post(
-                //`${import.meta.env.VITE_API_URL}/items/${itemId}/photos/`,
-                //formData,
-                //{
-                    //headers: { "Content-Type": "multipart/form-data" },
-                   // withCredentials: true,
-                //}
-            //);
+             const photoResponse = await axios.post(
+                `${import.meta.env.VITE_API_URL}/items/${itemId}/photos/`,
+                formData,
+                {
+                    headers: { "Content-Type": "multipart/form-data" },
+                    withCredentials: true,
+                }
+            );
 
             console.log("Item created successfully:", itemResponse.data);
-            // console.log("Photo uploaded successfully:", photoResponse.data);
+            console.log("Photo uploaded successfully:", photoResponse.data);
 
             // Close the form and reset the state
             toggleListItemContainer();
@@ -185,10 +185,10 @@ const NestExchange = () => {
             </select>
         </label>
         <input type="hidden" name="lister_id" value="123" /> {/* Replace 123 with the logged-in user's ID */}
-        <label>
-            //Image:
-            //<//input type="file" name="image" accept="image/*" required />
-        </label>
+                            {/*<label>
+            Image:
+            <input type="file" name="image" accept="image/*" required />
+        </label>*/}
         <button type="submit">Submit</button>
         <button type="button" onClick={toggleListItemContainer}>
             Cancel
