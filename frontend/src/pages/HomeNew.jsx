@@ -64,7 +64,7 @@ const NestExchange = () => {
         
         const title = event.target.title.value;
         const description = event.target.description.value;
-
+        const category_id = event.target.category_id.value;
         try {
             // First, create the item in the database
             const itemResponse = await axios.post(
@@ -72,6 +72,7 @@ const NestExchange = () => {
                 {
                     title,
                     description,
+                    category_id,
                 },
                 { withCredentials: true }
             );
