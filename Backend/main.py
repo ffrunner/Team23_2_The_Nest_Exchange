@@ -61,6 +61,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 #function to set up session authentication
 def get_current_user (request:Request):
     session_id = request.cookies.get("session_id")
+    print(f"Cookies:", request.cookies)
     print(f"Session id: {session_id}")
     if not session_id:
         raise HTTPException(status_code=401, detail="Not authenticated")
@@ -103,16 +104,20 @@ async def login(response: Response, user:LoginUser, db: Session = Depends(get_db
     db_user = db.query(User).filter(User.email == user.email).first()
     if db_user:
             if pwd_context.verify(user.password, db_user.password_hash):
-                session_id = str(uuid4())
-                user_data = {
+                try:
+                    session_id = str(uuid4())
+                    user_data = {
                     "id":db_user.id,
                     "email":db_user.email,
                     "role":db_user.role
-                }
-                redis_client.set(f"session:{session_id}", json.dumps(user_data), ex=3600)
-                print(f"stored session in redis: {user_data}")
-                response.set_cookie(key="session_id",value=session_id, httponly=True, secure=False, samesite="Lax", path="/")
-                return JSONResponse(content="Successfully logged in!")
+                     }
+                    redis_client.set(f"session:{session_id}", json.dumps(user_data), ex=3600)
+                    print(f"stored session in redis: {user_data}")
+                    response = JSONResponse(content="Successfully logged in!")
+                    response.set_cookie(key="session_id",value=session_id, httponly=True, secure=False, samesite="Lax", path="/")
+                    return response
+                except Exception as e:
+                    return JSONResponse(content="Redis session not properly stored: {e}")
             else:
                 return JSONResponse(content="Invalid credentials")
     else: 
@@ -164,8 +169,8 @@ async def change_password(user:ChangePassword, db: Session = Depends(get_db), cu
 
 @app.post("/items/")
 def create_item(item: ItemCreate, db: Session = Depends(get_db),current_user:dict = Depends(get_current_user)): 
-    #if not isinstance(current_user, dict) or "id" not in current_user:
-        #raise HTTPException(status_code=401, detail="Invalid or missing user session")
+    if not isinstance(current_user, dict) or "id" not in current_user:
+        raise HTTPException(status_code=401, detail="Invalid or missing user session")
     
     db_item = Item(title = item.title, description = item.description, category_id = item.category_id, lister_id = current_user["id"],is_active=True,  # Default to active
         is_claimed=False)
