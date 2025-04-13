@@ -65,6 +65,8 @@ const NestExchange = () => {
         const title = event.target.title.value;
         const description = event.target.description.value;
         const category_id = event.target.category_id.value;
+        const pickup_details = event.target.pickup_details.value;
+        
         try {
             // First, create the item in the database
             const itemResponse = await axios.post(
@@ -73,6 +75,7 @@ const NestExchange = () => {
                     title,
                     description,
                     category_id,
+                    pickup_details,
                 },
                 { withCredentials: true }
             );
@@ -170,6 +173,10 @@ const NestExchange = () => {
         <label>
             Description:
             <textarea name="description" placeholder="Enter item description" required></textarea>
+        </label>
+        <label>
+            Pickup Details:
+            <textarea name="pickup_details" placeholder="Enter item pickup details" required></textarea>
         </label>
         <label>
             Category:
