@@ -81,6 +81,7 @@ const NestExchange = () => {
             );
 
             const itemId = itemResponse.data.item.id;
+            console.log("Item ID:", itemId);
 
             // Then, upload the photo for the item
             const formData = new FormData();
