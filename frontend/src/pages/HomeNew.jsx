@@ -66,6 +66,7 @@ const NestExchange = () => {
         const description = event.target.description.value;
         const category_id = event.target.category_id.value;
         const pickup_details = event.target.pickup_details.value;
+        const imageFile = event.target.photo_url.files[0];
         
         try {
             // First, create the item in the database
@@ -85,7 +86,7 @@ const NestExchange = () => {
 
             // Then, upload the photo for the item
             const formData = new FormData();
-            formData.append('file', event.target.image.files[0]);
+            formData.append('file', event.imageFile);
             const photoResponse = await axios.post(
                 `${import.meta.env.VITE_API_URL}/items/${itemId}/photos/`,
                 formData,
