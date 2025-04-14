@@ -86,7 +86,7 @@ const NestExchange = () => {
 
             // Then, upload the photo for the item
             const formData = new FormData();
-            formData.append('file', imageFile);
+            formData.append('photo_url', imageFile);
             const photoResponse = await axios.post(
                 `${import.meta.env.VITE_API_URL}/items/${itemId}/photos/`,
                 formData,
