@@ -194,7 +194,7 @@ const NestExchange = () => {
         <input type="hidden" name="lister_id" value="123" /> {/* Replace 123 with the logged-in user's ID */}
          <label>
             Image:
-            <input type="file" name="image" accept="image/*" required />
+            <input type="file" name="photo_url" accept="image/*" required />
         </label>
         <button type="submit">Submit</button>
         <button type="button" onClick={toggleListItemContainer}>
