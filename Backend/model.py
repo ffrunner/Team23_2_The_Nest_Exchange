@@ -38,9 +38,9 @@ class Listing(Base):
 
 
     def to_dict(self):
-        
-        photo_url = f"/uploads/{self.item.photos[0].photo_url.split('/')[-1]}" if self.item and self.item.photos else None
-
+        photos = []
+        if self.item and self.item.photos:
+            photos = [f"/uploads/{photo.photo_url.split('/')[-1]}" for photo in self.item.photos] 
         return {
             "id": self.id,
             "title": self.title,
@@ -49,7 +49,7 @@ class Listing(Base):
             "lister_id": self.lister_id,
             "item_id": self.item_id,
             "category_id": self.category_id,
-            "photo": photo_url
+            "photo": photos
     }
 
 class ListingPhoto(Base):
@@ -71,7 +71,7 @@ class Item(Base):
     created_at = Column(TIMESTAMP, default=None)
     title = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
-    category_id = Column(Integer, ForeignKey('categories.id'), nullable=True)
+    pickup_details = Column(Text, nullable = True)
     is_active = Column(Boolean, default=True)
     lister_id = Column(Integer, ForeignKey('users.id'), nullable=True)
     claimer_id = Column(Integer, ForeignKey('users.id'), nullable=True) 
@@ -136,7 +136,6 @@ class SupportMessage(Base):
     message = Column(Text, nullable=False)
     response = Column(Text, nullable=True)
     status = Column(String(50), default="pending")
-
 
 
     
