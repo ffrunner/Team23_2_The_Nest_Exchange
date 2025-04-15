@@ -67,11 +67,6 @@ const NestExchange = () => {
     const pickup_details = event.target.pickup_details.value;
     const imageFile = event.target.photo_url.files[0];
 
-    if (!imageFile) {
-        console.error("No image file selected.");
-        return;
-    }
-
     try {
         
         const itemResponse = await axios.post(
@@ -85,31 +80,25 @@ const NestExchange = () => {
             { withCredentials: true }
         );
 
-        console.log("Item created response:", itemResponse.data);
-
+        const itemId = itemResponse?.data?.item?.id;
         
-        const item = itemResponse.data.item;
-        if (!item || !item.id) {
-            console.error("Could not get item ID");
-            return;
-        }
-
-        const itemId = item.id;
-        console.log("Item ID:", itemId);
 
         
         const formData = new FormData();
         formData.append('file', imageFile);
 
-        
-        const photoUploadUrl = `${import.meta.env.VITE_API_URL}/items/${itemId}/photos/`;
-        console.log("Uploading photo to:", photoUploadUrl);
+        const photoResponse = await axios.post(
+            `${import.meta.env.VITE_API_URL}/items/${itemId}/photos/`,
+            formData,
+            {
+                headers: { "Content-Type": "multipart/form-data" }, 
+                withCredentials: true, 
+            }
+        );
 
-        const photoResponse = await axios.post(photoUploadUrl, formData, {
-            withCredentials: true,
-        });
 
         console.log("Photo uploaded successfully:", photoResponse.data);
+        console.log("Item created successfully:", itemResponse.data);
         toggleListItemContainer();
 
     } catch (error) {
