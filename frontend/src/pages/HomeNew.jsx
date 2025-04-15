@@ -184,10 +184,10 @@ const NestExchange = () => {
         <label>
             Category:
             <select name="category_id" required>
-                <option value="1">Academic Materials</option>
-                <option value="2">Textbooks</option>
-                <option value="3">Technology</option>
-                <option value="4">Furniture</option>
+                <option value="1">Technology</option>
+                <option value="2">Furniture</option>
+                <option value="3">Academic Materials</option>
+                <option value="4">Textbooks</option>
             </select>
         </label>
         <input type="hidden" name="lister_id" value="123" /> {/* Replace 123 with the logged-in user's ID */}
