@@ -18,10 +18,10 @@ const NestExchange = () => {
     }, []);
 
     const categories = [
-        { title: "Academic Materials", image: "school-pencil-case-equipment.jpg", link: "Academic Materials" },
-        { title: "Textbooks", image: "Textbooks.jpg", link: "Textbooks" },
         { title: "Technology", image: "Technology.jpeg", link: "Technology" },
         { title: "Furniture", image: "Furniture.jpeg", link: "Furniture" },
+        { title: "Academic Materials", image: "school-pencil-case-equipment.jpg", link: "Academic Materials" },
+        { title: "Textbooks", image: "Textbooks.jpg", link: "Textbooks" },
     ];
 
     // Function to fetch listings for a category
@@ -147,7 +147,7 @@ const NestExchange = () => {
                                 listings.map((listing) => (
                                     <div key={listing.id} className="listingCard">
                                         <img
-                                            src={listing.photo || "/static/images/placeholder.jpg"}
+                                            src={listing.photos && listing.photos[0] ? listing.photos[0] : "/static/images/placeholder.jpg"}
                                             alt={listing.title}
                                             className="listingPhoto"
                                         />
