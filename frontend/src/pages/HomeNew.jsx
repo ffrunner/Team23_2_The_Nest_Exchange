@@ -100,7 +100,7 @@ const NestExchange = () => {
 
     } catch (error) {
         console.error("Error creating item or photo:", error);
-        alert("Failed to create item or upload item photo);
+        alert("Failed to create item or upload item photo");
     }
 };
 
