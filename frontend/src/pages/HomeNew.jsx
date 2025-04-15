@@ -59,53 +59,64 @@ const NestExchange = () => {
 
     // Function to handle form submission for listing an item
     const handleListItemSubmit = async (event) => {
-        event.preventDefault();
+    event.preventDefault();
+
+    const title = event.target.title.value;
+    const description = event.target.description.value;
+    const category_id = event.target.category_id.value;
+    const pickup_details = event.target.pickup_details.value;
+    const imageFile = event.target.photo_url.files[0];
+
+    if (!imageFile) {
+        console.error("No image file selected.");
+        return;
+    }
+
+    try {
+        
+        const itemResponse = await axios.post(
+            `${import.meta.env.VITE_API_URL}/items`,
+            {
+                title,
+                description,
+                category_id,
+                pickup_details,
+            },
+            { withCredentials: true }
+        );
+
+        console.log("Item created response:", itemResponse.data);
 
         
-        const title = event.target.title.value;
-        const description = event.target.description.value;
-        const category_id = event.target.category_id.value;
-        const pickup_details = event.target.pickup_details.value;
-        const imageFile = event.target.photo_url.files[0];
-        
-        try {
-            // First, create the item in the database
-            const itemResponse = await axios.post(
-                `${import.meta.env.VITE_API_URL}/items`,
-                {
-                    title,
-                    description,
-                    category_id,
-                    pickup_details,
-                },
-                { withCredentials: true }
-            );
-            console.log("Item created:", itemResponse.data);
-            const itemId = itemResponse.data.item.id;
-            
-
-            // Then, upload the photo for the item
-            const formData = new FormData();
-            formData.append('file', imageFile);
-           
-            
-            const photoResponse = await axios.post(
-                `${import.meta.env.VITE_API_URL}/items/${itemId}/photos/`,
-                formData,
-                {
-                    withCredentials: true,
-                }
-            );
-
-            
-            console.log("Photo uploaded successfully:", photoResponse.data);
-            console.log("Item created successfully:", itemResponse.data);
-            // Close the form and reset the state
-            toggleListItemContainer();
-        } catch (error) {
-            console.error("Error creating item or uploading photo:", error);
+        const item = itemResponse.data.item;
+        if (!item || !item.id) {
+            console.error("Could not get item ID");
+            return;
         }
-    };
+
+        const itemId = item.id;
+        console.log("Item ID:", itemId);
+
+        
+        const formData = new FormData();
+        formData.append('file', imageFile);
+
+        
+        const photoUploadUrl = `${import.meta.env.VITE_API_URL}/items/${itemId}/photos/`;
+        console.log("Uploading photo to:", photoUploadUrl);
+
+        const photoResponse = await axios.post(photoUploadUrl, formData, {
+            withCredentials: true,
+        });
+
+        console.log("Photo uploaded successfully:", photoResponse.data);
+        toggleListItemContainer();
+
+    } catch (error) {
+        console.error("Error creating item or photo:", error);
+    }
+};
+
 
     return (
         <div>
