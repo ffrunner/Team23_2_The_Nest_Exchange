@@ -80,15 +80,12 @@ const NestExchange = () => {
             { withCredentials: true }
         );
 
-        const itemId = itemResponse?.data?.item?.id;
-        
-
         
         const formData = new FormData();
         formData.append('file', imageFile);
 
         const photoResponse = await axios.post(
-            `${import.meta.env.VITE_API_URL}/items/${itemId}/photos/`,
+            `${import.meta.env.VITE_API_URL}/items/photos/`,
             formData,
             {
                 headers: { "Content-Type": "multipart/form-data" }, 
@@ -103,6 +100,7 @@ const NestExchange = () => {
 
     } catch (error) {
         console.error("Error creating item or photo:", error);
+        alert("Failed to create item or upload item photo);
     }
 };
 
