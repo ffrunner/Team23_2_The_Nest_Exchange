@@ -11,13 +11,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import os
 from uuid import uuid4
+from fastapi.staticfiles import StaticFiles
 #from fastapi_mail import FastMail, MessageSchema, MessageType
 #from fastapi_mail.config import ConnectionConfig
 
 #Setting up application with FastAPI
 app = FastAPI()
 UPLOAD_DIRECTORY = "./uploads"
-
+os.makedirs(UPLOAD_DIRECTORY, exist_ok=True)
+app.mount("/uploads",StaticFiles(directory=UPLOAD_DIRECTORY),name="uploads")
 
 #Setting up email system/function
 #conf = ConnectionConfig(
@@ -94,6 +96,7 @@ async def sign_up(user:CreateUser, db: Session = Depends(get_db)):
             db_user = User(email=user.email, username=user.username, password_hash=user.password_hash, role=user.role, first_name=user.first_name, last_name=user.last_name, phone=user.phone)
             db.add(db_user)
             db.commit()
+            db.refresh()
             return JSONResponse(content="Successfully signed up!")
     except Exception as e: 
         raise HTTPException(status_code=500, detail=f"Server error occurred:{str(e)}")
@@ -168,11 +171,11 @@ async def change_password(user:ChangePassword, db: Session = Depends(get_db), cu
 # Lister Functionalities
 
 @app.post("/items/")
-def create_item(item: ItemCreate, db: Session = Depends(get_db),current_user:dict = Depends(get_current_user)): 
+async def create_item(item: ItemCreate, db: Session = Depends(get_db),current_user:dict = Depends(get_current_user)): 
     if not isinstance(current_user, dict) or "id" not in current_user:
         raise HTTPException(status_code=401, detail="Invalid or missing user session")
     
-    db_item = Item(title = item.title, description = item.description, category_id = item.category_id, lister_id = current_user["id"],is_active=True,  # Default to active
+    db_item = Item(title = item.title, description = item.description, pickup_details = item.pickup_details, category_id = item.category_id, lister_id = current_user["id"],is_active=True,  # Default to active
         is_claimed=False)
     db.add(db_item)
     db.commit()
@@ -189,7 +192,7 @@ def create_item(item: ItemCreate, db: Session = Depends(get_db),current_user:dic
     db.add(db_listing)
     db.commit()
     db.refresh(db_listing)
-    return db_item, db_listing  
+    return {"item": db_item, "listing": db_listing}  
         
 @app.put("/items/{item_id}")
 def update_item(item_id: int, item: ItemUpdate, db: Session = Depends(get_db), current_user:dict=Depends(get_current_user)):
@@ -248,34 +251,31 @@ def delete_item(item_id: int, db: Session = Depends(get_db), current_user: dict=
 
     return
 
-@app.post("/items/{item_id}/photos/")
-async def upload_item_photo(item_id: int, file: UploadFile = File(...), db: Session = Depends(get_db), current_user: dict=Depends(get_current_user)):
+@app.post("/items/photos/")
+async def upload_item_photo(file: UploadFile = File(...), db: Session = Depends(get_db), current_user: dict=Depends(get_current_user)):
     if not isinstance(current_user, dict) or "id" not in current_user:
         raise HTTPException(status_code=401, detail="Invalid or missing user session")
     
     # Validate item_id
-    db_item = db.query(Item).filter(Item.id == item_id).first()
+    db_item = db.query(Item).filter(Item.lister_id == current_user["id"]).order_by(Item.id.desc()).first()
     if not db_item:
         raise HTTPException(status_code=404, detail="Item not found")
-    if db_item.lister_id != current_user["id"]:
-        raise HTTPException(status_code=403, detail="You do not have permission to upload a photo for this item")
-    # Ensure the upload directory exists
     os.makedirs(UPLOAD_DIRECTORY, exist_ok=True)
+    filename = f"{uuid4()}_{file.filename}"
+    file_path = os.path.join(UPLOAD_DIRECTORY, filename)
 
-    # Save the file
-    photo_url = os.path.join(UPLOAD_DIRECTORY, file.filename)
     try:
-        with open(photo_url, "wb") as buffer:
+        with open(file_path, "wb") as buffer:
             buffer.write(await file.read())
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
-
+    photo_url = f"/uploads/{filename}"
     # Save the photo record in the database
-    db_listing_photo = ListingPhoto(item_id=item_id, photo_url=photo_url)
+    db_listing_photo = ListingPhoto(item_id=db_item.id, photo_url=photo_url)
     db.add(db_listing_photo)
     db.commit()
     db.refresh(db_listing_photo)
-    return db_listing_photo
+    return {"photo": db_listing_photo, "photo_url": photo_url}
 
 @app.get("/items/{item_id}/claims/")
 def get_item_claims(item_id: int, db: Session = Depends(get_db), current_user: dict=Depends(get_current_user)):
