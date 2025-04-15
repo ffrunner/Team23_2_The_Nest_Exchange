@@ -80,9 +80,9 @@ const NestExchange = () => {
                 },
                 { withCredentials: true }
             );
-
-            const itemId = itemResponse?.data?.id;
-            console.log("Item ID:", itemId);
+            console.log("Item created:", itemResponse.data);
+            const itemId = itemResponse?.data?.item?.id;
+            
 
             // Then, upload the photo for the item
             const formData = new FormData();
