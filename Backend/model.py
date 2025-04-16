@@ -2,6 +2,7 @@ from config import Base
 from sqlalchemy import Column, Integer, Text, VARCHAR, TIMESTAMP, Boolean, ForeignKey, String, UniqueConstraint, CheckConstraint, Enum 
 from sqlalchemy.orm import relationship 
 import enum 
+from datetime import datetime, timezone
 
 #Set up SQLAlchemy models based on postgresql database. These models are the ones used to perform queries. 
 class User(Base):
@@ -40,7 +41,7 @@ class Listing(Base):
     def to_dict(self):
         photos = []
         if self.item and self.item.photos:
-            photos = [f"/uploads/{photo.photo_url.split('/')[-1]}" for photo in self.item.photos] 
+            photos = [photo.photo_url for photo in self.item.photos] 
         return {
             "id": self.id,
             "title": self.title,
@@ -49,7 +50,7 @@ class Listing(Base):
             "lister_id": self.lister_id,
             "item_id": self.item_id,
             "category_id": self.category_id,
-            "photo": photos
+            "photos": photos
     }
 
 class ListingPhoto(Base):
@@ -68,7 +69,7 @@ class Item(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     category_id = Column(Integer, ForeignKey('categories.id'), nullable=True)
     is_claimed = Column(Boolean, default=False)
-    created_at = Column(TIMESTAMP, default=None)
+    created_at = Column(TIMESTAMP, default=datetime.now(timezone.utc))
     title = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
     pickup_details = Column(Text, nullable = True)
@@ -136,6 +137,3 @@ class SupportMessage(Base):
     message = Column(Text, nullable=False)
     response = Column(Text, nullable=True)
     status = Column(String(50), default="pending")
-
-
-    
