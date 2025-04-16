@@ -104,7 +104,7 @@ const NestExchange = () => {
     }
 };
 
-
+const backendBaseUrl = import.meta.env.VITE_API_URL;
     return (
         <div>
             <main>
@@ -147,7 +147,7 @@ const NestExchange = () => {
                                 listings.map((listing) => (
                                     <div key={listing.id} className="listingCard">
                                         <img
-                                            src={listing.photos && listing.photos[0] ? listing.photos[0] : "/static/images/placeholder.jpg"}
+                                            src={listing.photos && listing.photos[0] ? `${backendBaseUrl}${listing.photos[0]` : "/static/images/placeholder.jpg"}
                                             alt={listing.title}
                                             className="listingPhoto"
                                         />
