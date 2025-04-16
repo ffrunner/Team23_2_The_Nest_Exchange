@@ -19,6 +19,7 @@ body {
     overflow: hidden; /* Prevent scrolling */
     position: relative; /* Ensure it is positioned correctly */
     background-color: white;
+    align_items: stretch;
 }
 
 /* Sidebar styling */
@@ -54,9 +55,10 @@ body {
 /* Main content styling */
 .profile-main {
     flex: 1;
-    padding: 20px;
+    padding: 40px;
     overflow-y: auto; /* Allow scrolling within the main content if needed */
     background-color: white;
+    display: block;
 }
 
 .profile-main h2 {
