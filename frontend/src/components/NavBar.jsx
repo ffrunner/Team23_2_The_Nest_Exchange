@@ -66,6 +66,9 @@ const NavBar = () => {
                     </div>
                     {isMenuOpen ? "X" : "MENU"}
                 </button>
+                <button className="logoutButton" onClick={handleLogout}>
+                    Logout
+                </button>
             </div>
             {isMenuOpen && (
                 <div className="menuOverlay">
