@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import List, Optional 
 
 #Pydantic Models used for data management (requests and responses) 
@@ -24,12 +24,17 @@ class ChangePassword(BaseModel):
     current_password: str 
     new_password: str  
 
+class ForgotPassword(BaseModel):
+    email: EmailStr
 
 class ItemCreate(BaseModel):
     title: str
     description: Optional[str] = None
-    category_id: int
-    lister_id: int
+    category_id: Optional[int] = None
+    pickup_details: str 
+    
+    class Config:
+        orm_mode=True
 
 class ItemUpdate(BaseModel):
     title: Optional[str] = None
@@ -44,7 +49,10 @@ class ClaimCreate(BaseModel):
 
 class ListingPhotoCreate(BaseModel):
     item_id: int
-    photo_url: str
+    photo_url:str 
+    
+    class Config:
+        orm_mode=True
 
 class ItemResponse(BaseModel):
     id: int
@@ -65,10 +73,8 @@ class ListingResponse(BaseModel):
     is_active: bool
     lister_id: int
     item_id: int
-
+    photo_url: str 
     
-
-
 # Pydantic schema for Category
 class CategoryResponse(BaseModel):
     id: int

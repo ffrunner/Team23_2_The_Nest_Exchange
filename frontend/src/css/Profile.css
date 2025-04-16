@@ -1,15 +1,3 @@
-.banner {
-    display: none !important;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4; /* Neutral background color */
-    overflow: hidden; /* Prevent scrolling */
-}
 
 /* Profile container */
 .profile-container {
@@ -97,16 +85,23 @@ body {
 
 .activity-cards {
     display: flex;
-    gap: 20px;
+    flex-wrap: wrap; /* Allow cards to wrap to the next row if needed */
+    gap: 20px; /* Add spacing between cards */
+    justify-content: space-between; /* Distribute cards evenly */
+    margin: 0 auto; /* Center the cards container */
+    width: 100%; /* Ensure it takes up the full width of the parent */
+    max-width: 1200px; /* Optional: Limit the width for better layout */
 }
 
 .activity-card {
-    flex: 1;
+    flex: 1 1 calc(33.333% - 20px); /* Make cards responsive and fit 3 per row */
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
+    min-width: 200px; /* Ensure a minimum width for smaller screens */
+    max-width: 300px; /* Optional: Limit the maximum width */
 }
 
 .activity-card p {

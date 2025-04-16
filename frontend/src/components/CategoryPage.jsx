@@ -16,8 +16,9 @@ const CategoryPage = () => {
   const fetchItems = async () => {
     try {
       setError(null);
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/items/filter/`, {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/items/filter/`, {
         params: { category_id: categoryName }, // Assuming categoryName is the category ID
+        withCredentials: true,
       });
       setItems(response.data);
     } catch (err) {
@@ -29,8 +30,9 @@ const CategoryPage = () => {
   const handleSearch = async () => {
     try {
       setError(null);
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/items/search/`, {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/items/search/`, {
         params: { keyword: searchKeyword },
+        withCredentials: true,
       });
       setItems(response.data);
     } catch (err) {

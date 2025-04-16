@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import Profile from './pages/Profile'; 
 import Admin from './pages/Admin'; // Import the Admin page
 import HomeNew from './pages/HomeNew'; // Import the new Home page
+import Dashboard from './pages/Dashboard'; // Import the Dashboard page
 import { UserProvider } from './context/UserContext'; // Import the UserProvider
 import './css/App.css';
 
@@ -32,6 +33,7 @@ function App() {
                         <Route path="/forgot-password" element={<ForgotPassword />} />
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/admin" element={<Admin />} /> 
+                        <Route path="/dashboard" element={<Dashboard />} />
                     </Routes>
                 </main>
             </div>

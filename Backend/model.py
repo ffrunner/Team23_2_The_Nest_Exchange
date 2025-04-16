@@ -2,6 +2,7 @@ from config import Base
 from sqlalchemy import Column, Integer, Text, VARCHAR, TIMESTAMP, Boolean, ForeignKey, String, UniqueConstraint, CheckConstraint, Enum 
 from sqlalchemy.orm import relationship 
 import enum 
+from datetime import datetime, timezone
 
 #Set up SQLAlchemy models based on postgresql database. These models are the ones used to perform queries. 
 class User(Base):
@@ -38,9 +39,9 @@ class Listing(Base):
 
 
     def to_dict(self):
-        
-        photo_url = f"/uploads/{self.item.photos[0].photo_url.split('/')[-1]}" if self.item and self.item.photos else None
-
+        photos = []
+        if self.item and self.item.photos:
+            photos = [photo.photo_url for photo in self.item.photos] 
         return {
             "id": self.id,
             "title": self.title,
@@ -49,15 +50,17 @@ class Listing(Base):
             "lister_id": self.lister_id,
             "item_id": self.item_id,
             "category_id": self.category_id,
-            "photo": photo_url
+            "photos": photos
     }
-    
 
 class ListingPhoto(Base):
     __tablename__ = "listing_photos"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    item_id = Column(Integer, ForeignKey('items.id'), nullable=False)
-    photo_url = Column(Text, nullable=False)
+
+    id = Column(Integer, primary_key=True, autoincrement=True)  
+    item_id = Column(Integer, ForeignKey('items.id'), nullable=False)  
+    photo_url = Column(Text, nullable=False)  
+
+    # Relationship to the Item model
     item = relationship("Item", back_populates="photos")
 
 class Item(Base):
@@ -66,10 +69,10 @@ class Item(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     category_id = Column(Integer, ForeignKey('categories.id'), nullable=True)
     is_claimed = Column(Boolean, default=False)
-    created_at = Column(TIMESTAMP, default=None)
+    created_at = Column(TIMESTAMP, default=datetime.now(timezone.utc))
     title = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
-    category_id = Column(Integer, ForeignKey('categories.id'), nullable=True)
+    pickup_details = Column(Text, nullable = True)
     is_active = Column(Boolean, default=True)
     lister_id = Column(Integer, ForeignKey('users.id'), nullable=True)
     claimer_id = Column(Integer, ForeignKey('users.id'), nullable=True) 
@@ -134,7 +137,3 @@ class SupportMessage(Base):
     message = Column(Text, nullable=False)
     response = Column(Text, nullable=True)
     status = Column(String(50), default="pending")
-
-
-
-    
