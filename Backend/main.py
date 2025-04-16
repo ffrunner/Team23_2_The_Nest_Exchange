@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Query, Re
 from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ClaimCreate, ItemResponse, ForgotPassword
 from config import get_db #,settings 
 from model import User, Item, ListingPhoto, Claim, Listing, Report, Category, SupportMessage
-from sqlalchemy.orm import Session, joinedload 
+from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from typing import List, Optional 
 from redis import StrictRedis
