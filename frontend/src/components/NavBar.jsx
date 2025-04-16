@@ -20,7 +20,23 @@ const NavBar = () => {
         console.log('Search query:', query); // Replace with actual search logic
         setIsSearchOpen(false); // Optionally close the search bar after submission
     };
-
+    const handleLogout = async () => {
+        try{
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/logout`, {}, { withCredentials: true});
+            if (response.status === 200){
+                console.log("Successfully logged out!");
+                navigate(`${import.meta.env.VITE_API_URL}/login`);
+            }
+        } catch (error) {
+            if (error.response) {
+                console.error("Logout failed:", error.response.data.detail);
+                alert("Logout failed:" + error.response.data.detail);
+            } else {
+                console.error("Logout failed", error.message);
+                alert("Error occurred. Please try again.");
+            }
+        }
+    };
     return (
         <div className="navbar">
             <div className="right-container">
