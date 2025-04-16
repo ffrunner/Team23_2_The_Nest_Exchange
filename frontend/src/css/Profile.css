@@ -15,7 +15,7 @@ body {
 .profile-container {
     display: flex;
     height: 100vh; /* Full viewport height */
-    width: 100vw; /* Full viewport width */
+    width: 100%; /* Full viewport width */
     overflow: hidden; /* Prevent scrolling */
     position: relative; /* Ensure it is positioned correctly */
     background-color: white;
@@ -23,7 +23,7 @@ body {
 
 /* Sidebar styling */
 .sidebar {
-    width: 250px;
+    width: 0 0 250px;
     background-color: #333; /* Dark background for sidebar */
     color: white;
     padding: 20px;
