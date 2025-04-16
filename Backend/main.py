@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Query, Re
 from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ClaimCreate, ItemResponse, ForgotPassword
 from config import get_db #,settings 
 from model import User, Item, ListingPhoto, Claim, Listing, Report, Category, SupportMessage
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload 
 from passlib.context import CryptContext
 from typing import List, Optional 
 from redis import StrictRedis
@@ -74,7 +74,7 @@ def get_current_user (request:Request):
 
 # Admin access control dependency
 def admin_required(current_user: dict = Depends(get_current_user)):
-    if current_user.get("role") != "admin":
+    if current_user.get("role") != "Admin":
         raise HTTPException(status_code=403, detail="Administrator access required")
     return current_user
 
@@ -301,7 +301,7 @@ def get_items(db: Session = Depends(get_db), current_user:dict=Depends(get_curre
     return items
 
 @app.get("/listings", response_model=dict)
-def get_listings(category: str = Query(None), db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
+async def get_listings(category: str = Query(None), db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     print(current_user)
     print(f"Received category: {category}")  # Debug: Check the category parameter
     if category:
@@ -320,7 +320,6 @@ def get_listings(category: str = Query(None), db: Session = Depends(get_db), cur
 
     # Return the listings
     return {"listings": [listing.to_dict() for listing in listings]}
-       
 
 # Claimer Functionalities
 
@@ -450,5 +449,3 @@ async def respond_support_message(message_id: int, response_text: str, db: Sessi
     db.commit()
     db.refresh(db_message)
     return db_message
-
-
