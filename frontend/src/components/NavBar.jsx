@@ -28,7 +28,7 @@ const NavBar = () => {
             const response = await axios.post(`${import.meta.env.VITE_API_URL}/logout`, {}, { withCredentials: true});
             if (response.status === 200){
                 console.log("Successfully logged out!");
-                navigate(`${import.meta.env.VITE_API_URL}/login`);
+                navigate("/login");
             }
         } catch (error) {
             if (error.response) {
