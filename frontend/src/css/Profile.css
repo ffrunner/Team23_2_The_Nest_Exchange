@@ -6,8 +6,8 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4; /* Neutral background color */
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f4f4f9; /* Neutral background color */
     overflow: hidden; /* Prevent scrolling */
 }
 
