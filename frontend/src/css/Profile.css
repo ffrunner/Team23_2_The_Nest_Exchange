@@ -17,13 +17,13 @@ body {
     flex-direction: row;
     justify-content: flex-start;
     height: 100vh; /* Full viewport height */
-    width: 100vw; /* Full viewport width */
+    width: 100%; /* Full viewport width */
     overflow: hidden; /* Prevent scrolling */
     position: relative; /* Ensure it is positioned correctly */
     background-color: white;
     align-items: stretch;
     gap: 0;
-    margin-left: -130px;
+    margin-left: 0px;
     padding: 0px;
 
 }
