@@ -1,7 +1,6 @@
 from config import Base
 from sqlalchemy import Column, Integer, Text, VARCHAR, TIMESTAMP, Boolean, ForeignKey, String, UniqueConstraint, CheckConstraint, Enum 
 from sqlalchemy.orm import relationship 
-import enum 
 from datetime import datetime, timezone
 
 #Set up SQLAlchemy models based on postgresql database. These models are the ones used to perform queries. 
@@ -115,10 +114,7 @@ class Claim(Base):
     lister = relationship("User", foreign_keys=[lister_id], back_populates="listed_claims")
     claimer = relationship("User", foreign_keys=[claimer_id], back_populates="claimed_claims")
 
-class ReportStatus(enum.Enum):
-    pending = "pending"
-    valid = "valid"
-    invalid = "invalid"
+
 
 class Report(Base):
     __tablename__ = "reports"
@@ -127,7 +123,7 @@ class Report(Base):
     listing_id = Column(Integer, nullable=False)
     reason = Column(Text, nullable=False)
     reported_by = Column(Integer, nullable=False)
-    status = Column(Enum(ReportStatus), default=ReportStatus.pending)
+    
 
 class SupportMessage(Base):
     __tablename__ = "support_messages"
