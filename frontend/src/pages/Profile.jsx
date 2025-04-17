@@ -18,51 +18,60 @@ const Profile = () => {
             fetchItems();
         }
     };
-
-    useEffect(() => {
-        const fetchUserName = async () => {
-            try{
-                const response = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/name`,
-                    { withCredentials: true, });
-            setUserName(response.data);
-            } catch(error) {
-                console.error("Error getting your listings:", error);
-                setError(error.response?.data?.detail || "Error occurred");
-            }
-        };
-        fetchUserName();
-    }, []);
-
-        const fetchItems = async() => {
-            setLoadingListings(true);
-            setError(null);
-            try{
-                const response = await axios.get(
-                     `${import.meta.env.VITE_API_URL}/items/`,  
-                    { withCredentials: true, });
-                setListings(response.data);
-            } catch(error) {
-                 console.error("Error getting user name:", error);
-                 setError(error.response?.data?.detail || "Error occurred");
-            }finally {
-                setLoadingListings(false);
-            }
-        };
-       const fetchClaimedItems = async () => {
-           try {
-               const response = await axios.get(
-                   `${import.meta.env.VITE_API_URL}/claimed`,
-                   { withCredentials: true,});
-               setClaimedItems(response.data);
-           } catch(error) {
-                 console.error("Error getting claimed items:", error);
-                 setError(error.response?.data?.detail || "Error occurred");
-           }
-       };
     
-        fetchClaimedItems();
-    }, []);
+useEffect(() => {
+    const fetchUserName = async () => {
+        try {
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_URL}/name`,
+                { withCredentials: true }
+            );
+            setUserName(response.data);
+        } catch (error) {
+            console.error("Error getting your name:", error);
+            setError(error.response?.data?.detail || "Error occurred");
+        }
+    };
+
+    fetchUserName();
+}, []); 
+
+useEffect(() => {
+    const fetchClaimedItems = async () => {
+        try {
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_URL}/claimed`,
+                { withCredentials: true }
+            );
+            setClaimedItems(response.data);
+        } catch (error) {
+            console.error("Error getting claimed items:", error);
+            setError(error.response?.data?.detail || "Error occurred");
+        }
+    };
+
+    fetchClaimedItems();
+}, []); 
+
+const fetchItems = async () => {
+    setLoadingListings(true);
+    setError(null);
+    try {
+        const response = await axios.get(
+            `${import.meta.env.VITE_API_URL}/items/`,
+            { withCredentials: true }
+        );
+        setListings(response.data);
+    } catch (error) {
+        console.error("Error getting items:", error);
+        setError(error.response?.data?.detail || "Error occurred");
+    } finally {
+        setLoadingListings(false);
+    }
+};
+
+
+
     return (
         <div className="profile-container">
             
