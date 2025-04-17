@@ -98,10 +98,6 @@ const fetchItems = async () => {
                 <section className="activity-section">
                     <h3>Activity</h3>
                     <div className="activity-cards">
-                        <div className="activity-card" onClick={() => handleSectionChange("Offers")}>
-                            <p>Offers</p>
-                            <h4>0</h4>
-                        </div>
                         <div className="activity-card" onClick={() => handleSectionChange("Claimed")}>
                             <p>Claimed</p>
                             <h4>0</h4>
@@ -113,12 +109,6 @@ const fetchItems = async () => {
                     </div>
                 </section>
                 <section className="dynamic-section">
-                    {selectedSection === "Offers" && (
-                        <div className="offers-container">
-                            <h3>Offers</h3>
-                            <p>Your offers</p>
-                        </div>
-                    )}
                
                     {selectedSection === "Claimed" && (
                             <div className="claimed-container">
