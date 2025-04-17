@@ -15,7 +15,7 @@ const Admin = () => {
     const fetchUsageReports = async () => {
       try {
         const response = await axios.get(
-          ${import.meta.env.VITE_API_URL}/usage`,
+          `${import.meta.env.VITE_API_URL}/usage`,
                 { withCredentials: true },
         );
         setUsageReports(response.data);
