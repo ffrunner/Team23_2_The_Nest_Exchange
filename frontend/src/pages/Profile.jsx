@@ -12,72 +12,7 @@ const Profile = () => {
     
     return (
         <div className="profile-container">
-            {/* Sidebar */}
-            <aside className="sidebar">
-                <ul>
-                    <li>
-                          <button 
-                            style={{
-                              background: 'none',
-                              border: 'none',
-                              color: 'inherit',
-                              font: 'inherit',
-                              cursor: 'pointer',
-                              padding: 0
-                            }} 
-                            onClick={() => navigate('/')}
-                          >
-                            Home
-                          </button>
-                        </li>
-                        <li>
-                          <button 
-                            style={{
-                              background: 'none',
-                              border: 'none',
-                              color: 'inherit',
-                              font: 'inherit',
-                              cursor: 'pointer',
-                              padding: 0
-                            }} 
-                            onClick={() => navigate('/profile')}
-                          >
-                            Profile
-                          </button>
-                        </li>
-                        <li>
-                          <button 
-                            style={{
-                              background: 'none',
-                              border: 'none',
-                              color: 'inherit',
-                              font: 'inherit',
-                              cursor: 'pointer',
-                              padding: 0
-                            }} 
-                            onClick={() => navigate('/admin')}
-                          >
-                            Admin
-                          </button>
-                        </li>
-                        <li>
-                          <button 
-                            style={{
-                              background: 'none',
-                              border: 'none',
-                              color: 'inherit',
-                              font: 'inherit',
-                              cursor: 'pointer',
-                              padding: 0
-                            }} 
-                            onClick={() => navigate('/settings')}
-                          >
-                            Settings
-                          </button>
-                        </li>
-                    
-                </ul>
-            </aside>
+            
 
             {/* Main Content */}
             <main className="profile-main">
