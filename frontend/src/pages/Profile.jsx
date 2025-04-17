@@ -15,7 +15,8 @@ const Profile = () => {
         setSelectedSection(section);
         if (section === "Listings"){
             fetchItems();
-    }
+        }
+    };
 
     useEffect(() => {
         const fetchUserName = async () => {
