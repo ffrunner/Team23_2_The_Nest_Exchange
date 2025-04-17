@@ -47,7 +47,6 @@ const Profile = () => {
                         alt="Profile"
                         className="profile-image"
                     />
-                    <h3>John Smith</h3>
                 </div>
 
                 {/* Activity Section */}
