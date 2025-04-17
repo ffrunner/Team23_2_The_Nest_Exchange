@@ -30,9 +30,11 @@ body {
     color: white;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    left:0;
+    left: 0;
+    top: 0;
     height: 100%;
     position: absolute;
+    z-index: 1000;
     
 }
 
