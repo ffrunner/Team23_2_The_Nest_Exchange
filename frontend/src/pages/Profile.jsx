@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../css/Profile.css'; // Ensure you create this CSS file for styling
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -21,6 +21,7 @@ const Profile = () => {
                     { withCredentials: true, });
             setUserName(response.data);
             } catch(error) {
+                console.error("Error getting user name:", error);
                 setError(error.response?.data?.detail || "Error occurred");
             }
         };
