@@ -8,9 +8,13 @@ const Profile = () => {
     const [selectedSection, setSelectedSection] = useState(null);
     const [userName, setUserName] = useState({ first_name: "", last_name: "" });
     const [error, setError] = useState(null);
+    const [listings, setListings] = useState([]);
+    const [loadingListings, setLoadingListings] = useState(false);
     
     const handleSectionChange = (section) => {
         setSelectedSection(section);
+        if (section === "Listings"){
+            fetchItems();
     };
 
     useEffect(() => {
@@ -27,7 +31,24 @@ const Profile = () => {
         };
         fetchUserName();
     }, []);
+
+        const fetchItems = async() => {
+            setLoadingListings(true);
+            setError(null);
+            try{
+                const response = await axios.get(
+                     `${import.meta.env.VITE_API_URL}/items/`,  
+                    { withCredentials: true, });
+                return response.data;
+            } catch(error) {
+                 console.error("Error getting user name:", error);
+                 setError(error.response?.data?.detail || "Error occurred");
+            }finally {
+                setLoadingListings(false);
+            }
+        };
     
+        
     return (
         <div className="profile-container">
             
@@ -64,7 +85,7 @@ const Profile = () => {
                         </div>
                         <div className="activity-card" onClick={() => handleSectionChange("Listings")}>
                             <p>Listings</p>
-                            <h4>0</h4>
+                            <h4>(listings.length)</h4>
                         </div>
                     </div>
                 </section>
@@ -84,7 +105,22 @@ const Profile = () => {
                     {selectedSection === "Listings" && (
                         <div className="listings-container">
                             <h3>Listings</h3>
-                            <p>Your listings</p>
+                            {loadingListings ? (
+                             <p> Loading your listings...</p>
+                            ) : error ? (
+                                <p>Error: {error}</p>
+                            ) : (
+                            <ul> {listings.length > 0 ? (
+                                listings.map((item) => (
+                                    <li key = {item.id}>
+                                        {item.name} - {item.description}
+                                    </li>
+                                    ))
+                                ) : (
+                                <p> No listings were found</p>
+                                )}
+                            </ul>
+                            )}
                         </div>
                     )}
                 
