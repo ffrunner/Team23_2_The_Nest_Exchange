@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../css/Profile.css'; // Ensure you create this CSS file for styling
 import { useNavigate } from 'react-router-dom';
 
@@ -6,9 +6,26 @@ import { useNavigate } from 'react-router-dom';
 const Profile = () => {
     const navigate = useNavigate();
     const [selectedSection, setSelectedSection] = useState(null);
+    const [userName, setUserName] = useState({ first_name: "", last_name: "" });
+    const [error, setError] = useState(null);
+    
     const handleSectionChange = (section) => {
         setSelectedSection(section);
     };
+
+    useEffect(() => {
+        const fetchUserName = async () => {
+            try{
+                const response = await axios.get(
+                    `${import.meta.env.VITE_API_URL}/name`,
+                    { withCredentials: true, });
+            setUserName(response.data);
+            } catch(error) {
+                setError(error.response?.data?.detail || "Error occurred");
+            }
+        };
+        fetchUserName():
+    }, []);
     
     return (
         <div className="profile-container">
@@ -16,7 +33,14 @@ const Profile = () => {
 
             {/* Main Content */}
             <main className="profile-main">
-                <h2>My Profile</h2>
+                <h2>Profile</h2>
+                {error ? (
+                    <p>Error: {error}</p>
+                ) : (
+                <p>
+                    {userName.first_name} {userName.last_name}
+                </p>
+            )}
                 <div className="profile-header">
                     <img
                         src="/path-to-profile-image.jpg" // Replace with the actual image path
