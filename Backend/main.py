@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Query, Request, Response
 from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ClaimCreate, ItemResponse, ForgotPassword
-from config import get_db #,settings 
+from config import get_db 
 from model import User, Item, ListingPhoto, Claim, Listing, Report, Category, SupportMessage
 from sqlalchemy.orm import Session 
 from passlib.context import CryptContext
@@ -12,36 +12,23 @@ from fastapi.responses import JSONResponse
 import os
 from uuid import uuid4
 from fastapi.staticfiles import StaticFiles
-#from fastapi_mail import FastMail, MessageSchema, MessageType
-#from fastapi_mail.config import ConnectionConfig
+
 
 #Setting up application with FastAPI
 app = FastAPI()
+
+#Having to make a directory for binary files for photos. Making absolute path so we all have the same one
 BASE_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_DIRECTORY = os.path.join(BASE_DIRECTORY, "uploads")
 os.makedirs(UPLOAD_DIRECTORY, exist_ok=True)
 app.mount("/uploads",StaticFiles(directory=UPLOAD_DIRECTORY),name="uploads")
 
-#Setting up email system/function
-#conf = ConnectionConfig(
-   # MAIL_USERNAME = settings.SMTP_USER,
-   # MAIL_PASSWORD = settings.SMTP_PASSWORD,
-   # MAIL_FROM = settings.SMTP_FROM_EMAIL,
-   # MAIL_PORT = settings.SMTP_PORT,
-   # MAIL_SERVER = settings.SMTP_HOST,
-   # MAIL_TLS = True,
-   # MAIL_SSL = False, 
-    #USE_CREDENTIALS = True,
-    #VALIDATE_CERTS = True
-#)
-#mail = FastMail(conf)
 
-#can add more origins. We'll need to add the actual link to nestexchange
+#Setting up CORS for security. Only backend and frontend can access. We'll need to add the actual link to nestexchange
 origins = [
     "http://localhost:8000",
     "http://localhost:5173",
 ]
-
 app.add_middleware(
     CORSMiddleware, 
     allow_origins=origins,
@@ -58,33 +45,33 @@ redis_client = StrictRedis(
     db=0
 )
 
-#Setting hash up
+#Setting hash up 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-#function to set up session authentication
+#Function to set up session authentication for current users
 def get_current_user (request:Request):
     session_id = request.cookies.get("session_id")
-    print(f"Cookies:", request.cookies)
-    print(f"Session id: {session_id}")
+    print(f"The session ID for logged in user: {session_id}")
     if not session_id:
-        raise HTTPException(status_code=401, detail="Not authenticated")
+        raise HTTPException(status_code=401, detail="User is not logged in")
     user_data = redis_client.get(f"session:{session_id}")
     if not user_data:
-        raise HTTPException(status_code=401, detail="Not authenticated")
+        raise HTTPException(status_code=401, detail="User is not logged in")
     return json.loads(user_data)
 
-# Admin access control dependency
+#Function to use for admin functionalities (RBAC)
 def admin_required(current_user: dict = Depends(get_current_user)):
     if current_user.get("role") != "Admin":
-        raise HTTPException(status_code=403, detail="Administrator access required")
+        raise HTTPException(status_code=403, detail="Administrator users can only access this function")
     return current_user
 
 
-#Define routes
+#Define Nest Exchange routes
 @app.get("/")
 async def root():
     return {"msg" : "The Nest Exchange"}
 
+#Function to create a user and store their info in database
 @app.post("/signup")
 async def sign_up(user:CreateUser, db: Session = Depends(get_db)):
     try: 
@@ -102,7 +89,8 @@ async def sign_up(user:CreateUser, db: Session = Depends(get_db)):
             return JSONResponse(content="Successfully signed up!")
     except Exception as e: 
         raise HTTPException(status_code=500, detail=f"Server error occurred:{str(e)}")
-        
+
+#Function to log user in to Nest Exchange. It sets their session ID as well
 @app.post("/login")
 async def login(response: Response, user:LoginUser, db: Session = Depends(get_db)):
     #If user is found in db, can try to login. If not, will print user not found 
@@ -117,18 +105,18 @@ async def login(response: Response, user:LoginUser, db: Session = Depends(get_db
                     "role":db_user.role
                      }
                     redis_client.set(f"session:{session_id}", json.dumps(user_data), ex=3600)
-                    print(f"stored session in redis: {user_data}")
+                    print(f"The stored user data in Redis is: {user_data}")
                     response = JSONResponse(content="Successfully logged in!")
                     response.set_cookie(key="session_id",value=session_id, httponly=True, secure=False, samesite="Lax", path="/")
                     return response
                 except Exception as e:
-                    return JSONResponse(content="Redis session not properly stored: {e}")
+                    return JSONResponse(content="Redis error occurred in setting up cookie or session: {e}")
             else:
-                return JSONResponse(content="Invalid credentials")
+                return JSONResponse(content="Cannot login. Invalid credentials")
     else: 
         raise HTTPException(status_code=404, detail="User not found")
     
-#Function to get profile name
+#Function to get first and last name on the profile page
 @app.get("/name")
 async def get_name(db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     user_id = current_user["id"]
@@ -137,16 +125,18 @@ async def get_name(db: Session = Depends(get_db), current_user: dict = Depends(g
         raise HTTPException(status_code=404, detail="User not found")
     return {"first_name": db_user.first_name, "last_name": db_user.last_name}
 
+#Function to logout the user and end their session 
 @app.post("/logout")
 async def logout(response: Response, request: Request):
     session_id = request.cookies.get("session_id")
     if not session_id: 
-        raise HTTPException(status_code=400, detail="Not logged in")
+        raise HTTPException(status_code=400, detail="User is not logged in")
     
     redis_client.delete(f"session:{session_id}")
     response.delete_cookie("session_id", path="/")
     return JSONResponse(content="Successfully logged out!")
 
+#Function to change user's password. Will be accessed from the settings page
 @app.post("/changepassword")
 async def change_password(user:ChangePassword, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     #If user enters email and current passw correctly, can change password. If not, will print errors
@@ -159,104 +149,83 @@ async def change_password(user:ChangePassword, db: Session = Depends(get_db), cu
         else:
             return JSONResponse(content="Current password is incorrect")
     else: 
-        raise HTTPException(status_code=404, detail="Incorrect email")
-
-#@app.post("/forgotpassword")
-#async def forgot_password(user:ForgotPassword, db: Session = Depends(get_db)):
-    #db_user = db.query(User).filter(User.email == user.email).first()
-   # if db_user:
-       # reset_link = f"http://localhost:8000/changepassword"
-       # message = MessageSchema(
-         #   subject = "Nest Exchange Password",
-          #  recipients=[user.email],
-          #  body=f"To reset your Nest Exchange password, visit : {reset_link}",
-          #  subtype=MessageType.plain)
-       # try: 
-           # await mail.send_message(message)
-       # except Exception as e:
-           # raise HTTPException(status_code=500, detail=f"Email failed to send: str{e}")
-       # return JSONResponse(content="Password reset link has been sent to email")
-   # else:
-        #raise HTTPException(status_code=404, detail="User not found")
-
+        raise HTTPException(status_code=404, detail="Email not found")
 
 
 # Lister Functionalities
-
+#Function to create or list an item
 @app.post("/items/")
 async def create_item(item: ItemCreate, db: Session = Depends(get_db),current_user:dict = Depends(get_current_user)): 
     if not isinstance(current_user, dict) or "id" not in current_user:
-        raise HTTPException(status_code=401, detail="Invalid or missing user session")
+        raise HTTPException(status_code=401, detail="You do not have permission to list an item")
     
     db_item = Item(title = item.title, description = item.description, pickup_details = item.pickup_details, category_id = item.category_id, lister_id = current_user["id"],is_active=True,  # Default to active
         is_claimed=False)
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
-    #redis_client.delete("items")  # Invalidate general items cache
+    #redis_client.delete("items")  
     db_listing = Listing(
         title=item.title,
         description=item.description,
         lister_id=current_user["id"],
         item_id=db_item.id,
-        category_id=db_item.category_id,  # Link the listing to the item
-        is_active=True  # Default to active
+        category_id=db_item.category_id,  
+        is_active=True  
     )
     db.add(db_listing)
     db.commit()
     db.refresh(db_listing)
     return {"item": db_item, "listing": db_listing}  
-        
+
+#Function to update an item's data  
 @app.put("/items/{item_id}")
 def update_item(item_id: int, item: ItemUpdate, db: Session = Depends(get_db), current_user:dict=Depends(get_current_user)):
-    # Fetch the item from the database
     if not isinstance(current_user, dict) or "id" not in current_user:
-        raise HTTPException(status_code=401, detail="Invalid or missing user session")
-    
+        raise HTTPException(status_code=401, detail="You do not have permission to update this listing")
+    #Get item from the database with the query. If it's found and user has permission, can change the item
     db_item = db.query(Item).filter(Item.id == item_id).first()
     if not db_item:
         raise HTTPException(status_code=404, detail="Item not found")
     if db_item.lister_id != current_user["id"]:
         raise HTTPException(status_code=403, detail="You do not have permission to update this item")
-    # Validate category_id if provided
+    #Make sure that the category is in the database too
     if item.category_id is not None:
         category = db.query(Category).filter(Category.id == item.category_id).first()
         if not category:
-            raise HTTPException(status_code=400, detail="Invalid category_id")
+            raise HTTPException(status_code=400, detail="The category is not found")
     
-    # Apply updates
     for key, value in item.dict(exclude_unset=True).items():
         setattr(db_item, key, value)
 
-    # Commit changes to the database
     db.commit()
     db.refresh(db_item)
     
-    # Invalidate cache
+   
     #redis_client.delete(f"item:{item_id}")
     #redis_client.delete("items")
     
     return db_item
-      
-@app.delete("/items/{item_id}", status_code=204)
+
+#Function to delete a listing. Can be accessed from lister's profile by lister or by admin     
+@app.delete("/items/{item_id}")
 def delete_item(item_id: int, db: Session = Depends(get_db), current_user: dict=Depends(get_current_user)):
     if not isinstance(current_user, dict) or "id" not in current_user:
-        raise HTTPException(status_code=401, detail="Invalid or missing user session")
+        raise HTTPException(status_code=401, detail="Only the lister of this item or an administrator user can delete this")
     
     db_item = db.query(Item).filter(Item.id == item_id).first()
     if not db_item:
         raise HTTPException(status_code=404, detail="Item not found")
     if not db_item.lister_id != current_user["id"]:
         raise HTTPException(status_code=403, detail="You do not have permission to delete this item")
-    # Delete related records (e.g., photos, claims)
+    # Have to delete the other rows in database associated with this item like the photo and claims
     db.query(ListingPhoto).filter(ListingPhoto.item_id == item_id).delete()
     db.query(Claim).filter(Claim.item_id == item_id).delete()
 
-    # Delete the item
     db.delete(db_item)
     db.commit()
 
-    # Invalidate cache
+    # Invalidate the Redis cache
     try:
         redis_client.delete(f"item:{item_id}")
     except Exception as e:
@@ -264,12 +233,11 @@ def delete_item(item_id: int, db: Session = Depends(get_db), current_user: dict=
 
     return
 
+#Function to add photos to item listed
 @app.post("/items/photos/")
 async def upload_item_photo(file: UploadFile = File(...), db: Session = Depends(get_db), current_user: dict=Depends(get_current_user)):
     if not isinstance(current_user, dict) or "id" not in current_user:
-        raise HTTPException(status_code=401, detail="Invalid or missing user session")
-    
-    # Validate item_id
+        raise HTTPException(status_code=401, detail="You do not have permission to add a photo for this item")
     db_item = db.query(Item).filter(Item.lister_id == current_user["id"]).order_by(Item.id.desc()).first()
     if not db_item:
         raise HTTPException(status_code=404, detail="Item not found")
@@ -281,19 +249,19 @@ async def upload_item_photo(file: UploadFile = File(...), db: Session = Depends(
         with open(file_path, "wb") as buffer:
             buffer.write(await file.read())
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"File could not be read: {str(e)}")
     photo_url = f"/uploads/{filename}"
-    # Save the photo record in the database
     db_listing_photo = ListingPhoto(item_id=db_item.id, photo_url=photo_url)
     db.add(db_listing_photo)
     db.commit()
     db.refresh(db_listing_photo)
     return {"photo": db_listing_photo, "photo_url": photo_url}
 
+#Function to get the claims for a specific item 
 @app.get("/items/{item_id}/claims/")
 def get_item_claims(item_id: int, db: Session = Depends(get_db), current_user: dict=Depends(get_current_user)):
     if not isinstance(current_user, dict):
-        raise HTTPException(status_code=401, detail="Invalid or missing user session")
+        raise HTTPException(status_code=401, detail="You don't have permission to get claims for this item")
    
     cached_claims = redis_client.get(f"claims:item:{item_id}")
 
@@ -309,7 +277,7 @@ def get_item_claims(item_id: int, db: Session = Depends(get_db), current_user: d
 @app.get("/items/", response_model=List[ItemResponse])
 def get_items(db: Session = Depends(get_db), current_user:dict=Depends(get_current_user)):
     if not current_user or not isinstance(current_user, dict) or "id" not in current_user:
-        raise HTTPException(status_code=401, detail="Invalid or missing user session")
+        raise HTTPException(status_code=401, detail="You don't have permission to get the user's listings")
     
     items = db.query(Item).filter(Item.lister_id == current_user["id"])
     return items
@@ -318,22 +286,21 @@ def get_items(db: Session = Depends(get_db), current_user:dict=Depends(get_curre
 @app.get("/listings", response_model=dict)
 async def get_listings(category: str = Query(None), db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     print(current_user)
-    print(f"Received category: {category}")  # Debug: Check the category parameter
+    print(f"Received category: {category}")  
     if category:
         category_obj = db.query(Category).filter(Category.name == category).first()
-        print(f"Category object: {category_obj}")  # Debug: Check the category object
+        print(f"Category object: {category_obj}") 
         if not category_obj:
-            raise HTTPException(status_code=422, detail="Invalid category")
+            raise HTTPException(status_code=422, detail="Not a category")
 
-        # Fetch listings for the category
+        # Fetch all listings in database for chosen category
         listings = db.query(Listing).filter(Listing.category_id == category_obj.id).all()
-        print(f"Listings for category: {listings}")  # Debug: Check the listings
+        print(f"Listings for category: {listings}")  
     else:
-        # Fetch all listings if no category is provided
+        #Can also just get all listings in database not based on the category if category not chosen
         listings = db.query(Listing).all()
-        print(f"All listings: {listings}")  # Debug: Check all listings
+        print(f"All listings: {listings}")  
 
-    # Return the listings
     return {"listings": [listing.to_dict() for listing in listings]}
 
 #Get a specific listing and its details when it is clicked
@@ -351,7 +318,7 @@ async def get_listing(id: int, db: Session = Depends(get_db)):
 @app.get("/claimed")
 async def get_claimed(db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     if not isinstance(current_user, dict) or "id" not in current_user:
-        raise HTTPException(status_code=401, detail="Invalid or missing user session")
+        raise HTTPException(status_code=401, detail="You do not have permission to get the user's claimed items")
     user = db.query(User).filter(User.id == current_user["id"]).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -359,22 +326,25 @@ async def get_claimed(db: Session = Depends(get_db), current_user: dict = Depend
     claimed_items_format = [{"id": item.id, "title": item.title, "description": item.description} for item in claimed_items]
     return claimed_items_format
 
+#Function for searching items
 @app.get("/items/search/", response_model=List[ItemResponse])
 def search_items(keyword: str, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     if not isinstance(current_user, dict) or "id" not in current_user:
-        raise HTTPException(status_code=401, detail="Invalid or missing user session")
+        raise HTTPException(status_code=401, detail="You do not have permission to search")
 
     items = db.query(Item).filter(Item.title.ilike(f"%{keyword}%")).all()
     return items
 
+#Function to filter items by the categories
 @app.get("/items/filter/", response_model=List[ItemResponse])
 def filter_items(category_id: int, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     if not isinstance(current_user, dict) or "id" not in current_user:
-        raise HTTPException(status_code=401, detail="Invalid or missing user session")
+        raise HTTPException(status_code=401, detail="You do not have permission to view listings")
 
     items = db.query(Item).filter(Item.category_id == category_id).all()
     return items
 
+#Function to claim a listing
 @app.post("/items/{item_id}/claims/")
 def create_claim(
     item_id: int,
@@ -382,37 +352,36 @@ def create_claim(
     db: Session = Depends(get_db),
     current_user: dict = Depends(get_current_user)
 ):
-    # Validate the current user session
+   
     if not isinstance(current_user, dict) or "id" not in current_user:
-        raise HTTPException(status_code=401, detail="Invalid or missing user session")
+        raise HTTPException(status_code=401, detail="You do not have permission to claim")
 
-    # Fetch the item from the database
+    #Check to see if the selected item is in the database
     db_item = db.query(Item).filter(Item.id == item_id).first()
     if not db_item:
         raise HTTPException(status_code=404, detail="Item not found")
 
-    # Prevent the item's lister (owner) from creating a claim for their own item
+    #The item's lister (owner) can't claim their own item
     if db_item.lister_id == current_user["id"]:
         raise HTTPException(status_code=403, detail="You cannot claim your own item")
 
-    # Ensure the item is claimable (active and not already claimed)
+    #Check to see if the item is claimable (active and not already claimed)
     if not db_item.is_active or db_item.is_claimed:
-        raise HTTPException(status_code=400, detail="Item is not available for claiming")
-
-    # Create the claim record
+        raise HTTPException(status_code=400, detail="Item is already claimed or inactive")
     db_claim = Claim(
         item_id=item_id,
-        claimer_id=current_user["id"],  # Associate claim with the logged-in user
+        claimer_id=current_user["id"],  
         message=claim.message,
-        status="pending"  # Default status for new claims
+        status="pending"  
     )
     db.add(db_claim)
     db.commit()
     db.refresh(db_claim)
 
     return db_claim
-# Admin Functionalities
 
+# Admin Functionalities
+#Function to allow admin users to delete inappropriate listings
 @app.delete("/admin/listings/{listing_id}", status_code=200)
 async def remove_listing(listing_id: int, db: Session = Depends(get_db), current_user: dict =Depends(admin_required)):
     print(f"Admin: {current_user['email']}")
@@ -421,8 +390,9 @@ async def remove_listing(listing_id: int, db: Session = Depends(get_db), current
         raise HTTPException(status_code=404, detail="Listing not found")
     db.delete(db_listing)
     db.commit()
-    return {"msg": "Listing removed"}
+    return {"msg": "Listing has been deleted"}
 
+#Function to have admin report
 @app.put("/admin/reports/{report_id}", status_code=200)
 async def respond_report(report_id: int, action: str, db: Session = Depends(get_db), current_user: dict =Depends(admin_required)):
     print(f"Admin: {current_user['email']}")
@@ -434,6 +404,7 @@ async def respond_report(report_id: int, action: str, db: Session = Depends(get_
     db.refresh(db_report)
     return {"msg": "Report status updated", "report": db_report.__dict__}
 
+#Function to give admin users usage reports
 @app.get("/admin/usage", status_code=200)
 async def view_usage_reports(db: Session = Depends(get_db), current_user: dict =Depends(admin_required)):
     print(f"Admin: {current_user['email']}")
@@ -448,6 +419,7 @@ async def view_usage_reports(db: Session = Depends(get_db), current_user: dict =
         "total_reports": total_reports
     }
 
+#Function to let admin users create a category
 @app.post("/admin/categories")
 async def add_category(name: str, db: Session = Depends(get_db),current_user: dict =Depends(admin_required)):
     print(f"Admin: {current_user['email']}")
@@ -457,6 +429,7 @@ async def add_category(name: str, db: Session = Depends(get_db),current_user: di
     db.refresh(new_category)
     return new_category
 
+#Function to let amdin users edit categories 
 @app.put("/admin/categories/{category_id}")
 async def edit_category(category_id: int, name: str, db: Session = Depends(get_db),current_user: dict =Depends(admin_required)):
     print(f"Admin: {current_user['email']}")
@@ -468,12 +441,14 @@ async def edit_category(category_id: int, name: str, db: Session = Depends(get_d
     db.refresh(db_category)
     return db_category
 
+#Function to give admin users support messages
 @app.get("/admin/support", status_code=200)
 async def view_support_messages(db: Session = Depends(get_db),current_user: dict =Depends(admin_required)):
     print(f"Admin: {current_user['email']}")
     messages = db.query(SupportMessage).all()
     return messages
 
+#Function to let admin users respond to support messages
 @app.put("/admin/support/{message_id}", status_code=200)
 async def respond_support_message(message_id: int, response_text: str, db: Session = Depends(get_db),current_user: dict =Depends(admin_required)):
     print(f"Admin: {current_user['email']}")
