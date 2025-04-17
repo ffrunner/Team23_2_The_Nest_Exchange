@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Query, Re
 from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ClaimCreate, ItemResponse, ForgotPassword
 from config import get_db #,settings 
 from model import User, Item, ListingPhoto, Claim, Listing, Report, Category, SupportMessage
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session 
 from passlib.context import CryptContext
 from typing import List, Optional 
 from redis import StrictRedis
@@ -79,6 +79,7 @@ def admin_required(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Administrator access required")
     return current_user
 
+
 #Define routes
 @app.get("/")
 async def root():
@@ -126,6 +127,15 @@ async def login(response: Response, user:LoginUser, db: Session = Depends(get_db
                 return JSONResponse(content="Invalid credentials")
     else: 
         raise HTTPException(status_code=404, detail="User not found")
+    
+#Function to get profile name
+@app.get("/name")
+async def get_name(db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
+    user_id = current_user["id"]
+    db_user = db.query(User).filter(User.id == user_id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {"first_name": db_user.first_name, "last_name": db_user.last_name}
 
 @app.post("/logout")
 async def logout(response: Response, request: Request):
@@ -168,6 +178,8 @@ async def change_password(user:ChangePassword, db: Session = Depends(get_db), cu
        # return JSONResponse(content="Password reset link has been sent to email")
    # else:
         #raise HTTPException(status_code=404, detail="User not found")
+
+
 
 # Lister Functionalities
 
@@ -293,14 +305,16 @@ def get_item_claims(item_id: int, db: Session = Depends(get_db), current_user: d
     redis_client.setex(f"claims:item:{item_id}", 3600, json.dumps([claim.__dict__ for claim in claims]))
     return {"cached": False, "claims": claims}
 
+#Function to get user's listings(the ones they created)
 @app.get("/items/", response_model=List[ItemResponse])
 def get_items(db: Session = Depends(get_db), current_user:dict=Depends(get_current_user)):
     if not current_user or not isinstance(current_user, dict) or "id" not in current_user:
         raise HTTPException(status_code=401, detail="Invalid or missing user session")
     
-    items = db.query(Item).all()
+    items = db.query(Item).filter(Item.lister_id == current_user["id"])
     return items
 
+#Function to get all listings in the database based on category
 @app.get("/listings", response_model=dict)
 async def get_listings(category: str = Query(None), db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     print(current_user)
@@ -322,7 +336,28 @@ async def get_listings(category: str = Query(None), db: Session = Depends(get_db
     # Return the listings
     return {"listings": [listing.to_dict() for listing in listings]}
 
+#Get a specific listing and its details when it is clicked
+@app.get("/listings/{id}", response_model=dict)
+async def get_listing(id: int, db: Session = Depends(get_db)):
+    listing = db.query(Listing).filter(Listing.id == id).first()
+    if not listing:
+        raise HTTPException(status_code=404, detail="Listing not found")
+    
+    return listing.to_dict()
+
 # Claimer Functionalities
+
+#Function to get all the listings a user has claimed
+@app.get("/claimed")
+async def get_claimed(db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
+    if not isinstance(current_user, dict) or "id" not in current_user:
+        raise HTTPException(status_code=401, detail="Invalid or missing user session")
+    user = db.query(User).filter(User.id == current_user["id"]).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    claimed_items = user.claimed_items
+    claimed_items_format = [{"id": item.id, "title": item.title, "description": item.description} for item in claimed_items]
+    return claimed_items_format
 
 @app.get("/items/search/", response_model=List[ItemResponse])
 def search_items(keyword: str, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
