@@ -15,10 +15,67 @@ const Profile = () => {
             {/* Sidebar */}
             <aside className="sidebar">
                 <ul>
-                    <li><button onClick={() => navigate('/homeNew')}>Home</button></li>
-                    <li><button onClick={() => navigate('/profile')}>Profile</button></li>
-                    <li><button onClick={() => navigate('/admin')}>Admin</button></li>
-                    <li><button onClick={() => navigate('/settings')}>Settings</button></li>
+                    <li>
+                          <button 
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              color: 'inherit',
+                              font: 'inherit',
+                              cursor: 'pointer',
+                              padding: 0
+                            }} 
+                            onClick={() => navigate('/homeNew')}
+                          >
+                            Home
+                          </button>
+                        </li>
+                        <li>
+                          <button 
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              color: 'inherit',
+                              font: 'inherit',
+                              cursor: 'pointer',
+                              padding: 0
+                            }} 
+                            onClick={() => navigate('/profile')}
+                          >
+                            Profile
+                          </button>
+                        </li>
+                        <li>
+                          <button 
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              color: 'inherit',
+                              font: 'inherit',
+                              cursor: 'pointer',
+                              padding: 0
+                            }} 
+                            onClick={() => navigate('/admin')}
+                          >
+                            Admin
+                          </button>
+                        </li>
+                        <li>
+                          <button 
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              color: 'inherit',
+                              font: 'inherit',
+                              cursor: 'pointer',
+                              padding: 0
+                            }} 
+                            onClick={() => navigate('/settings')}
+                          >
+                            Settings
+                          </button>
+                        </li>
+                    
                 </ul>
             </aside>
 
