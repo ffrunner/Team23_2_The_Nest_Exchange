@@ -56,7 +56,7 @@ const Profile = () => {
 
             {/* Main Content */}
             <main className="profile-main">
-                <h2>Profile</h2>
+                <h2>My Profile</h2>
                 {error ? (
                     <p>Error: {error}</p>
                 ) : (
