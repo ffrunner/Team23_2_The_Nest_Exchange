@@ -57,6 +57,7 @@ body {
 
 /* Main content styling */
 .profile-main {
+    transform: translateX(-20px);
     flex: 1;
     padding: 0;
     overflow-y: auto; /* Allow scrolling within the main content if needed */
