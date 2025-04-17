@@ -411,12 +411,12 @@ async def respond_report(report_id: int, action: str, db: Session = Depends(get_
 async def view_usage_reports(db: Session = Depends(get_db), current_user: dict =Depends(admin_required)):
     print(f"Admin: {current_user['email']}")
     total_listings = db.query(Listing).count()
-    total_items = db.query(Item).count()
+    total_users = db.query(User).count()
     total_claims = db.query(Claim).count()
     total_reports = db.query(Report).count()
     return {
         "total_listings": total_listings,
-        "total_items": total_items,
+        "total_users": total_users,
         "total_claims": total_claims,
         "total_reports": total_reports
     }
