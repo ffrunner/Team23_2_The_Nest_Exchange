@@ -5,7 +5,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url('/visit-banner.jpg') no-repeat center center fixed;
+  background: url("/visit-banner.jpg") no-repeat center center fixed;
   background-size: cover; 
   background-color: transparent;
   font-family: 'Montserrat', sans-serif;
