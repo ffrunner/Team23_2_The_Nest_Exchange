@@ -61,12 +61,10 @@ const Profile = () => {
                         <div className="activity-card" onClick={() => handleSectionChange("Claimed")}>
                             <p>Claimed</p>
                             <h4>0</h4>
-                            <span className="badge">30</span>
                         </div>
                         <div className="activity-card" onClick={() => handleSectionChange("Listings")}>
                             <p>Listings</p>
                             <h4>0</h4>
-                            <span className="badge">300</span>
                         </div>
                     </div>
                 </section>
