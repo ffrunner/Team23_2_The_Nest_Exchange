@@ -146,3 +146,18 @@ body {
     border-radius: 12px;
     font-size: 12px;
 }
+.offers-container, .claimed-container, .listings-container {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.offers-container h3, .claimed-container h3, .listings-container h3 {
+    margin-bottom: 10px;
+}
+
+.offers-container p, .claimed-container p, .listings-container p {
+    font-size: 16px;
+}
