@@ -60,6 +60,7 @@ const Profile = () => {
                  setError(error.response?.data?.detail || "Error occurred");
            }
        };
+    
         fetchClaimedItems();
     }, []);
     return (
