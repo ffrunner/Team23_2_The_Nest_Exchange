@@ -62,6 +62,7 @@ def get_current_user (request:Request):
 
 #Function to use for admin functionalities (RBAC)
 def admin_required(current_user: dict = Depends(get_current_user)):
+    #if the current user isn't an admin, they won't have permission 
     if current_user.get("role") != "Admin":
         raise HTTPException(status_code=403, detail="Administrator users can only access this function")
     return current_user
