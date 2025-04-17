@@ -15,7 +15,7 @@ const Profile = () => {
         setSelectedSection(section);
         if (section === "Listings"){
             fetchItems();
-    };
+    }
 
     useEffect(() => {
         const fetchUserName = async () => {
@@ -39,7 +39,7 @@ const Profile = () => {
                 const response = await axios.get(
                      `${import.meta.env.VITE_API_URL}/items/`,  
                     { withCredentials: true, });
-                return response.data;
+                setListings(response.data);
             } catch(error) {
                  console.error("Error getting user name:", error);
                  setError(error.response?.data?.detail || "Error occurred");
@@ -85,7 +85,7 @@ const Profile = () => {
                         </div>
                         <div className="activity-card" onClick={() => handleSectionChange("Listings")}>
                             <p>Listings</p>
-                            <h4>(listings.length)</h4>
+                            <h4>{listings.length}</h4>
                         </div>
                     </div>
                 </section>
