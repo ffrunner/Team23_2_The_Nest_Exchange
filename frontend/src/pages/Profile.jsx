@@ -124,8 +124,8 @@ const Profile = () => {
                             )}
                         </div>
          
-            )  
-                    )};
+            )}
+                    )}
                     {selectedSection === "Listings" && (
                         <div className="listings-container">
                             <h3>Listings</h3>
