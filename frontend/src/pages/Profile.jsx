@@ -25,7 +25,7 @@ const Profile = () => {
                               cursor: 'pointer',
                               padding: 0
                             }} 
-                            onClick={() => navigate('/homeNew')}
+                            onClick={() => navigate('/')}
                           >
                             Home
                           </button>
