@@ -133,8 +133,7 @@ const fetchItems = async () => {
                                ))
                             )}
                         </div>
-         
-            )}
+         )}
                     
                     {selectedSection === "Listings" && (
                         <div className="listings-container">
