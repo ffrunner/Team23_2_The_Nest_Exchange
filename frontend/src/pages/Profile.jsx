@@ -60,7 +60,7 @@ const Profile = () => {
                  setError(error.response?.data?.detail || "Error occurred");
            }
        };
-        fetch ClaimedItems();
+        fetchClaimedItems();
     }, []);
     return (
         <div className="profile-container">
