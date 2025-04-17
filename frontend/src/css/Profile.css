@@ -15,16 +15,17 @@ body {
 .profile-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     height: 100vh; /* Full viewport height */
-    width: 100%; /* Full viewport width */
+    width: 100vw; /* Full viewport width */
     overflow: hidden; /* Prevent scrolling */
     position: relative; /* Ensure it is positioned correctly */
     background-color: white;
     align-items: stretch;
     gap: 0;
     margin: 0 auto;
-    padding: 0px;
+    padding: 0;
+    box-sizing: border-box;
 
 }
 
@@ -32,14 +33,14 @@ body {
 /* Main content styling */
 .profile-main {
     flex: 1;
-    padding: 0;
+    padding: 20px;
     overflow-y: auto; /* Allow scrolling within the main content if needed */
     background-color: white;
     display: block;
     width: 100%;
     max-width: 100%;
     margin: 0;
-    margin-left: 0px;
+    box-sizing: border-box;
     
 }
 
