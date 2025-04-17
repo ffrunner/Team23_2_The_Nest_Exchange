@@ -4,6 +4,11 @@ import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
     const navigate = useNavigate();
+    const [selectedSection, setSelectedSection] = useState(null);
+    const handleSectionChange = (section) => {
+        setSelectedSection(section);
+    };
+    
     return (
         <div className="profile-container">
             {/* Sidebar */}
@@ -32,21 +37,42 @@ const Profile = () => {
                 <section className="activity-section">
                     <h3>Activity</h3>
                     <div className="activity-cards">
-                        <div className="activity-card">
+                        <div className="activity-card" onClick={() => handleSectionChange("Offers")}>
                             <p>Offers</p>
                             <h4>0</h4>
                         </div>
-                        <div className="activity-card">
+                        <div className="activity-card" onClick={() => handleSectionChange("Claimed")}>
                             <p>Claimed</p>
                             <h4>0</h4>
                             <span className="badge">30</span>
                         </div>
-                        <div className="activity-card">
+                        <div className="activity-card" onClick={() => handleSectionChange("Listings")}>
                             <p>Listings</p>
                             <h4>0</h4>
                             <span className="badge">300</span>
                         </div>
                     </div>
+                </section>
+                <section className="dynamic-section">
+                    {selectedSection === "Offers" && (
+                        <div className="offers-container">
+                            <h3>Offers</h3>
+                            <p>Your offers</p>
+                        </div>
+                    )}
+                    {selectedSection === "Claimed" && (
+                        <div className="claimed-container">
+                            <h3>Claimed</h3>
+                            <p>Your claimed items</p>
+                        </div>
+                    )}
+                    {selectedSection === "Listings" && (
+                        <div className="listings-container">
+                            <h3>Listings</h3>
+                            <p>Your listings</p>
+                        </div>
+                    )}
+                
                 </section>
             </main>
         </div>
