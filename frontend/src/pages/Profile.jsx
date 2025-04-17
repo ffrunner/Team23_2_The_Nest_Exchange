@@ -10,6 +10,7 @@ const Profile = () => {
     const [error, setError] = useState(null);
     const [listings, setListings] = useState([]);
     const [loadingListings, setLoadingListings] = useState(false);
+    const [claimedItems, setClaimedItems] = useState([]);
     
     const handleSectionChange = (section) => {
         setSelectedSection(section);
@@ -48,8 +49,19 @@ const Profile = () => {
                 setLoadingListings(false);
             }
         };
-    
-        
+       const fetchClaimedItems = async () => {
+           try {
+               const response = await axios.get(
+                   `${import.meta.env.VITE_API_URL}/claimed`,
+                   { withCredentials: true,});
+               setClaimedItems(response.data);
+           } catch(error) {
+                 console.error("Error getting claimed items:", error);
+                 setError(error.response?.data?.detail || "Error occurred");
+           }
+       };
+        fetchClaimedItems();
+    }, []);
     return (
         <div className="profile-container">
             
@@ -100,9 +112,20 @@ const Profile = () => {
                     {selectedSection === "Claimed" && (
                         <div className="claimed-container">
                             <h3>Claimed</h3>
-                            <p>Your claimed items</p>
+                            { claimedItems.length === 0 ? (
+                            <p> You have not claimed items</p>
+                            ) : (
+                                claimedItems.map((item) => (
+                                    <div key={item.id} className="claimed-item-card">
+                                     <h2>{item.title}</h2>
+                                    <p>{item.description}</p>
+                                    </div>
+                               ))
+                            )}
                         </div>
-                    )}
+            </div>
+            );   
+                    )};
                     {selectedSection === "Listings" && (
                         <div className="listings-container">
                             <h3>Listings</h3>
