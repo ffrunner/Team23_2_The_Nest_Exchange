@@ -23,7 +23,7 @@ body {
     background-color: white;
     align-items: stretch;
     gap: 0;
-    margin-left: -100px;
+    margin-left: -130px;
     padding: 0px;
 
 }
@@ -92,6 +92,8 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
+    max-width: 200px;
+    width: 100%;
 }
 
 .activity-card p {
