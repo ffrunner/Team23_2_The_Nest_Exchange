@@ -60,7 +60,7 @@ const Profile = () => {
                  setError(error.response?.data?.detail || "Error occurred");
            }
        };
-        fetchClaimedItems();
+        
     }, []);
     return (
         <div className="profile-container">
@@ -123,8 +123,8 @@ const Profile = () => {
                                ))
                             )}
                         </div>
-            </div>
-            );   
+         
+            )  
                     )};
                     {selectedSection === "Listings" && (
                         <div className="listings-container">
