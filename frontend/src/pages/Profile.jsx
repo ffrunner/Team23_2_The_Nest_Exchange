@@ -24,7 +24,7 @@ const Profile = () => {
                 setError(error.response?.data?.detail || "Error occurred");
             }
         };
-        fetchUserName():
+        fetchUserName();
     }, []);
     
     return (
