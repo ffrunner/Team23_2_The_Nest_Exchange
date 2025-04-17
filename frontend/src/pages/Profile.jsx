@@ -8,7 +8,7 @@ const Profile = () => {
             <aside className="sidebar">
                 <ul>
                     <li><a href="/home">Home</a></li>
-                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/profile">Profile</a></li>
                     <li><a href="/admin">Admin</a></li>
                     <li><a href="/settings">Settings</a></li>
                 </ul>
@@ -16,7 +16,7 @@ const Profile = () => {
 
             {/* Main Content */}
             <main className="profile-main">
-                <h2>My Dashboard</h2>
+                <h2>My Profile</h2>
                 <div className="profile-header">
                     <img
                         src="/path-to-profile-image.jpg" // Replace with the actual image path
