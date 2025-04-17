@@ -19,8 +19,7 @@ body {
     overflow: hidden; /* Prevent scrolling */
     position: relative; /* Ensure it is positioned correctly */
     background-color: white;
-    align_items: stretch;
-    gap: 20px;
+
 }
 
 /* Sidebar styling */
