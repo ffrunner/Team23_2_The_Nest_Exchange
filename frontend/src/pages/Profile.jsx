@@ -1,16 +1,18 @@
 import React from 'react';
 import '../css/Profile.css'; // Ensure you create this CSS file for styling
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
+    const navigate = useNavigate();
     return (
         <div className="profile-container">
             {/* Sidebar */}
             <aside className="sidebar">
                 <ul>
-                    <li><a href="/home">Home</a></li>
-                    <li><a href="/profile">Profile</a></li>
-                    <li><a href="/admin">Admin</a></li>
-                    <li><a href="/settings">Settings</a></li>
+                    <li><button onClick={() => navigate('/homeNew')}>Home</button></li>
+                    <li><button onClick={() => navigate('/profile')}>Profile</button></li>
+                    <li><button onClick={() => navigate('/admin')}>Admin</button></li>
+                    <li><button onClick={() => navigate('/settings')}>Settings</button></li>
                 </ul>
             </aside>
 
