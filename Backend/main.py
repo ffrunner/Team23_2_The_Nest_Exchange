@@ -17,7 +17,8 @@ from fastapi.staticfiles import StaticFiles
 
 #Setting up application with FastAPI
 app = FastAPI()
-UPLOAD_DIRECTORY = "./uploads"
+BASE_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_DIRECTORY = os.path.join(BASE_DIRECTORY, "uploads")
 os.makedirs(UPLOAD_DIRECTORY, exist_ok=True)
 app.mount("/uploads",StaticFiles(directory=UPLOAD_DIRECTORY),name="uploads")
 
