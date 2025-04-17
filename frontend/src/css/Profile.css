@@ -14,11 +14,15 @@ body {
 /* Profile container */
 .profile-container {
     display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
     height: 100vh; /* Full viewport height */
     width: 100vw; /* Full viewport width */
     overflow: hidden; /* Prevent scrolling */
     position: relative; /* Ensure it is positioned correctly */
     background-color: white;
+    align-items: stretch;
+    gap: 0;
 
 }
 
@@ -61,7 +65,6 @@ body {
 
 /* Main content styling */
 .profile-main {
-    transform: translateX(-20px);
     flex: 1;
     padding: 0;
     overflow-y: auto; /* Allow scrolling within the main content if needed */
