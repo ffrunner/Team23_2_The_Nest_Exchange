@@ -25,7 +25,7 @@ const Profile = () => {
                     { withCredentials: true, });
             setUserName(response.data);
             } catch(error) {
-                console.error("Error getting user name:", error);
+                console.error("Error getting your listings:", error);
                 setError(error.response?.data?.detail || "Error occurred");
             }
         };
