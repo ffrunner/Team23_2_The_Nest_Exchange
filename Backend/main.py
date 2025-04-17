@@ -62,8 +62,8 @@ def get_current_user (request:Request):
 
 #Function to use for admin functionalities (RBAC)
 def admin_required(current_user: dict = Depends(get_current_user)):
-    #if the current user isn't an admin, they won't have permission 
-    if current_user.get("role") != "Admin":
+    #if the current user isn't an admin, they won't have permission
+    if current_user.get("role") not in ["Admin", "admin"]:
         raise HTTPException(status_code=403, detail="Administrator users can only access this function")
     return current_user
 
@@ -87,7 +87,7 @@ async def sign_up(user:CreateUser, db: Session = Depends(get_db)):
             db_user = User(email=user.email, username=user.username, password_hash=user.password_hash, role=user.role, first_name=user.first_name, last_name=user.last_name, phone=user.phone)
             db.add(db_user)
             db.commit()
-            db.refresh()
+            db.refresh(db_user)
             return JSONResponse(content="Successfully signed up!")
     except Exception as e: 
         raise HTTPException(status_code=500, detail=f"Server error occurred:{str(e)}")
@@ -117,7 +117,7 @@ async def login(response: Response, user:LoginUser, db: Session = Depends(get_db
                 return JSONResponse(content="Cannot login. Invalid credentials")
     else: 
         raise HTTPException(status_code=404, detail="User not found")
-    
+
 #Function to get first and last name on the profile page
 @app.get("/name")
 async def get_name(db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
@@ -153,6 +153,19 @@ async def change_password(user:ChangePassword, db: Session = Depends(get_db), cu
     else: 
         raise HTTPException(status_code=404, detail="Email not found")
 
+#Function that allows users to delete their Nest Exchange accounts and all their data. Will be on the settings page
+@app.delete("/deleteaccount")
+async def delete_account(db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
+    if not isinstance(current_user, dict) or "id" not in current_user:
+        raise HTTPException(status_code=401, detail="You do not have permission to delete the user's account")
+    db_user = db.query(User).filter(User.id == current_user["id"]).first()
+    if db_user:
+        #Make user exit/logout 
+        db.query(User).filter(User.id == current_user["id"]).delete()
+        db.query(Claim).filter(Claim.claimer_id == current_user["id"]).delete()
+        db.query(Listing).filter(Listing.lister_id == current_user["id"]).delete()
+        #db.query(ListingPhoto).filter(ListingPhoto.)
+        db.query(Item).filter(Item.lister_id == current_user["id"]).delete()
 
 # Lister Functionalities
 #Function to create or list an item
@@ -462,3 +475,4 @@ async def respond_support_message(message_id: int, response_text: str, db: Sessi
     db.commit()
     db.refresh(db_message)
     return db_message
+
