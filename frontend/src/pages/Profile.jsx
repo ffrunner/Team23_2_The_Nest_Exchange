@@ -119,21 +119,22 @@ const fetchItems = async () => {
                             <p>Your offers</p>
                         </div>
                     )}
+               
                     {selectedSection === "Claimed" && (
-                        <div className="claimed-container">
-                            <h3>Claimed</h3>
-                            { claimedItems.length === 0 ? (
-                            <p> You have not claimed items</p>
-                            ) : (
-                                claimedItems.map((item) => (
-                                    <div key={item.id} className="claimed-item-card">
-                                     <h2>{item.title}</h2>
-                                    <p>{item.description}</p>
-                                    </div>
-                               ))
-                            )}
-                        </div>
-         )}
+                            <div className="claimed-container">
+                                <h3>Claimed</h3>
+                                {claimedItems.length === 0 ? (
+                                    <p>You have not claimed any items</p>
+                                ) : (
+                                    claimedItems.map((item) => (
+                                        <div key={item.id} className="claimed-item-card">
+                                            <h2>{item.title}</h2>
+                                            <p>{item.description}</p>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        )}
                     
                     {selectedSection === "Listings" && (
                         <div className="listings-container">
