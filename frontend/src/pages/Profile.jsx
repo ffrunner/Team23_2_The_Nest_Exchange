@@ -90,7 +90,7 @@ const fetchItems = async () => {
          alert("There was an error editing the listing");
      } finally {
          setLoadingListings(false);
-     }
+     };
 
 
     return (
