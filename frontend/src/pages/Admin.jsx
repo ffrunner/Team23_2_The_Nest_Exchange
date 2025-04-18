@@ -51,6 +51,7 @@ const Admin = () => {
       );
       setReports(response.data.reports);
       setShowReports(true);
+      setSelectedReport(null); // Reset selected
     } catch (error) {
       console.error("Error fetching reports:", error);
     }
@@ -68,7 +69,6 @@ const Admin = () => {
       );
       alert("Report resolved successfully");
 
-      // Update the resolved state locally
       setReports((prev) =>
         prev.map((r) =>
           r.id === selectedReport.id ? { ...r, resolved: true } : r
@@ -130,22 +130,30 @@ const Admin = () => {
             )}
           </div>
 
-          {/* Report List */}
+          {/* 🧾 All Reports */}
           {showReports && (
-            <div className="reports-section">
+            <div className="report-box">
               <h2>All Reports</h2>
               {reports.length === 0 ? (
-                <p>No reports available.</p>
+                <p>No reports found.</p>
               ) : (
-                <ul>
+                <ul className="report-list">
                   {reports.map((report) => (
                     <li
                       key={report.id}
-                      style={{ cursor: "pointer", padding: "5px 0" }}
+                      className="report-item"
                       onClick={() => setSelectedReport(report)}
                     >
-                      Report #{report.id} - Listing ID: {report.listing_id} - Resolved:{" "}
-                      {report.resolved ? "Yes" : "No"}
+                      <strong>Report #{report.id}</strong> — Listing:{" "}
+                      {report.listing_id} —{" "}
+                      <span
+                        style={{
+                          color: report.resolved ? "green" : "red",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {report.resolved ? "Resolved" : "Unresolved"}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -153,9 +161,9 @@ const Admin = () => {
             </div>
           )}
 
-          {/* Selected Report Detail */}
+          {/* 📄 Selected Report Details */}
           {selectedReport && (
-            <div className="report-detail">
+            <div className="report-detail-box">
               <h3>Report #{selectedReport.id} Details</h3>
               <p>
                 <strong>Listing ID:</strong> {selectedReport.listing_id}
@@ -174,7 +182,7 @@ const Admin = () => {
               {!selectedReport.resolved && (
                 <div className="resolve-buttons">
                   <button onClick={() => resolveReport("reject")}>
-                    Reject
+                    Reject Report
                   </button>
                   <button onClick={() => resolveReport("delete_listing")}>
                     Delete Listing
