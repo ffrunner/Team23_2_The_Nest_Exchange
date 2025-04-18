@@ -12,6 +12,12 @@ const Profile = () => {
     const [loadingListings, setLoadingListings] = useState(false);
     const [claimedItems, setClaimedItems] = useState([]);
     const [selectedListing, setSelectedListing] = useState(null);
+     const categories = [
+        { id: 1, title: "Technology", image: "Technology.jpeg", link: "Technology" },
+        { id: 2, title: "Furniture", image: "Furniture.jpeg", link: "Furniture" },
+        { id: 3, title: "Academic Materials", image: "school-pencil-case-equipment.jpg", link: "Academic Materials" },
+        { id: 4, title: "Textbooks", image: "Textbooks.jpg", link: "Textbooks" },
+    ];
     
     const handleSectionChange = (section) => {
         setSelectedSection(section);
@@ -153,7 +159,7 @@ const fetchItems = async () => {
                             <ul> {listings.length > 0 ? (
                                 listings.map((item) => (
                                     <li key = {item.id} onClick={() => setSelectedListing(item)}>
-                                        {item.name} - {item.description}
+                                        {item.title} - {item.description}
                                     </li>
                                     ))
                                 ) : (
@@ -170,19 +176,44 @@ const fetchItems = async () => {
         <div className="modal-backdrop" onClick={() => setSelectedListing(null)}>
           <div className="listing-modal" onClick={(e) => e.stopPropagation()}>
             <h3>Edit Listing</h3>
+              <label>Title:</label>
             <input
-              value={selectedListing.name}
+              type = "text"
+              value={selectedListing.title}
               onChange={(e) =>
-                setSelectedListing({ ...selectedListing, name: e.target.value })
+                setSelectedListing({ ...selectedListing, title: e.target.value })
               }
             />
+              <label>Description:</label>
             <textarea
-              value={selectedListing.description}
+              value={selectedListing.description || ""}
               onChange={(e) =>
                 setSelectedListing({ ...selectedListing, description: e.target.value })
               }
             />
-            <button onClick={() => handleEdit()}>Edit</button>
+              <label>Pickup Details:</label>
+              <input
+                  type= "text"
+                  value={selectedListing.pickup_details}
+                  onChange={(e) =>
+                      setSelectedListing({...selectedListing, pickup_details: e.target.value})
+                }
+             />
+              <label>Category:</label>
+              <select 
+                  value={selectedListing.category_id}
+                  onChange={(e) =>
+                      setSelectedListing({...selectedListing, category_id: e.target.value})
+                  }
+                  >
+                  <option value="">Select a category</option>
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.title}
+                      </option>
+                    ))}
+                  </select>
+            <button onClick={() => handleEdit()}>Submit Changes</button>
             <button onClick={() => handleDelete(selectedListing.id)} style={{ color: "red" }}>
               Delete
             </button>
