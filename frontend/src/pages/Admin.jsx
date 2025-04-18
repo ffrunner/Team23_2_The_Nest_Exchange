@@ -55,17 +55,17 @@ const Admin = () => {
             <div className="card">
               <h3>Total Users</h3>
               <p>{usageReports.total_users}</p>
-              <p>120</p>
+              
             </div>
             <div className="card">
               <h3>Total Listings</h3>
               <p>{usageReports.total_listings}</p>
-              <p>310</p>
+              
             </div>
             <div className="card">
               <h3>Total Claims</h3>
               <p>{usageReports.total_claims}</p>
-              <p>5</p>
+              
             </div>
             <div className="card">
               <h3>Total Reports</h3>
