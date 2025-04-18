@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../css/HomeNew.css';
 
-
 const NestExchange = () => {
     const [listings, setListings] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -34,19 +33,10 @@ const NestExchange = () => {
             setSelectedCategory(category);
             setIsContainerOpen(true);
 
-<<<<<<< HEAD
             const response = await axios.get(
                 `${backendBaseUrl}/listings?category=${category}`,
                 { withCredentials: true }
             );
-=======
-            // Use the category value directly without formatting
-            const response = await axios.get(
-                `${import.meta.env.VITE_API_URL}/listings?category=${category}`,
-                { withCredentials: true }
-            );
-            console.log("Fetched listings:", response.data.listings); // Debug: Log fetched listings
->>>>>>> front
             setListings(response.data.listings);
         } catch (err) {
             console.error(err);
@@ -67,11 +57,11 @@ const NestExchange = () => {
     const handleClaim = async (listingId) => {
         try {
             const response = await axios.post(
-                `${backendBaseUrl}/items/${listingId}/claims/`, // Correct endpoint
-                {}, // No additional data needed
+                `${backendBaseUrl}/items/${listingId}/claims/`,
+                {},
                 { withCredentials: true }
             );
-            alert(response.data.message || "You have successfully claimed this item!");
+            alert("You have successfully claimed this item!");
             closeListingDetails();
         } catch (err) {
             console.error(err);
@@ -84,9 +74,8 @@ const NestExchange = () => {
     };
 
     const handleListItemSubmit = async (event) => {
-    event.preventDefault();
+        event.preventDefault();
 
-<<<<<<< HEAD
         const title = event.target.title.value;
         const description = event.target.description.value;
         const category_id = event.target.category_id.value;
@@ -120,64 +109,13 @@ const NestExchange = () => {
             alert("Failed to create item or upload item photo");
         }
     };
-=======
-    const title = event.target.title.value;
-    const description = event.target.description.value;
-    const category_id = event.target.category_id.value;
-    const pickup_details = event.target.pickup_details.value;
-    const imageFile = event.target.photo_url.files[0];
 
-    try {
-        
-        const itemResponse = await axios.post(
-            `${import.meta.env.VITE_API_URL}/items`,
-            {
-                title,
-                description,
-                category_id,
-                pickup_details,
-            },
-            { withCredentials: true }
-        );
-
-        
-        const formData = new FormData();
-        formData.append('file', imageFile);
-
-        const photoResponse = await axios.post(
-            `${import.meta.env.VITE_API_URL}/items/photos/`,
-            formData,
-            {
-                headers: { "Content-Type": "multipart/form-data" }, 
-                withCredentials: true, 
-            }
-        );
-
-
-        console.log("Photo uploaded successfully:", photoResponse.data);
-        console.log("Item created successfully:", itemResponse.data);
-        toggleListItemContainer();
->>>>>>> front
-
-    } catch (error) {
-        console.error("Error creating item or photo:", error);
-        alert("Failed to create item or upload item photo");
-    }
-};
-
-const backendBaseUrl = import.meta.env.VITE_API_URL;
     return (
         <div>
             <main>
                 <div className="hero">
-                    <h1>Share. Rethink. Renew</h1>
+                    <h1>Share. Rethink. Renew.</h1>
                     <p>Uniting Our Community One Gift at a Time.</p>
-<<<<<<< HEAD
-                    <div className="hero-login-signup">
-                        <button><Link to="/login">Login/Sign Up</Link></button>
-                    </div>
-=======
->>>>>>> front
                 </div>
 
                 <div className="about">
@@ -209,10 +147,9 @@ const backendBaseUrl = import.meta.env.VITE_API_URL;
                             {listings.length > 0 ? (
                                 listings.map((listing) => (
                                     <div
-                                    onClick={() => {
-                                        console.log("Selected Listing:", listing); // Add this line
-                                        setSelectedListing(listing);
-                                    }}
+                                        key={listing.id}
+                                        className="listingCard"
+                                        onClick={() => setSelectedListing(listing)}
                                     >
                                         <img
                                             src={listing.photos && listing.photos[0] ? `${backendBaseUrl}${listing.photos[0]}` : "/static/images/placeholder.jpg"}
@@ -243,11 +180,15 @@ const backendBaseUrl = import.meta.env.VITE_API_URL;
                         <div className="listingInfo">
                             <h2>{selectedListing.title}</h2>
                             <p><strong>Description:</strong> {selectedListing.description}</p>
-                            <p><strong>Pick up information:</strong> {selectedListing.pickup_details || "Not provided"}</p>
+                            <p><strong>Pick up information:</strong> {selectedListing.pickup_details}</p>
                         </div>
                         <div className="listerInfo">
                             <h3>Lister</h3>
-                            <p className="listerName">{selectedListing.listerName || "Anonymous"}</p>
+                            <img
+                                src={selectedListing.listerPhoto || "/static/images/user-placeholder.jpg"}
+                                alt="Lister"
+                                className="listerPhoto"
+                            />
                         </div>
                         <button className="claimButton" onClick={() => handleClaim(selectedListing.id)}>
                             Claim
@@ -261,7 +202,6 @@ const backendBaseUrl = import.meta.env.VITE_API_URL;
                     </button>
                     {isListItemOpen && (
                         <div className="list-item-container">
-<<<<<<< HEAD
                             <h3>List an Item</h3>
                             <form onSubmit={handleListItemSubmit}>
                                 <label>
@@ -295,42 +235,6 @@ const backendBaseUrl = import.meta.env.VITE_API_URL;
                                 </button>
                             </form>
                         </div>
-=======
-                        <h3>List an Item</h3>
-                        <form onSubmit={handleListItemSubmit}>
-                <label>
-            Title:
-            <input type="text" name="title" placeholder="Enter item title" required />
-        </label>
-        <label>
-            Description:
-            <textarea name="description" placeholder="Enter item description" required></textarea>
-        </label>
-        <label>
-            Pickup Details:
-            <textarea name="pickup_details" placeholder="Enter item pickup details" required></textarea>
-        </label>
-        <label>
-            Category:
-            <select name="category_id" required>
-                <option value="1">Technology</option>
-                <option value="2">Furniture</option>
-                <option value="3">Academic Materials</option>
-                <option value="4">Textbooks</option>
-            </select>
-        </label>
-        <input type="hidden" name="lister_id" value="123" /> {/* Replace 123 with the logged-in user's ID */}
-         <label>
-            Image:
-            <input type="file" name="photo_url" accept="image/*" required />
-        </label>
-        <button type="submit">Submit</button>
-        <button type="button" onClick={toggleListItemContainer}>
-            Cancel
-        </button>
-    </form>
-</div>
->>>>>>> front
                     )}
                 </div>
 

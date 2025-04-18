@@ -1,7 +1,140 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/Settings.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+    const [userName, setUserName] = useState({ first_name: "", last_name: "" });
+    const [formData, setFormData] = useState({
+            first_name: '',
+            last_name: '',
+            username: '',
+            phone: '',
+            email: '',
+          });
+    const [passwordData, setPasswordData] = useState({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+    });
+
+    useEffect(() => {
+    const fetchUserName = async () => {
+        try {
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_URL}/name`,
+                { withCredentials: true }
+            );
+            setUserName(response.data);
+        } catch (error) {
+            console.error("Error getting your name:", error);
+            setError(error.response?.data?.detail || "Error occurred");
+        }
+    };
+
+    fetchUserName();
+}, []); 
+    
+     const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const handlePasswordChange = (e) => {
+        const { name, value } = e.target;
+        setPasswordData(prev => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmitPasswordChange = async (e) => {
+    e.preventDefault();
+
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+        alert("New password and confirm password do not match");
+        return;
+    }
+
+    try {
+        const response = await axios.post(
+            `${import.meta.env.VITE_API_URL}/changepassword`,
+            {
+                current_password: passwordData.currentPassword,
+                new_password: passwordData.newPassword,
+            },
+            { withCredentials: true }
+        );
+
+        if (response.status === 200) {
+            alert('Your password has been successfully changed!');
+        }
+    } catch (error) {
+        console.log("Failed to change your password:", error);
+        alert("Error occurred when changing your password. Please try again.");
+    }
+};
+
+    const updateUser = async (updateData) => {
+        try {
+            const response = await axios.patch(
+                `${import.meta.env.VITE_API_URL}/update/user`,
+                updateData,
+                { withCredentials: true }
+            );
+            return response.data;
+    } catch (error) {
+        console.log("Failed to save your account changes:", error)
+    }
+};
+     const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const filteredData = Object.fromEntries(
+            Object.entries(formData).filter(([_, v]) => v.trim() !== '')
+        );
+
+        const updated = await updateUser(filteredData);
+        if (updated) {
+            alert('Your account changes have been saved!');
+            console.log(updated);
+        } else {
+            alert('Failed to save your account changes.');
+        }
+    }; 
+
+const handleDeleteAccount = async () => {
+
+    setLoading(true);
+    setError(null);
+
+    try {
+        const response = await axios.delete(
+            `${import.meta.env.VITE_API_URL}/deleteaccount`,
+            { withCredentials: true }
+        );
+
+        if (response.status === 200) {
+            alert("Your account has been deleted.");
+
+            
+            navigate('/');  
+        }
+    } catch (error) {
+        console.error("Failed to delete your Nest Exchange account:", error);
+        setError("There was an error deleting your Nest Exchange account.");
+    } finally {
+        setLoading(false);
+    }
+};
+
+    
     return (
         <div className="settings-container">
             {/* Sidebar */}
@@ -18,12 +151,14 @@ const Settings = () => {
 
                 {/* Profile Header */}
                 <div className="profile-header">
-                    <img
-                        src="/path-to-profile-image.jpg" // Replace with the actual image path
-                        alt="Profile"
-                        className="profile-image"
-                    />
-                    <h3>John Smith</h3> {/*replace with user's name */}
+              {error ? (
+                    <p>Error: {error}</p>
+                ) : (
+                <p>
+                    {userName.first_name} {userName.last_name}
+                </p>
+            )}
+
                 </div>
 
                 {/* Edit Profile */}
@@ -40,31 +175,62 @@ const Settings = () => {
                     <div className="edit-profile-dropdown" style={{ display: 'none' }}>
                         <div className="edit-profile-container">
                             <h4>Edit Profile</h4>
-                            <form>
+                            <form onSubmit={handleSubmit}>
                                 <div className="top-fields">
-                                    <div classname="field">
+                                    <div className="field">
                                         <label htmlFor="first-name">First Name</label> <br/>
-                                        <input type="text" id="first-name" name="first-name" required />
+                                        <input 
+                                            type="text" 
+                                            id="first_name" 
+                                            name="first_name"
+                                            value={formData.first_name}
+                                            onChange={handleChange}
+                                            required
+                                            />
                                     </div>
-                                    <div classname="field">
+                                    <div className="field">
                                         <label htmlFor="last-name">Last Name</label> <br/>
-                                        <input type="text" id="last-name" name="last-name" required />
+                                        <input 
+                                            type="text" 
+                                            id="last_name" 
+                                            name="last_name" 
+                                            value={formData.last_name}
+                                            onChange={handleChange}
+                                            required />
                                     </div>
                                 </div>
                                 <br />
 
                                 <div className="bottom-fields">
-                                    <div classname="field">
+                                    <div className="field">
                                         <label htmlFor="username">Username</label> <br></br>
-                                        <input type="text" id="username" name="username" required />
+                                        <input 
+                                            type="text" 
+                                            id="username" 
+                                            name="username" 
+                                            value={formData.username}
+                                            onChange={handleChange}
+                                            required />
                                     </div>
-                                    <div classname="field">
+                                    <div className="field">
                                         <label htmlFor="phone">Phone Number</label> <br></br>
-                                        <input type="tel" id="phone" name="phone" required />
+                                        <input 
+                                            type="text" 
+                                            id="phone" 
+                                            name="phone" 
+                                            value={formData.phone}
+                                            onChange={handleChange}
+                                            required />
                                     </div>
                                     <div className="field">
                                         <label htmlFor="email">Email</label> <br></br>
-                                        <input type="email" id="email" name="email" required />
+                                        <input 
+                                            type="email" 
+                                            id="email" 
+                                            name="email" 
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            required />
                                     </div>
                                 </div>
 
@@ -90,17 +256,35 @@ const Settings = () => {
                     <div className="change-password-dropdown" style={{ display: 'none' }}>
                         <div className="change-password-container">
                             <h4>Change Password</h4>
-                            <form>
+                            <form onSubmit={handleSubmitPasswordChange}>
                                 <label htmlFor="current-password">Current Password</label> <br></br>
-                                <input type="password" id="current-password" name="current-password" required />
+                                <input 
+                                    type="password" 
+                                    id="currentPassword" 
+                                    name="currentPassword"
+                                    value={passwordData.currentPassword}
+                                    onChange={handlePasswordChange}
+                                    required />
                                 <br></br>
 
                                 <label htmlFor="new-password">New Password</label> <br></br>
-                                <input type="password" id="new-password" name="new-password" required />
+                                <input 
+                                    type="password" 
+                                    id="newPassword" 
+                                    name="newPassword"
+                                    value={passwordData.newPassword}
+                                    onChange={handlePasswordChange}
+                                    required />
                                 <br></br>
 
                                 <label htmlFor="confirm-password">Confirm New Password</label> <br></br>
-                                <input type="password" id="confirm-password" name="confirm-password" required />
+                                <input 
+                                    type="password" 
+                                    id="confirmPassword" 
+                                    name="confirmPassword" 
+                                    value={passwordData.confirmPassword}
+                                    onChange={handlePasswordChange}
+                                    required />
                                 <br></br>
                                 <br></br>
 
@@ -125,8 +309,22 @@ const Settings = () => {
                         <div className="delete-profile-container">
                             <h4>Delete Profile</h4>
                             <p>Are you sure you want to delete your profile? This action cannot be undone.</p>
-                            <button type="button" className="delete-button">Delete Profile</button>
-                            <button type="button" className="cancel-button"> Cancel </button>
+                            <button 
+                                type="button" 
+                                className="delete-button"
+                                onClick={handleDeleteAccount} 
+                                disabled={loading}
+                                >Delete Profile</button>
+                            <button 
+                                type="button" 
+                                className="cancel-button"
+                                 onClick={() => {
+                                    const dropdown = document.querySelector('.delete-profile-dropdown');
+                                    dropdown.style.display = 'none';
+                                }}
+                            >
+                                Cancel 
+                            </button>
                         </div>
                     </div>
                 </section>

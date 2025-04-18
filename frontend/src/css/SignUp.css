@@ -1,15 +1,4 @@
 .sign-up-body {
-<<<<<<< HEAD
-  margin: 0;
-  padding: 0;
-  height: 100vh; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: url("/visit-banner.jpg") no-repeat center center fixed;
-  background-size: cover; 
-  background-color: white;
-=======
     margin: 0;
     padding: 0;
     height: 100vh; 
@@ -66,7 +55,6 @@
     border-color: #ffc629; /* Change border color on focus */
     outline: none; /* Remove default outline */
     box-shadow: 0 0 5px rgba(255, 198, 41, 0.5); /* Optional, for a glow effect */
->>>>>>> front
 }
 
 .content {
