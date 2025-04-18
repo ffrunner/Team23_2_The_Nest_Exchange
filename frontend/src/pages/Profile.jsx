@@ -86,13 +86,7 @@ const fetchItems = async () => {
                     {userName.first_name} {userName.last_name}
                 </p>
             )}
-                <div className="profile-header">
-                    <img
-                        src="/path-to-profile-image.jpg" // Replace with the actual image path
-                        alt="Profile"
-                        className="profile-image"
-                    />
-                </div>
+              
 
                 {/* Activity Section */}
                 <section className="activity-section">
