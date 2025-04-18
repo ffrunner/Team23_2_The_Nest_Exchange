@@ -15,7 +15,7 @@ import './css/App.css';
 function App() {
     const location = useLocation();
     
-    const hideNavBarAndSearch = ["/login", "/signup", "/forgot-password"];
+    const hideNavBarAndSearch = ["/login", "/signup", "/forgot-password", "/"];
 
     return (
         <div>
