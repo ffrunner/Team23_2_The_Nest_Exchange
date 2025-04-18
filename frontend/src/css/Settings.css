@@ -200,7 +200,7 @@ body {
 }
 
 /* Account Removal aka Profile Deletion */
-.delete-account-container {
+.delete-profile-container {
     background-color: #f9f9f9;
     border: 1px solid #ccc;
     border-radius: 8px;
