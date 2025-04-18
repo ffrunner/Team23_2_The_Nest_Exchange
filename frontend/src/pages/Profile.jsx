@@ -181,7 +181,7 @@ const fetchItems = async () => {
                 setSelectedListing({ ...selectedListing, description: e.target.value })
               }
             />
-            <button onClick={() => handleEdit(selectedListing)}>Edit</button>
+            <button onClick={() => handleEdit()}>Edit</button>
             <button onClick={() => handleDelete(selectedListing.id)} style={{ color: "red" }}>
               Delete
             </button>
