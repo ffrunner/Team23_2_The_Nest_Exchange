@@ -5,39 +5,6 @@
   font-family: Arial, sans-serif;
 }
 
-/* Sidebar */
-.admin-page .sidebar {
-  width: 250px;
-  background-color: #f4f4f4;
-  padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.admin-page .sidebar h2 {
-  font-size: 1.5em;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.admin-page .sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-
-.admin-page .sidebar ul li {
-  margin: 15px 0;
-}
-
-.admin-page .sidebar ul li a {
-  text-decoration: none;
-  color: #333;
-  font-size: 1.1em;
-}
-
-.admin-page .sidebar ul li a.active {
-  font-weight: bold;
-  color: #007bff;
-}
 
 /* Main Content */
 .admin-page .main-content {
