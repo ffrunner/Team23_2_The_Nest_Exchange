@@ -25,8 +25,6 @@ const Admin = () => {
       }
     };
 
-    fetchUsageReports();
-  }, []);
     const fetchActivityLog = async () => {
       try {
         const response = await axios.get(
@@ -38,6 +36,7 @@ const Admin = () => {
         console.error("Error fetching activity log:", error);
       }
     };
+  fetchUsageReports();
   fetchActivityLog();
 }, []);
       
