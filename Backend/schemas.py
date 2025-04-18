@@ -82,3 +82,10 @@ class CategoryResponse(BaseModel):
 
     class Config:
         orm_mode = True
+
+class CreateActivityLog(BaseModel):
+    user_id: int
+    action: str
+
+    class Config:
+        orm_mode = True
