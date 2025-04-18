@@ -15,7 +15,6 @@ body {
 .profile-container {
     display: flex;
     flex-direction: row;
-    justify-content: center;
     height: 100vh; /* Full viewport height */
     width: 100vw; /* Full viewport width */
     overflow: hidden; /* Prevent scrolling */
