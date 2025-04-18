@@ -33,7 +33,7 @@ body {
 /* Main content styling */
 .profile-main {
     flex: 1;
-    padding: 20px;
+    padding: 0;
     overflow-y: auto; /* Allow scrolling within the main content if needed */
     background-color: white;
     display: block;
