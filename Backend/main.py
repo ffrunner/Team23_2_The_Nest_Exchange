@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Query, Request, Response
-from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ClaimCreate, ItemResponse, ForgotPassword
+from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ClaimCreate, ItemResponse, CreateActivityLog
 from config import get_db 
-from model import User, Item, ListingPhoto, Claim, Listing, Report, Category, SupportMessage
+from model import User, Item, ListingPhoto, Claim, Listing, Report, Category, SupportMessage, ActivityLog
 from sqlalchemy.orm import Session 
 from passlib.context import CryptContext
 from typing import List, Optional 
@@ -160,13 +160,16 @@ async def delete_account(db: Session = Depends(get_db), current_user: dict = Dep
         raise HTTPException(status_code=401, detail="You do not have permission to delete the user's account")
     db_user = db.query(User).filter(User.id == current_user["id"]).first()
     if db_user:
-        #Make user exit/logout 
         db.query(User).filter(User.id == current_user["id"]).delete()
         db.query(Claim).filter(Claim.claimer_id == current_user["id"]).delete()
         db.query(Listing).filter(Listing.lister_id == current_user["id"]).delete()
         #db.query(ListingPhoto).filter(ListingPhoto.)
         db.query(Item).filter(Item.lister_id == current_user["id"]).delete()
-
+        db.commit()
+        response = JSONResponse(content= "Your account has been deleted")
+        response.delete_cookie("session_id")
+        return response 
+    
 # Lister Functionalities
 #Function to create or list an item
 @app.post("/items/")
@@ -191,6 +194,14 @@ async def create_item(item: ItemCreate, db: Session = Depends(get_db),current_us
     db.add(db_listing)
     db.commit()
     db.refresh(db_listing)
+    #For activity log
+    add_activity(
+        CreateActivityLog(
+            user_id=current_user["id"],
+            action= "added a new listing"
+        ),
+        db
+    )
     return {"item": db_item, "listing": db_listing}  
 
 #Function to update an item's data  
@@ -407,6 +418,21 @@ async def remove_listing(listing_id: int, db: Session = Depends(get_db), current
     db.commit()
     return {"msg": "Listing has been deleted"}
 
+#Function to add activities to activity log
+def add_activity(activity: CreateActivityLog, db:Session = Depends(get_db)):
+    db_activity = ActivityLog(user_id = activity.user_id, action = activity.action)
+    db.add(db_activity)
+    db.commit()
+    db.refresh(db_activity)
+    return db_activity
+
+#Function to give admin users the activity log
+@app.get("/admin/activitylog")
+async def view_activity_log(db: Session = Depends(get_db), current_user: dict = Depends(admin_required)):
+    print(f"Admin: {current_user['email']}")
+    activities = db.query(ActivityLog).order_by(ActivityLog.created_at.desc()).all()
+    return activities 
+
 #Function to have admin report
 @app.put("/admin/reports/{report_id}", status_code=200)
 async def respond_report(report_id: int, action: str, db: Session = Depends(get_db), current_user: dict =Depends(admin_required)):
@@ -475,4 +501,3 @@ async def respond_support_message(message_id: int, response_text: str, db: Sessi
     db.commit()
     db.refresh(db_message)
     return db_message
-
