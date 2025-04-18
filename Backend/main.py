@@ -390,10 +390,9 @@ def filter_items(category_id: int, db: Session = Depends(get_db), current_user: 
     return items
 
 #Function to claim a listing
-@app.post("/items/{item_id}/claims/")
+@app.post("/items/{listing_id}/claims/")
 def create_claim(
-    item_id: int,
-    claim: ClaimCreate,
+    listing_id: int,
     db: Session = Depends(get_db),
     current_user: dict = Depends(get_current_user)
 ):
@@ -402,10 +401,13 @@ def create_claim(
         raise HTTPException(status_code=401, detail="You do not have permission to claim")
 
     #Check to see if the selected item is in the database
-    db_item = db.query(Item).filter(Item.id == item_id).first()
-    if not db_item:
+    db_listing = db.query(Listing).filter(Listing.id == listing_id).first()
+    if not db_listing:
         raise HTTPException(status_code=404, detail="Item not found")
 
+    db_item = db_listing.item
+    if not db_item: 
+        raise HTTPException(status_code=404, detail="Item not found")
     #The item's lister (owner) can't claim their own item
     if db_item.lister_id == current_user["id"]:
         raise HTTPException(status_code=403, detail="You cannot claim your own item")
@@ -413,21 +415,20 @@ def create_claim(
     #Check to see if the item is claimable (active and not already claimed)
     if not db_item.is_active or db_item.is_claimed:
         raise HTTPException(status_code=400, detail="Item is already claimed or inactive")
+    pickup_details = db_item.pickup_details
     db_claim = Claim(
-        item_id=item_id,
+        item_id=db_item.id,
         lister_id = db_item.lister_id,
         claimer_id=current_user["id"],  
-        pickup_details = claim.pickup_details,
-        claim_status = claim.claim_status
+        pickup_details = pickup_details,
+        claim_status = "claimed"
     )
     db.add(db_claim)
 
     db_item.is_claimed = True
     db_item.is_active = False
     db_item.claimer_id = current_user["id"]
-    db_listing = db.query(Listing).filter(Listing.item_id == item_id).first()
-    if db_listing:
-        db_listing.is_active = False
+    db_listing.is_active = False
     db.commit()
     db.refresh(db_claim)
 
@@ -528,3 +529,4 @@ async def respond_support_message(message_id: int, response_text: str, db: Sessi
     db.commit()
     db.refresh(db_message)
     return db_message
+
