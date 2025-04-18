@@ -234,7 +234,7 @@ def update_item(item_id: int, item: ItemUpdate, db: Session = Depends(get_db), c
     return db_item
 
 #Function to delete a listing. Can be accessed from lister's profile by lister or by admin     
-@app.delete("/items/{item_id}")
+@app.delete("/items/delete/{item_id}")
 def delete_item(item_id: int, db: Session = Depends(get_db), current_user: dict=Depends(get_current_user)):
     if not isinstance(current_user, dict) or "id" not in current_user:
         raise HTTPException(status_code=401, detail="Only the lister of this item or an administrator user can delete this")
@@ -242,12 +242,12 @@ def delete_item(item_id: int, db: Session = Depends(get_db), current_user: dict=
     db_item = db.query(Item).filter(Item.id == item_id).first()
     if not db_item:
         raise HTTPException(status_code=404, detail="Item not found")
-    if not db_item.lister_id != current_user["id"]:
+    if db_item.lister_id != current_user["id"]:
         raise HTTPException(status_code=403, detail="You do not have permission to delete this item")
     # Have to delete the other rows in database associated with this item like the photo and claims
     db.query(ListingPhoto).filter(ListingPhoto.item_id == item_id).delete()
     db.query(Claim).filter(Claim.item_id == item_id).delete()
-
+    db.query(Listing).filter(Listing.item_id == item_id).delete()
     db.delete(db_item)
     db.commit()
 
