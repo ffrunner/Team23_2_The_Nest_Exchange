@@ -6,7 +6,7 @@
     justify-content: center;
     align-items: center;
     background-image: url("/assets/images/visit-banner.jpg") no-repeat center center fixed;
-    background-size: container; 
+    background-size: cover; 
     background-color: white;
   }
 
