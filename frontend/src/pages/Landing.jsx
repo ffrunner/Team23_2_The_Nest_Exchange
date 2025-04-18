@@ -7,7 +7,7 @@ return (
         <div>
             <main>
                 <div className="hero">
-                    <h1>Share. Rethink. Renew</h1>
+                    <h1>Share. Rethink. Renew.</h1>
                     <p>Uniting Our Community One Gift at a Time.</p>
                     <div className="hero-login-signup">
                         <button><Link to="/login">Login/Sign Up</Link></button>
