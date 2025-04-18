@@ -51,7 +51,7 @@ class ItemUpdate(BaseModel):
 
 class ClaimCreate(BaseModel):
     pickup_details: Optional[str] = None
-    claim_status: str
+    claim_status: Optional[str] = "claimed"
 
 class ListingPhotoCreate(BaseModel):
     item_id: int
