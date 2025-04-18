@@ -1,42 +1,27 @@
-/* Admin Page Layout */
+body {
+  margin: auto;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f4f4f9; /* Neutral background color */
+  overflow: hidden; /* Prevent scrolling */
+}
+
+/* Admin Page container */
 .admin-page {
   display: flex;
-  height: 100vh;
-  font-family: Arial, sans-serif;
-}
-
-/* Sidebar */
-.admin-page .sidebar {
-  width: 250px;
-  background-color: #f4f4f4;
-  padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.admin-page .sidebar h2 {
-  font-size: 1.5em;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.admin-page .sidebar ul {
-  list-style: none;
+  flex-direction: row;
+  justify-content: flex-start;
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
+  overflow: hidden; /* Prevent scrolling */
+  position: relative; /* Ensure it is positioned correctly */
+  background-color: white;
+  align-items: stretch;
+  gap: 0;
+  margin: auto;
   padding: 0;
-}
-
-.admin-page .sidebar ul li {
-  margin: 15px 0;
-}
-
-.admin-page .sidebar ul li a {
-  text-decoration: none;
-  color: #333;
-  font-size: 1.1em;
-}
-
-.admin-page .sidebar ul li a.active {
-  font-weight: bold;
-  color: #007bff;
+  box-sizing: border-box;
 }
 
 /* Main Content */
@@ -58,25 +43,12 @@
   color: #333;
 }
 
-.admin-page .menu-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  font-size: 1em;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.admin-page .menu-button:hover {
-  background-color: #0056b3;
-}
-
 /* Admin Dashboard */
 .admin-page .admin-dashboard h2 {
   font-size: 1.5em;
   margin-bottom: 15px;
   color: #333;
+  text-align: left;
 }
 
 .admin-page .admin-cards {
@@ -91,7 +63,7 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 20px;
-  text-align: center;
+  text-align: left;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 

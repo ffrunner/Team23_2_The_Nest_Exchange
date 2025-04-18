@@ -26,24 +26,14 @@ const Admin = () => {
 
     fetchUsageReports();
   }, []);
+
   return (
     <div className="admin-page">
-      {/* Sidebar */}
-      <div className="sidebar">
-        <h2>The Nest Exchange</h2>
-        <ul>
-          <li><a href="/home">Home</a></li>
-          <li><a href="/dashboard">My Profile</a></li>
-          <li><a href="/admin" className="active">Admin</a></li>
-          <li><a href="/settings">Settings</a></li>
-        </ul>
-      </div>
 
       {/* Main Content */}
       <div className="main-content">
         <header>
           <h1>Admin Panel</h1>
-          <button className="menu-button">Menu</button>
         </header>
 
         <div className="admin-dashboard">
