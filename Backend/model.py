@@ -22,7 +22,7 @@ class User(Base):
     listed_claims = relationship("Claim", foreign_keys="[Claim.lister_id]", back_populates="lister")
     claimed_claims = relationship("Claim", foreign_keys="[Claim.claimer_id]", back_populates="claimer")
     activity_logs = relationship("ActivityLog", foreign_keys="[ActivityLog.user_id]", back_populates="user")
-
+    reports = relationship("Report", foreign_keys="[Report.reported_by]", back_populates="reporter")
 class Listing(Base):
     __tablename__ = "listings"
 
@@ -35,7 +35,7 @@ class Listing(Base):
     category_id = Column(Integer, ForeignKey("categories.id"), nullable=True)  # Add this column
     
     item = relationship("Item", back_populates="listings")
-
+    reports = relationship("Report", back_populates="listing")
 
     def to_dict(self):
         photos = []
@@ -128,13 +128,13 @@ class Report(Base):
     __tablename__ = "reports"
     
     id = Column(Integer, primary_key=True, index=True)
-    #listing_id = Column(Integer, ForeignKey("listings.id"), nullable=False)
+    listing_id = Column(Integer, ForeignKey("listings.id"), nullable=False)
     reason = Column(Text, nullable=False)
-    #reported_by = Column(Integer, ForeignKey("users.id"),nullable=False)
+    reported_by = Column(Integer, ForeignKey("users.id"),nullable=False)
     resolved = Column(Boolean, default=False)
 
-    #listing = relationship("Listing", back_populates="reports")
-    #reporter = relationship("User", back_populates="reports")
+    listing = relationship("Listing", back_populates="reports")
+    reporter = relationship("User", back_populates="reports")
 
 class SupportMessage(Base):
     __tablename__ = "support_messages"
