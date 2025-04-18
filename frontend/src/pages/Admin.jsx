@@ -86,7 +86,7 @@ const Admin = () => {
           </li>
           ))}
         </ul>
-          
+          )}
           </div>
         </div>
       </div>
