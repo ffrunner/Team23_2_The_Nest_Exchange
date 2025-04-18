@@ -70,7 +70,27 @@ const fetchItems = async () => {
         setLoadingListings(false);
     }
 };
-
+ const handleEdit = async() => {
+     setLoadingListings(true);
+     try {
+         const response = await axios.put(
+             `${import.meta.env.VITE_API_URL}/items/${selectedListing.id}`,
+             selectedListing,
+            { withCredentials: true }
+        );
+         setListings((prevListings) =>
+            prevListings.map((item) =>
+                item.id === selectedListing.id ? response.data : item
+            )
+        );
+        alert("Listing has been edited successfully!");
+        setSelectedListing(null); 
+     } catch (error){
+         console.error("Error editing listing:", error);
+         alert("There was an error editing the listing");
+     } finally {
+         setLoadingListings(false);
+     }
 
 
     return (
