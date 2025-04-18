@@ -98,7 +98,21 @@ const fetchItems = async () => {
          setLoadingListings(false);
      }
  };
-
+  const handleDelete = async() => {
+      try {
+          const response = await axios.delete(
+           `${import.meta.env.VITE_API_URL}/items/delete/${selectedListing.id}`,
+            { withCredentials: true }
+        );  
+          if (response.status === 200){
+              setListings((prevListings) => prevListings.filter((item) => item.id !== selectedListing.id));
+              alert('Listing was deleted successfully');
+              }
+            } catch (error) {
+              console.error('Error deleting listing:', error);
+              alert("There was an error deleting the listing");
+            }
+          };
 
     return (
         <div className="profile-container">
@@ -214,7 +228,13 @@ const fetchItems = async () => {
                     ))}
                   </select>
             <button onClick={() => handleEdit()}>Submit Changes</button>
-            <button onClick={() => handleDelete(selectedListing.id)} style={{ color: "red" }}>
+            <button onClick={() => {
+            if (window.confirm(`Are you sure you want to delete "${selectedListing.title}"?`)) {
+                  handleDelete(); 
+                }
+              }}
+              style={{ color: 'red' }}
+            >
               Delete
             </button>
             <button onClick={() => setSelectedListing(null)}>Close</button>
