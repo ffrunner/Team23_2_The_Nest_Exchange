@@ -337,7 +337,26 @@ async def get_listing(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Listing not found")
     
     return listing.to_dict()
+#Function to create report
+@app.post("/listings/{listing_id}/report")
+def report_listing(listing_id: int,report:ReportReason, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
+    if not isinstance(current_user, dict) or "id" not in current_user:
+        raise HTTPException(status_code=401, detail="You do not have permission to report listings")
+    listing = db.query(Listing).filter(Listing.id == listing_id).first()
+    if not listing:
+        raise HTTPException(status_code=404, detail="Listing not found")
+    new_report = Report(
+        listing_id=listing_id,
+        reason = report.reason,
+        reported_by = current_user["id"],
+        resolved = False,
 
+    )
+    db.add(new_report)
+    db.commit()
+    db.refresh(new_report)
+    
+    return new_report
 # Claimer Functionalities
 
 #Function to get all the listings a user has claimed
