@@ -21,7 +21,7 @@ class User(Base):
     claimed_items = relationship("Item", foreign_keys="[Item.claimer_id]", back_populates="claimer")
     listed_claims = relationship("Claim", foreign_keys="[Claim.lister_id]", back_populates="lister")
     claimed_claims = relationship("Claim", foreign_keys="[Claim.claimer_id]", back_populates="claimer")
-    
+    activity_logs = relationship("ActivityLog", foreign_keys="[ActivityLog.user_id]", back_populates="user")
 class Listing(Base):
     __tablename__ = "listings"
     
@@ -115,7 +115,14 @@ class Claim(Base):
     claimer = relationship("User", foreign_keys=[claimer_id], back_populates="claimed_claims")
 
 
+class ActivityLog(Base):
+    __tablename__ = "activity_logs"
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('users.id'),nullable=False)
+    action = Column(Text, nullable=False)
+    created_at = Column(TIMESTAMP, default=datetime.now(timezone.utc))
 
+    user = relationship("User", back_populates="activity_logs")
 class Report(Base):
     __tablename__ = "reports"
     
