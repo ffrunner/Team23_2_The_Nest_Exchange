@@ -58,6 +58,7 @@ const NestExchange = () => {
         try {
             const response = await axios.post(
                 `${backendBaseUrl}/items/${listingId}/claims/`,
+                {},
                 { withCredentials: true }
             );
             alert("You have successfully claimed this item!");
