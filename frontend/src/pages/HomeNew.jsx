@@ -203,15 +203,11 @@ const NestExchange = () => {
                                 <div className="listingInfo">
                                     <h2>{selectedListing.title}</h2>
                                     <p><strong>Description:</strong> {selectedListing.description}</p>
-                                    <p><strong>Pick up information:</strong> {selectedListing.pickup_details}</p>
+                                    
                                 </div>
                                 <div className="listerInfo">
-                                    <h3>Lister</h3>
-                                    <img
-                                        src={selectedListing.listerPhoto || "/static/images/user-placeholder.jpg"}
-                                        alt="Lister"
-                                        className="listerPhoto"
-                                    />
+                                    
+                                    
                                 </div>
                                 <button className="claimButton" onClick={() => handleClaim(selectedListing.id)}>
                                     Claim
