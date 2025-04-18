@@ -3,6 +3,7 @@ import "../css/Admin.css";
 import axios from "axios";
 
 const Admin = () => {
+  const [activityLog, setActivityLog] = useState([]);
   const [usageReports, setUsageReports] = useState ( {
     total_listings: 0,
     total_items: 0,
@@ -26,6 +27,20 @@ const Admin = () => {
 
     fetchUsageReports();
   }, []);
+    const fetchActivityLog = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/admin/activitylog`,
+          { withCredentials: true },
+          );
+        setActivityLog(response.data);
+      } catch (error) {
+        console.error("Error fetching activity log:", error);
+      }
+    };
+  fetchActivityLog();
+}, []);
+      
   return (
     <div className="admin-page">
 
@@ -62,8 +77,17 @@ const Admin = () => {
 
           <h2>Recent Activity</h2>
           <div className="activity-log">
-            <p>User John Doe added a new listing.</p>
-            <p>User Jane Smith reported an item.</p>
+            {activityLog.length === 0 ? (
+            <p>No recent activity</p>
+        ) : (
+        <ul>
+          {activityLog.map((db_activity) => (
+          <li key={db_activity.id}>
+          User {db_activity.user_id} : {db_activity.action} at {db_activity.created_at}
+          </li>
+          ))}
+        </ul>
+          
           </div>
         </div>
       </div>
