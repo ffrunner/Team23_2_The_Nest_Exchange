@@ -11,6 +11,7 @@ const Profile = () => {
     const [listings, setListings] = useState([]);
     const [loadingListings, setLoadingListings] = useState(false);
     const [claimedItems, setClaimedItems] = useState([]);
+    const [selectedListing, setSelectedListing] = useState(null);
     
     const handleSectionChange = (section) => {
         setSelectedSection(section);
@@ -130,7 +131,7 @@ const fetchItems = async () => {
                             ) : (
                             <ul> {listings.length > 0 ? (
                                 listings.map((item) => (
-                                    <li key = {item.id}>
+                                    <li key = {item.id} onClick={() => setSelectedListing(item)}>
                                         {item.name} - {item.description}
                                     </li>
                                     ))
@@ -144,6 +145,30 @@ const fetchItems = async () => {
                 
                 </section>
             </main>
+            {selectedListing && (
+        <div className="modal-backdrop" onClick={() => setSelectedListing(null)}>
+          <div className="listing-modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Edit Listing</h3>
+            <input
+              value={selectedListing.name}
+              onChange={(e) =>
+                setSelectedListing({ ...selectedListing, name: e.target.value })
+              }
+            />
+            <textarea
+              value={selectedListing.description}
+              onChange={(e) =>
+                setSelectedListing({ ...selectedListing, description: e.target.value })
+              }
+            />
+            <button onClick={() => handleEdit(selectedListing)}>Edit</button>
+            <button onClick={() => handleDelete(selectedListing.id)} style={{ color: "red" }}>
+              Delete
+            </button>
+            <button onClick={() => setSelectedListing(null)}>Close</button>
+          </div>
+        </div>
+      )}
         </div>
     );
 };
