@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Query, Request, Response
-from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ClaimCreate, ItemResponse, CreateActivityLog
+from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ReportReason, ItemResponse, CreateActivityLog
 from config import get_db 
 from model import User, Item, ListingPhoto, Claim, Listing, Report, Category, SupportMessage, ActivityLog
 from sqlalchemy.orm import Session 
