@@ -42,4 +42,8 @@ return (
         </div>
     );
 };
+<<<<<<< HEAD
 export default Landing;
+=======
+export default Landing;
+>>>>>>> front

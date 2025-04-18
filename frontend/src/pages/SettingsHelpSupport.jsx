@@ -94,4 +94,9 @@ const SettingsHelpSupport = () => {
     );
 };
 
+<<<<<<< HEAD
 export default SettingsHelpSupport;
+=======
+export default SettingsHelpSupport;
+
+>>>>>>> front

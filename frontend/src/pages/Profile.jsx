@@ -187,6 +187,7 @@ const fetchItems = async () => {
                 </section>
             </main>
             {selectedListing && (
+<<<<<<< HEAD
     <div className="modal-backdrop" onClick={() => setSelectedListing(null)}>
     <div className="modal-container" onClick={(e) => e.stopPropagation()}>
         <h3>Edit Listing</h3>
@@ -259,6 +260,62 @@ const fetchItems = async () => {
     </div>
 </div>
 )}
+=======
+        <div className="modal-backdrop" onClick={() => setSelectedListing(null)}>
+          <div className="listing-modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Edit Listing</h3>
+              <label>Title:</label>
+            <input
+              type = "text"
+              value={selectedListing.title}
+              onChange={(e) =>
+                setSelectedListing({ ...selectedListing, title: e.target.value })
+              }
+            />
+              <label>Description:</label>
+            <textarea
+              value={selectedListing.description || ""}
+              onChange={(e) =>
+                setSelectedListing({ ...selectedListing, description: e.target.value })
+              }
+            />
+              <label>Pickup Details:</label>
+              <input
+                  type= "text"
+                  value={selectedListing.pickup_details}
+                  onChange={(e) =>
+                      setSelectedListing({...selectedListing, pickup_details: e.target.value})
+                }
+             />
+              <label>Category:</label>
+              <select 
+                  value={selectedListing.category_id}
+                  onChange={(e) =>
+                      setSelectedListing({...selectedListing, category_id: e.target.value})
+                  }
+                  >
+                  <option value="">Select a category</option>
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.title}
+                      </option>
+                    ))}
+                  </select>
+            <button onClick={() => handleEdit()}>Submit Changes</button>
+            <button onClick={() => {
+            if (window.confirm(`Are you sure you want to delete "${selectedListing.title}"?`)) {
+                  handleDelete(); 
+                }
+              }}
+              style={{ color: 'red' }}
+            >
+              Delete
+            </button>
+            <button onClick={() => setSelectedListing(null)}>Close</button>
+          </div>
+        </div>
+      )}
+>>>>>>> front
         </div>
     );
 };

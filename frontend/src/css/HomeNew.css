@@ -32,32 +32,7 @@ html, body {
     color: #555;
 }
 
-.hero-login-signup {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
 
-.hero-login-signup button {
-    background-color: #f9a826;
-    color: white;
-    border: none;
-    padding: 15px 20px;
-    font-size: 1em;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.hero-login-signup button:hover {
-    background-color: #e08d00;
-}
-
-.hero-login-signup button a {
-    text-decoration: none;
-    color: white;
-}
 
 /* About Section */
 .about {
@@ -309,4 +284,88 @@ footer a {
 
 footer a:hover {
     text-decoration: underline;
+}
+
+.list-item-button {
+    display: inline-block;
+    background-color: #303AB2; /* Yellow background */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px; /* Add spacing above the button */
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.list-item-button:hover {
+    background-color: #e08d00; /* Darker yellow on hover */
+}
+
+.list-item-button a {
+    text-decoration: none;
+    color: white;
+}
+
+.list-item-container {
+    background-color: #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.list-item-container h3 {
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.list-item-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.list-item-container label {
+    display: flex;
+    font-size: 1em;
+    color: #555;
+}
+
+.list-item-container input,
+.list-item-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    background-color: #ffffff; /* Set the background color to white */
+    color: #333; 
+}
+
+.list-item-container button {
+    background-color: #ffc107;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.list-item-container button:hover {
+    background-color: #e08d00;
+}
+
+.list-item-container button[type="button"] {
+    background-color: #e74c3c;
+}
+
+.list-item-container button[type="button"]:hover {
+    background-color: #c0392b;
 }

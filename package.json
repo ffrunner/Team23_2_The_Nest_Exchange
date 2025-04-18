@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "axios": "^1.8.4",
-    "gh-pages": "^6.3.0",
-    "react-router-dom": "^7.5.0"
+    "gh-pages": "^6.3.0"
+  },
+  "devDependencies": {
+    "vite": "^6.3.1"
   }
 }
