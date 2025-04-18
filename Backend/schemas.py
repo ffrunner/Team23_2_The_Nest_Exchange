@@ -95,3 +95,6 @@ class CreateActivityLog(BaseModel):
 
     class Config:
         orm_mode = True
+        
+class ReportReason(BaseModel):
+    reason: str
