@@ -13,6 +13,14 @@ class CreateUser(BaseModel):
     last_name: str
     phone: str
 
+#Data to get from user when updating their info. Will be on settings page
+class UpdateUser(BaseModel):
+    first_name: Optional[str]
+    last_name: Optional[str]
+    username: Optional[str]
+    email: Optional[str]
+    phone: Optional[str] 
+
 #Data to get from user when logging them in   
 class LoginUser(BaseModel):
     email: str
@@ -20,7 +28,6 @@ class LoginUser(BaseModel):
 
 #Data to get from user when changing their password
 class ChangePassword(BaseModel):
-    email: str 
     current_password: str 
     new_password: str  
 
@@ -43,8 +50,6 @@ class ItemUpdate(BaseModel):
     category_id: Optional[int] = None
 
 class ClaimCreate(BaseModel):
-    lister_id: int
-    claimer_id: int
     pickup_details: Optional[str] = None
     claim_status: str
 

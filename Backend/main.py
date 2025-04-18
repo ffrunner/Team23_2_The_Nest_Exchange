@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Query, Request, Response
-from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ClaimCreate, ItemResponse, CreateActivityLog
+from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ClaimCreate, ItemResponse, CreateActivityLog, UpdateUser
 from config import get_db 
 from model import User, Item, ListingPhoto, Claim, Listing, Report, Category, SupportMessage, ActivityLog
 from sqlalchemy.orm import Session 
@@ -118,6 +118,22 @@ async def login(response: Response, user:LoginUser, db: Session = Depends(get_db
     else: 
         raise HTTPException(status_code=404, detail="User not found")
 
+#Function to change user info from settings page 
+@app.patch("/update/user")
+async def update_user(user:UpdateUser, db : Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
+    if not isinstance(current_user, dict) or "id" not in current_user:
+        raise HTTPException(status_code=401, detail="You do not have permission to update the user's account")
+    user_id = current_user["id"]
+    db_user = db.query(User).filter(User.id == user_id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    for key, value in user.dict(exclude_unset=True).items():
+        setattr(db_user, key, value)
+
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+    
 #Function to get first and last name on the profile page
 @app.get("/name")
 async def get_name(db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
@@ -160,11 +176,14 @@ async def delete_account(db: Session = Depends(get_db), current_user: dict = Dep
         raise HTTPException(status_code=401, detail="You do not have permission to delete the user's account")
     db_user = db.query(User).filter(User.id == current_user["id"]).first()
     if db_user:
-        db.query(User).filter(User.id == current_user["id"]).delete()
+        
         db.query(Claim).filter(Claim.claimer_id == current_user["id"]).delete()
         db.query(Listing).filter(Listing.lister_id == current_user["id"]).delete()
-        #db.query(ListingPhoto).filter(ListingPhoto.)
+        db.query(ListingPhoto).filter(ListingPhoto.item_id.in_(
+            db.query(Item.id).filter(Item.lister_id == current_user["id"])
+        )).delete()
         db.query(Item).filter(Item.lister_id == current_user["id"]).delete()
+        db.query(User).filter(User.id == current_user["id"]).delete()
         db.commit()
         response = JSONResponse(content= "Your account has been deleted")
         response.delete_cookie("session_id")
@@ -396,15 +415,32 @@ def create_claim(
         raise HTTPException(status_code=400, detail="Item is already claimed or inactive")
     db_claim = Claim(
         item_id=item_id,
+        lister_id = db_item.lister_id,
         claimer_id=current_user["id"],  
-        message=claim.message,
-        status="pending"  
+        pickup_details = claim.pickup_details,
+        claim_status = claim.claim_status
     )
     db.add(db_claim)
+
+    db_item.is_claimed = True
+    db_item.is_active = False
+    db_item.claimer_id = current_user["id"]
+    db_listing = db.query(Listing).filter(Listing.item_id == item_id).first()
+    if db_listing:
+        db_listing.is_active = False
     db.commit()
     db.refresh(db_claim)
 
-    return db_claim
+    return {
+    "id": listing.id,
+    "title": listing.title,
+    "description": listing.description,
+    "pickup_details": item.pickup_details,
+    "is_active": listing.is_active,
+    "claimed_by": listing.claimed_by,
+    "lister_id": listing.lister_id,
+    "item_id": listing.item_id,  # Include item_id
+}
 
 # Admin Functionalities
 #Function to allow admin users to delete inappropriate listings

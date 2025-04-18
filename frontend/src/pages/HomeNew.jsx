@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../css/HomeNew.css';
 
+
 const NestExchange = () => {
     const [listings, setListings] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -57,11 +58,11 @@ const NestExchange = () => {
     const handleClaim = async (listingId) => {
         try {
             const response = await axios.post(
-                `${backendBaseUrl}/listings/${listingId}/claim`,
-                {},
+                `${backendBaseUrl}/items/${listingId}/claims/`, // Correct endpoint
+                {}, // No additional data needed
                 { withCredentials: true }
             );
-            alert("You have successfully claimed this item!");
+            alert(response.data.message || "You have successfully claimed this item!");
             closeListingDetails();
         } catch (err) {
             console.error(err);
@@ -150,9 +151,10 @@ const NestExchange = () => {
                             {listings.length > 0 ? (
                                 listings.map((listing) => (
                                     <div
-                                        key={listing.id}
-                                        className="listingCard"
-                                        onClick={() => setSelectedListing(listing)}
+                                    onClick={() => {
+                                        console.log("Selected Listing:", listing); // Add this line
+                                        setSelectedListing(listing);
+                                    }}
                                     >
                                         <img
                                             src={listing.photos && listing.photos[0] ? `${backendBaseUrl}${listing.photos[0]}` : "/static/images/placeholder.jpg"}
@@ -183,15 +185,11 @@ const NestExchange = () => {
                         <div className="listingInfo">
                             <h2>{selectedListing.title}</h2>
                             <p><strong>Description:</strong> {selectedListing.description}</p>
-                            <p><strong>Pick up information:</strong> {selectedListing.pickup_details}</p>
+                            <p><strong>Pick up information:</strong> {selectedListing.pickup_details || "Not provided"}</p>
                         </div>
                         <div className="listerInfo">
                             <h3>Lister</h3>
-                            <img
-                                src={selectedListing.listerPhoto || "/static/images/user-placeholder.jpg"}
-                                alt="Lister"
-                                className="listerPhoto"
-                            />
+                            <p className="listerName">{selectedListing.listerName || "Anonymous"}</p>
                         </div>
                         <button className="claimButton" onClick={() => handleClaim(selectedListing.id)}>
                             Claim

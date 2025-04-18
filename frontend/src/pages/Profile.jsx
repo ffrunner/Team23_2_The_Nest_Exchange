@@ -187,60 +187,78 @@ const fetchItems = async () => {
                 </section>
             </main>
             {selectedListing && (
-        <div className="modal-backdrop" onClick={() => setSelectedListing(null)}>
-          <div className="listing-modal" onClick={(e) => e.stopPropagation()}>
-            <h3>Edit Listing</h3>
-              <label>Title:</label>
+    <div className="modal-backdrop" onClick={() => setSelectedListing(null)}>
+    <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+        <h3>Edit Listing</h3>
+        <form>
+            <label htmlFor="title">Title:</label>
             <input
-              type = "text"
-              value={selectedListing.title}
-              onChange={(e) =>
-                setSelectedListing({ ...selectedListing, title: e.target.value })
-              }
+                id="title"
+                type="text"
+                value={selectedListing.title}
+                onChange={(e) =>
+                    setSelectedListing({ ...selectedListing, title: e.target.value })
+                }
             />
-              <label>Description:</label>
+
+            <label htmlFor="description">Description:</label>
             <textarea
-              value={selectedListing.description || ""}
-              onChange={(e) =>
-                setSelectedListing({ ...selectedListing, description: e.target.value })
-              }
+                id="description"
+                value={selectedListing.description || ""}
+                onChange={(e) =>
+                    setSelectedListing({ ...selectedListing, description: e.target.value })
+                }
             />
-              <label>Pickup Details:</label>
-              <input
-                  type= "text"
-                  value={selectedListing.pickup_details}
-                  onChange={(e) =>
-                      setSelectedListing({...selectedListing, pickup_details: e.target.value})
+
+            <label htmlFor="pickup-details">Pickup Details:</label>
+            <input
+                id="pickup-details"
+                type="text"
+                value={selectedListing.pickup_details}
+                onChange={(e) =>
+                    setSelectedListing({ ...selectedListing, pickup_details: e.target.value })
                 }
-             />
-              <label>Category:</label>
-              <select 
-                  value={selectedListing.category_id}
-                  onChange={(e) =>
-                      setSelectedListing({...selectedListing, category_id: e.target.value})
-                  }
-                  >
-                  <option value="">Select a category</option>
-                    {categories.map((cat) => (
-                      <option key={cat.id} value={cat.id}>
-                        {cat.title}
-                      </option>
-                    ))}
-                  </select>
-            <button onClick={() => handleEdit()}>Submit Changes</button>
-            <button onClick={() => {
-            if (window.confirm(`Are you sure you want to delete "${selectedListing.title}"?`)) {
-                  handleDelete(); 
+            />
+
+            <label htmlFor="category">Category:</label>
+            <select
+                id="category"
+                value={selectedListing.category_id}
+                onChange={(e) =>
+                    setSelectedListing({ ...selectedListing, category_id: e.target.value })
                 }
-              }}
-              style={{ color: 'red' }}
             >
-              Delete
-            </button>
-            <button onClick={() => setSelectedListing(null)}>Close</button>
-          </div>
-        </div>
-      )}
+                <option value="">Select a category</option>
+                {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                        {cat.title}
+                    </option>
+                ))}
+            </select>
+
+            <div className="button-group">
+                <button type="button" className="save-button" onClick={handleEdit}>
+                    Submit Changes
+                </button>
+                <button
+                    type="button"
+                    className="delete-button"
+                    onClick={() => {
+                        if (window.confirm(`Are you sure you want to delete "${selectedListing.title}"?`)) {
+                            handleDelete();
+                        }
+                    }}
+                >
+                    Delete
+                </button>
+                <button type="button" className="close-button" onClick={() => setSelectedListing(null)}>
+                    Close
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+)}
         </div>
     );
 };
