@@ -369,3 +369,63 @@ footer a:hover {
 .list-item-container button[type="button"]:hover {
     background-color: #c0392b;
 }
+
+.reportContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    width: 90%;
+    max-width: 400px;
+}
+
+.reportContainer h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.reportContainer textarea {
+    width: 100%;
+    height: 100px;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.reportButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.reportButtons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.reportButtons button:first-child {
+    background-color: #dc3545;
+    color: white;
+}
+
+.reportButtons button:first-child:hover {
+    background-color: #c82333;
+}
+
+.reportButtons button:last-child {
+    background-color: #6c757d;
+    color: white;
+}
+
+.reportButtons button:last-child:hover {
+    background-color: #5a6268;
+}
