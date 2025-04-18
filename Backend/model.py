@@ -22,9 +22,9 @@ class User(Base):
     listed_claims = relationship("Claim", foreign_keys="[Claim.lister_id]", back_populates="lister")
     claimed_claims = relationship("Claim", foreign_keys="[Claim.claimer_id]", back_populates="claimer")
     activity_logs = relationship("ActivityLog", foreign_keys="[ActivityLog.user_id]", back_populates="user")
+
 class Listing(Base):
     __tablename__ = "listings"
-    
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(255), nullable=False)
@@ -82,7 +82,7 @@ class Item(Base):
     claimer = relationship("User", foreign_keys=[claimer_id], back_populates="claimed_items")
     category = relationship("Category", back_populates="items")  
     photos = relationship("ListingPhoto", back_populates="item") 
-
+    claims = relationship("Claim", back_populates="item")
 class Category(Base):
     __tablename__ = "categories"
     
@@ -103,7 +103,7 @@ class Claim(Base):
     claimer_id = Column(Integer, ForeignKey('users.id'), nullable=False)  
     pickup_details = Column(Text, nullable=True)  
     claim_status = Column(String(50), nullable=False)
-
+    item_id = Column(Integer, ForeignKey('items.id'), nullable = False)
     # Check constraint for claim_status
     __table_args__ = (
         CheckConstraint(
@@ -113,7 +113,7 @@ class Claim(Base):
     )
     lister = relationship("User", foreign_keys=[lister_id], back_populates="listed_claims")
     claimer = relationship("User", foreign_keys=[claimer_id], back_populates="claimed_claims")
-
+    item = relationship("Item", foreign_keys=[item_id],back_populates="claims")
 
 class ActivityLog(Base):
     __tablename__ = "activity_logs"
@@ -123,14 +123,18 @@ class ActivityLog(Base):
     created_at = Column(TIMESTAMP, default=datetime.now(timezone.utc))
 
     user = relationship("User", back_populates="activity_logs")
+
 class Report(Base):
     __tablename__ = "reports"
     
     id = Column(Integer, primary_key=True, index=True)
-    listing_id = Column(Integer, nullable=False)
+    #listing_id = Column(Integer, ForeignKey("listings.id"), nullable=False)
     reason = Column(Text, nullable=False)
-    reported_by = Column(Integer, nullable=False)
-    
+    #reported_by = Column(Integer, ForeignKey("users.id"),nullable=False)
+    resolved = Column(Boolean, default=False)
+
+    #listing = relationship("Listing", back_populates="reports")
+    #reporter = relationship("User", back_populates="reports")
 
 class SupportMessage(Base):
     __tablename__ = "support_messages"
