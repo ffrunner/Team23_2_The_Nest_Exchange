@@ -1,7 +1,6 @@
 from config import Base
 from sqlalchemy import Column, Integer, Text, VARCHAR, TIMESTAMP, Boolean, ForeignKey, String, UniqueConstraint, CheckConstraint, Enum 
 from sqlalchemy.orm import relationship 
-import enum 
 from datetime import datetime, timezone
 
 #Set up SQLAlchemy models based on postgresql database. These models are the ones used to perform queries. 
@@ -22,7 +21,7 @@ class User(Base):
     claimed_items = relationship("Item", foreign_keys="[Item.claimer_id]", back_populates="claimer")
     listed_claims = relationship("Claim", foreign_keys="[Claim.lister_id]", back_populates="lister")
     claimed_claims = relationship("Claim", foreign_keys="[Claim.claimer_id]", back_populates="claimer")
-    
+    activity_logs = relationship("ActivityLog", foreign_keys="[ActivityLog.user_id]", back_populates="user")
 class Listing(Base):
     __tablename__ = "listings"
     
@@ -115,11 +114,15 @@ class Claim(Base):
     lister = relationship("User", foreign_keys=[lister_id], back_populates="listed_claims")
     claimer = relationship("User", foreign_keys=[claimer_id], back_populates="claimed_claims")
 
-class ReportStatus(enum.Enum):
-    pending = "pending"
-    valid = "valid"
-    invalid = "invalid"
 
+class ActivityLog(Base):
+    __tablename__ = "activity_logs"
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('users.id'),nullable=False)
+    action = Column(Text, nullable=False)
+    created_at = Column(TIMESTAMP, default=datetime.now(timezone.utc))
+
+    user = relationship("User", back_populates="activity_logs")
 class Report(Base):
     __tablename__ = "reports"
     
@@ -127,7 +130,7 @@ class Report(Base):
     listing_id = Column(Integer, nullable=False)
     reason = Column(Text, nullable=False)
     reported_by = Column(Integer, nullable=False)
-    status = Column(Enum(ReportStatus), default=ReportStatus.pending)
+    
 
 class SupportMessage(Base):
     __tablename__ = "support_messages"

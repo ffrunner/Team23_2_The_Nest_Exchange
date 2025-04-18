@@ -1,6 +1,3 @@
-.banner {
-    display: none !important;
-}
 
 body {
     margin: 0;
@@ -15,7 +12,6 @@ body {
 .profile-container {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
     height: 100vh; /* Full viewport height */
     width: 100vw; /* Full viewport width */
     overflow: hidden; /* Prevent scrolling */
@@ -25,7 +21,6 @@ body {
     gap: 0;
     margin: 0 auto;
     padding: 0;
-    box-sizing: border-box;
 
 }
 
@@ -33,14 +28,13 @@ body {
 /* Main content styling */
 .profile-main {
     flex: 1;
-    padding: 20px;
+    padding: 0;
     overflow-y: auto; /* Allow scrolling within the main content if needed */
     background-color: white;
     display: block;
     width: 100%;
     max-width: 100%;
     margin: 0;
-    box-sizing: border-box;
     
 }
 
@@ -57,14 +51,6 @@ body {
     margin-bottom: 20px;
 }
 
-.profile-header .profile-image {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    margin-right: 20px;
-    object-fit: cover;
-    border: 2px solid #007bff; /* Optional border */
-}
 
 .profile-header h3 {
     margin: 0;
@@ -131,3 +117,27 @@ body {
  .claimed-container p, .listings-container p {
     font-size: 16px;
 }
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.listing-modal {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+

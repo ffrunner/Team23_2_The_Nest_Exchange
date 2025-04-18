@@ -11,6 +11,7 @@ const Profile = () => {
     const [listings, setListings] = useState([]);
     const [loadingListings, setLoadingListings] = useState(false);
     const [claimedItems, setClaimedItems] = useState([]);
+    const [selectedListing, setSelectedListing] = useState(null);
     
     const handleSectionChange = (section) => {
         setSelectedSection(section);
@@ -69,7 +70,28 @@ const fetchItems = async () => {
         setLoadingListings(false);
     }
 };
-
+ const handleEdit = async() => {
+     setLoadingListings(true);
+     try {
+         const response = await axios.put(
+             `${import.meta.env.VITE_API_URL}/items/${selectedListing.id}`,
+             selectedListing,
+            { withCredentials: true }
+        );
+         setListings((prevListings) =>
+            prevListings.map((item) =>
+                item.id === selectedListing.id ? response.data : item
+            )
+        );
+        alert("Listing has been edited successfully!");
+        setSelectedListing(null); 
+     } catch (error){
+         console.error("Error editing listing:", error);
+         alert("There was an error editing the listing");
+     } finally {
+         setLoadingListings(false);
+     }
+ };
 
 
     return (
@@ -86,13 +108,7 @@ const fetchItems = async () => {
                     {userName.first_name} {userName.last_name}
                 </p>
             )}
-                <div className="profile-header">
-                    <img
-                        src="/path-to-profile-image.jpg" // Replace with the actual image path
-                        alt="Profile"
-                        className="profile-image"
-                    />
-                </div>
+              
 
                 {/* Activity Section */}
                 <section className="activity-section">
@@ -136,7 +152,7 @@ const fetchItems = async () => {
                             ) : (
                             <ul> {listings.length > 0 ? (
                                 listings.map((item) => (
-                                    <li key = {item.id}>
+                                    <li key = {item.id} onClick={() => setSelectedListing(item)}>
                                         {item.name} - {item.description}
                                     </li>
                                     ))
@@ -150,6 +166,30 @@ const fetchItems = async () => {
                 
                 </section>
             </main>
+            {selectedListing && (
+        <div className="modal-backdrop" onClick={() => setSelectedListing(null)}>
+          <div className="listing-modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Edit Listing</h3>
+            <input
+              value={selectedListing.name}
+              onChange={(e) =>
+                setSelectedListing({ ...selectedListing, name: e.target.value })
+              }
+            />
+            <textarea
+              value={selectedListing.description}
+              onChange={(e) =>
+                setSelectedListing({ ...selectedListing, description: e.target.value })
+              }
+            />
+            <button onClick={() => handleEdit()}>Edit</button>
+            <button onClick={() => handleDelete(selectedListing.id)} style={{ color: "red" }}>
+              Delete
+            </button>
+            <button onClick={() => setSelectedListing(null)}>Close</button>
+          </div>
+        </div>
+      )}
         </div>
     );
 };

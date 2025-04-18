@@ -10,19 +10,10 @@ body {
 /* Admin Page container */
 .admin-page {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  height: 100vh; /* Full viewport height */
-  width: 100vw; /* Full viewport width */
-  overflow: hidden; /* Prevent scrolling */
-  position: relative; /* Ensure it is positioned correctly */
-  background-color: white;
-  align-items: stretch;
-  gap: 0;
-  margin: auto;
-  padding: 0;
-  box-sizing: border-box;
+  height: 100vh;
+  font-family: Arial, sans-serif;
 }
+
 
 /* Main Content */
 .admin-page .main-content {

@@ -5,8 +5,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url('visit-banner.jpg') no-repeat center center fixed;
-    background-size: container; 
+    background-image: url("/visit-banner.jpg") no-repeat center center fixed;
+    background-size: cover; 
     background-color: white;
   }
 
