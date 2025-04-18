@@ -99,18 +99,50 @@ body {
   background: #eaeaea;
 }
 
-.reports-section,
-.report-detail {
-  margin-top: 24px;
+.report-box {
+  margin-top: 20px;
   padding: 16px;
   border: 1px solid #ddd;
-  background-color: #fafafa;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+}
+
+.report-list {
+  list-style: none;
+  padding: 0;
+}
+
+.report-item {
+  padding: 10px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.report-item:hover {
+  background-color: #eaeaea;
+}
+
+.report-detail-box {
+  margin-top: 20px;
+  padding: 16px;
+  background-color: #fffbe6;
+  border: 1px solid #ffecb3;
   border-radius: 6px;
 }
 
 .resolve-buttons button {
   margin-right: 10px;
-  padding: 6px 12px;
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
 }
+
+.resolve-buttons button:hover {
+  background-color: #0056b3;
+}
+
 
