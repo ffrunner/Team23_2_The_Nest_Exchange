@@ -50,8 +50,6 @@ class ItemUpdate(BaseModel):
     category_id: Optional[int] = None
 
 class ClaimCreate(BaseModel):
-    lister_id: int
-    claimer_id: int
     pickup_details: Optional[str] = None
     claim_status: str
 
