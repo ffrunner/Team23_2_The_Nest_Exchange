@@ -415,11 +415,19 @@ def create_claim(
         raise HTTPException(status_code=400, detail="Item is already claimed or inactive")
     db_claim = Claim(
         item_id=item_id,
+        lister_id = db_item.lister_id,
         claimer_id=current_user["id"],  
-        message=claim.message,
-        status="pending"  
+        pickup_details = claim.pickup_details,
+        claim_status = claim.claim_status
     )
     db.add(db_claim)
+
+    db_item.is_claimed = True
+    db_item.is_active = False
+    db_item.claimer_id = current_user["id"]
+    db_listing = db.query(Listing).filter(Listing.item_id == item_id).first()
+    if db_listing:
+        db_listing.is_active = False
     db.commit()
     db.refresh(db_claim)
 
