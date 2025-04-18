@@ -1,0 +1,120 @@
+html, body {
+    margin: 0;
+    
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Hero Section */
+.hero {
+    background-color: #eaeaea;
+    text-align: center;
+    padding: 50px 20px;
+    height: 50vh;
+    display: flex;
+    flex-direction: column; /* Keep content stacked vertically */
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 10px;
+}
+
+.hero h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.hero p {
+    font-size: 1.5em;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+.hero-login-signup {
+    margin-top: 20px; /* Add spacing above the login/signup buttons */
+    display: flex; /* Use flexbox to align buttons side by side */
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 15px; /* Add spacing between the buttons */
+}
+
+.hero-login-signup button {
+    background-color: #f9a826; /* Blue background for login/signup buttons */
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.hero-login-signup button:hover {
+    background-color: #e08d00; /* Darker blue on hover */
+}
+
+.hero-login-signup button a {
+    text-decoration: none;
+    color: white;
+}
+
+.hero button:hover {
+    background-color: #e08d00;
+}
+
+.hero button a {
+    text-decoration: none;
+    color: white;
+}
+
+/* About Section */
+.about {
+    background-color: #ffffff;
+    padding: 30px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.about p {
+    font-size: 1.2em;
+    color: #555;
+}
+
+/* How It Works Section */
+.how-it-works {
+    background-color: #ffffff;
+    padding: 30px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    text-align: center; /* Center the text inside the section */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content horizontally */
+    font-family: 'Montserrat', sans-serif;
+}
+
+.how-it-works ol {
+    padding-left: 0; /* Remove default padding */
+    list-style-position: inside; /* Ensure list numbers are inside the container */
+    text-align: center; /* Center the text */
+}
+
+.how-it-works li {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    color: #555;
+}
