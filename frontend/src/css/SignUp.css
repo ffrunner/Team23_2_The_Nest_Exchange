@@ -1,110 +1,110 @@
 .sign-up-body {
-    margin: 0;
-    padding: 0;
-    height: 100vh; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: url('visit-banner.jpg') no-repeat center center fixed;
-    background-size: container; 
-    background-color: white;
-  }
-
-  .content {
-    margin-top: 80px; 
-    height: calc(100vh - 80px); 
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-  }
-  
-.sign-up-container {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #D9D9D9;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
-  }
-  
-  .sign-up-container h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .sign-up-container input,
-  .sign-up-container select {
-    width: 75%;
-    padding: 12px;
-    color: #000;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1em;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin: 10px 0;
-    background-color: #f9f9f9;
-    border-radius: 4px;
-    text-align: center;
-  }
-  
-  .sign-up-container input:focus, 
-  .sign-up-container select:focus {
-    border-color: #ffc629; /* Change border color on focus */
-    outline: none; /* Remove default outline */
-    box-shadow: 0 0 5px rgba(255, 198, 41, 0.5); /* Optional, for a glow effect */
+  margin: 0;
+  padding: 0;
+  height: 100vh; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("/visit-banner.jpg") no-repeat center center fixed;
+  background-size: cover; 
+  background-color: white;
 }
 
-  .sign-up-container button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.content {
+  margin-top: 80px; 
+  height: calc(100vh - 80px); 
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
 
-  }
-  
-  .sign-up-container button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+.sign-up-container {
+max-width: 400px;
+margin: 50px auto;
+padding: 20px;
+border: 1px solid #ccc;
+border-radius: 8px;
+background-color: #D9D9D9;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+font-family: Arial, sans-serif;
+}
+
+.sign-up-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.sign-up-container input,
+.sign-up-container select {
+  width: 75%;
+  padding: 12px;
+  color: #000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1em;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin: 10px 0;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.sign-up-container input:focus, 
+.sign-up-container select:focus {
+  border-color: #ffc629; /* Change border color on focus */
+  outline: none; /* Remove default outline */
+  box-shadow: 0 0 5px rgba(255, 198, 41, 0.5); /* Optional, for a glow effect */
+}
+
+.sign-up-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+}
+
+.sign-up-container button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .sign-up-container button:hover:not(:disabled) {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 /* Error message styling */
 .sign-up-container p {
-    color: red;
-    font-size: 14px;
-    text-align: center;
+  color: red;
+  font-size: 14px;
+  text-align: center;
 }
 
 /* Placeholder option styling */
 .sign-up-container select option[disabled] {
-    color: #aaa;
+  color: #aaa;
 }
 
 /* Add responsive design */
 @media (max-width: 500px) {
-    .sign-up-container {
-        padding: 15px;
-        margin: 20px;
-    }
+  .sign-up-container {
+      padding: 15px;
+      margin: 20px;
+  }
 
-    .sign-up-container h2 {
-        font-size: 18px;
-    }
+  .sign-up-container h2 {
+      font-size: 18px;
+  }
 
-    .sign-up-container input,
-    .sign-up-container select,
-    .sign-up-container button {
-        font-size: 14px;
-    }
+  .sign-up-container input,
+  .sign-up-container select,
+  .sign-up-container button {
+      font-size: 14px;
+  }
 }

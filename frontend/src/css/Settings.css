@@ -1,0 +1,239 @@
+.banner {
+    display: none !important;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Monsterrat', sans-serif;
+    background-color: #f4f4f4; /* Neutral background color */
+    overflow-x: hidden; /* Prevent scrolling */
+}
+
+/* Settings container */
+.settings-container {
+    display: flex;
+    height: 90vh; 
+    width: 95vw; 
+    overflow: hidden;
+    position: relative; /* Ensure it is positioned correctly */
+    background-color: white;
+}
+
+/* Sidebar styling */
+.sidebar {
+    width: 190px;
+    background-color: #333; /* Dark background for sidebar */
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    text-align: left;
+    transition: color 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+    color: #007bff; /* Highlight color on hover */
+}
+
+/* Main content styling */
+.account-main {
+    flex: 1;
+    padding: 20px;
+    overflow: scroll; /* Allow scrolling within the main content if needed */
+    background-color: white;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.account-main h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: left;
+}
+
+.profile-main {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto; /* Allow scrolling within the main content if needed */
+    background-color: white;
+}
+
+.profile-main h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+/* Profile header */
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-header .profile-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 20px;
+    object-fit: cover;
+    border: 2px solid #007bff; /* Optional border */
+}
+
+.profile-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+/* Edit Profile */
+.edit-profile-container {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: left; /* Align text to the left */
+}
+
+.edit-profile h3{
+    margin-bottom: 10px;
+    color: #333;
+    text-align: left; /* Align text to the left */
+}
+
+.top-fields {
+    display: flex;
+    gap: 20px; /* Add space between the fields */
+}
+
+.top-fields .field {
+    flex: 1; /* Make the fields take equal width */
+}
+
+.top-fields label {
+    display: block;
+    
+}
+
+.top-fields input {
+    width: 100%; 
+    padding: 7px;
+    box-sizing: border-box;
+}
+
+.bottom-fields {
+    display: flex;
+    gap: 20px; /* Add space between the fields */
+}
+
+.bottom-fields .field {
+    flex: 1; /* Make the fields take equal width */
+}
+
+.bottom-fields label {
+    display: block;
+    margin-bottom: 5px; /* Add space between the label and input */
+}
+
+.bottom-fields input {
+    width: 100%; /* Make the input take the full width of its container */
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.edit-profile-container button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Change Password*/
+.change-password-container {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: left; /* Align text to the left */
+}
+
+.change-password h3{
+    margin-bottom: 10px;
+    color: #333;
+    text-align: left; /* Align text to the left */
+}
+
+.change-password-container button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Account Removal aka Profile Deletion */
+.delete-profile-container {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: left; /* Align text to the left */
+}
+
+.delete-profile h3{
+    margin-bottom: 10px;
+    color: #333;
+    text-align: left; /* Align text to the left */
+}
+
+.delete-button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-right: 16px; /* Space between buttons */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.cancel-button {
+    padding: 10px;
+    background-color: #ccc; /* Grey color for cancel button */
+    color: black;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}

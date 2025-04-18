@@ -82,7 +82,7 @@ class Item(Base):
     claimer = relationship("User", foreign_keys=[claimer_id], back_populates="claimed_items")
     category = relationship("Category", back_populates="items")  
     photos = relationship("ListingPhoto", back_populates="item") 
-
+    claims = relationship("Claim", back_populates="item")
 class Category(Base):
     __tablename__ = "categories"
     
@@ -103,7 +103,7 @@ class Claim(Base):
     claimer_id = Column(Integer, ForeignKey('users.id'), nullable=False)  
     pickup_details = Column(Text, nullable=True)  
     claim_status = Column(String(50), nullable=False)
-
+    item_id = Column(Integer, ForeignKey('items.id'), nullable = False)
     # Check constraint for claim_status
     __table_args__ = (
         CheckConstraint(
@@ -113,7 +113,7 @@ class Claim(Base):
     )
     lister = relationship("User", foreign_keys=[lister_id], back_populates="listed_claims")
     claimer = relationship("User", foreign_keys=[claimer_id], back_populates="claimed_claims")
-
+    item = relationship("Item", foreign_keys=[item_id],back_populates="claims")
 
 class ActivityLog(Base):
     __tablename__ = "activity_logs"

@@ -74,7 +74,7 @@ const NavBar = () => {
                 <div className="menuOverlay">
                     <nav>
                         <ul>
-                            <li><Link to="/">Home</Link></li>
+                            <li><Link to="/home">Home</Link></li>
                             <li><Link to="/profile">My Profile</Link></li>
                             <li><Link to="/settings">Settings</Link></li>
                             <li><Link to="/admin">Admin</Link></li>

@@ -39,6 +39,7 @@ class ItemCreate(BaseModel):
 class ItemUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
+    pickup_details: str
     category_id: Optional[int] = None
 
 class ClaimCreate(BaseModel):

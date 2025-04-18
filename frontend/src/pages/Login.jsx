@@ -35,7 +35,7 @@ const Login = () => {
       if (response.status === 200) {
         // Redirect to the home page on successful login
         console.log('Login successful, redirecting...');
-        navigate('/'); 
+        navigate('/home'); 
       } else {
         setError(response.data.detail || 'Invalid credentials');
       }
