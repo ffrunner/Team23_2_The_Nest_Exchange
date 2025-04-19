@@ -9,6 +9,8 @@ from datetime import datetime, timezone
 from config import get_db
 from model import User, Category, Item, Listing, Claim, ListingPhoto, Report, SupportMessage, ActivityLog
 
+#AI tool (Chatgpt) used for debugging purposes
+
 app = FastAPI(title="Faker Data Service")
 fake = Faker()
 
