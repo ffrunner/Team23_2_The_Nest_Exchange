@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Query, Request, Response
-from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ClaimCreate, ItemResponse, CreateActivityLog, UpdateUser
+from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ReportReason, ItemResponse, CreateActivityLog, UpdateUser, ResolveReport, ResolveAction
 from config import get_db 
 from model import User, Item, ListingPhoto, Claim, Listing, Report, Category, SupportMessage, ActivityLog
 from sqlalchemy.orm import Session 
@@ -357,6 +357,35 @@ async def get_listing(id: int, db: Session = Depends(get_db)):
     
     return listing.to_dict()
 
+#Function to create report
+@app.post("/listings/{listing_id}/report")
+def report_listing(listing_id: int,report:ReportReason, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
+    if not isinstance(current_user, dict) or "id" not in current_user:
+        raise HTTPException(status_code=401, detail="You do not have permission to report listings")
+    listing = db.query(Listing).filter(Listing.id == listing_id).first()
+    if not listing:
+        raise HTTPException(status_code=404, detail="Listing not found")
+    new_report = Report(
+        listing_id=listing_id,
+        reason = report.reason,
+        reported_by = current_user["id"],
+        resolved = False,
+
+    )
+    db.add(new_report)
+    db.commit()
+    db.refresh(new_report)
+    
+     #For activity log
+    add_activity(
+        CreateActivityLog(
+            user_id=current_user["id"],
+            action= "reported a listing"
+        ),
+        db
+    )
+
+    return new_report
 # Claimer Functionalities
 
 #Function to get all the listings a user has claimed
@@ -432,6 +461,15 @@ def create_claim(
     db.commit()
     db.refresh(db_claim)
 
+     #For activity log
+    add_activity(
+        CreateActivityLog(
+            user_id=current_user["id"],
+            action= "claimed a listing"
+        ),
+        db
+    )
+
     return db_claim
 
 # Admin Functionalities
@@ -461,17 +499,35 @@ async def view_activity_log(db: Session = Depends(get_db), current_user: dict = 
     activities = db.query(ActivityLog).order_by(ActivityLog.created_at.desc()).all()
     return activities 
 
-#Function to have admin report
-@app.put("/admin/reports/{report_id}", status_code=200)
-async def respond_report(report_id: int, action: str, db: Session = Depends(get_db), current_user: dict =Depends(admin_required)):
+#Function to let admin users take care of reports
+@app.post("/admin/reports/resolve")
+async def resolve_report(resolve:ResolveReport, db: Session = Depends(get_db), current_user: dict =Depends(admin_required)):
     print(f"Admin: {current_user['email']}")
-    db_report = db.query(Report).filter(Report.id == report_id).first()
+    db_report = db.query(Report).filter(Report.id == resolve.report_id).first()
     if not db_report:
         raise HTTPException(status_code=404, detail="Report not found")
-    db_report.status = action
+    if db_report.resolved: 
+        raise HTTPException(status_code=400, detail="Report has already been resolved")
+    
+    listing = db.query(Listing).filter(Listing.id == db_report.listing_id).first()
+    
+    if resolve.action == ResolveAction.delete_listing:
+        if not listing: 
+            raise HTTPException(status_code=404, detail="Listing has already been deleted")
+        db.delete(listing)
+        db_report.resolved = True
+    
+    if resolve.action == ResolveAction.reject:
+        db_report.resolved = True
+
     db.commit()
-    db.refresh(db_report)
     return {"msg": "Report status updated", "report": db_report.__dict__}
+#Function to give admin users all the reports
+@app.get("/admin/reports")
+async def get_reports(db:Session = Depends(get_db), current_user: dict = Depends(admin_required)):
+    print(f"Admin:{current_user['email']}")
+    reports = db.query(Report).all()
+    return {"reports": [report.__dict__ for report in reports]}
 
 #Function to give admin users usage reports
 @app.get("/admin/usage", status_code=200)
@@ -529,4 +585,3 @@ async def respond_support_message(message_id: int, response_text: str, db: Sessi
     db.commit()
     db.refresh(db_message)
     return db_message
-
