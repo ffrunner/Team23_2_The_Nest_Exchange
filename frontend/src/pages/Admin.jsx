@@ -151,7 +151,7 @@ const Admin = () => {
                       {report.listing_id} —{" "}
                       <span
                         style={{
-                          color: report.resolved ? "green" : "red",
+                          color: report.resolved ? "blue" : "red",
                           fontWeight: "bold",
                         }}
                       >
