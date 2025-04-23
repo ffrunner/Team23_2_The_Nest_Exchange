@@ -14,6 +14,7 @@ const Admin = () => {
   const [showReports, setShowReports] = useState(false);
   const [selectedReport, setSelectedReport] = useState(null);
 
+  //Function to get counts of users, listings, etc
   useEffect(() => {
     const fetchUsageReports = async () => {
       try {
@@ -27,6 +28,7 @@ const Admin = () => {
       }
     };
 
+    //Function to fill activity log 
     const fetchActivityLog = async () => {
       try {
         const response = await axios.get(
@@ -43,6 +45,7 @@ const Admin = () => {
     fetchActivityLog();
   }, []);
 
+  //Function to get all reports when report box is clicked
   const handleReportsClick = async () => {
     try {
       const response = await axios.get(
@@ -57,6 +60,7 @@ const Admin = () => {
     }
   };
 
+  //Function to call backend to resolve reports
   const resolveReport = async (action) => {
     try {
       await axios.post(
@@ -168,10 +172,10 @@ const Admin = () => {
                 <strong>Listing ID:</strong> {selectedReport.listing_id}
               </p>
               <p>
-                <strong>User ID:</strong> {selectedReport.user_id}
+                <strong>User who made the report:</strong> {selectedReport.reported_by}
               </p>
               <p>
-                <strong>Reason:</strong> {selectedReport.reason}
+                <strong>Reason for the report:</strong> {selectedReport.reason}
               </p>
               <p>
                 <strong>Resolved:</strong>{" "}
