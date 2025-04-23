@@ -51,7 +51,7 @@ const Admin = () => {
       );
       setReports(response.data.reports);
       setShowReports(true);
-      setSelectedReport(null); // Reset selected
+      setSelectedReport(null);
     } catch (error) {
       console.error("Error fetching reports:", error);
     }
@@ -76,7 +76,7 @@ const Admin = () => {
       );
       setSelectedReport((prev) => ({ ...prev, resolved: true }));
     } catch (error) {
-      console.error("Error resolving report:", error);
+      console.error("There was an error resolving the report:", error);
       alert("Failed to resolve report");
     }
   };
@@ -130,12 +130,12 @@ const Admin = () => {
             )}
           </div>
 
-          {/* 🧾 All Reports */}
+          
           {showReports && (
             <div className="report-box">
               <h2>All Reports</h2>
               {reports.length === 0 ? (
-                <p>No reports found.</p>
+                <p> No reports were found</p>
               ) : (
                 <ul className="report-list">
                   {reports.map((report) => (
@@ -161,7 +161,7 @@ const Admin = () => {
             </div>
           )}
 
-          {/* 📄 Selected Report Details */}
+         
           {selectedReport && (
             <div className="report-detail-box">
               <h3>Report #{selectedReport.id} Details</h3>
