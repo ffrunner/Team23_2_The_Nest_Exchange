@@ -499,37 +499,41 @@ async def view_activity_log(db: Session = Depends(get_db), current_user: dict = 
     activities = db.query(ActivityLog).order_by(ActivityLog.created_at.desc()).all()
     return activities 
 
-#Function to let admin users take care of reports
+#Function to let admin users take care of/resolve reports
 @app.post("/admin/reports/resolve")
 async def resolve_report(resolve:ResolveReport, db: Session = Depends(get_db), current_user: dict =Depends(admin_required)):
     print(f"Admin: {current_user['email']}")
+    #Look for the report in database. If not there, error. If already resolved, will say so
     db_report = db.query(Report).filter(Report.id == resolve.report_id).first()
     if not db_report:
         raise HTTPException(status_code=404, detail="Report not found")
     if db_report.resolved: 
         raise HTTPException(status_code=400, detail="Report has already been resolved")
-    
+    #Make sure listing id matches up with the one in report 
     listing = db.query(Listing).filter(Listing.id == db_report.listing_id).first()
     
+    #If admin user selects delete listing, will check for listing in db and then delete if it's there. Report will be resolved
     if resolve.action == ResolveAction.delete_listing:
         if not listing: 
             raise HTTPException(status_code=404, detail="Listing has already been deleted")
         db.delete(listing)
         db_report.resolved = True
     
+    #If admin user selects reject report, the report will be resolved
     if resolve.action == ResolveAction.reject:
         db_report.resolved = True
 
     db.commit()
     return {"msg": "Report status updated", "report": db_report.__dict__}
-#Function to give admin users all the reports
+
+#Function to give admin users all the reports from database
 @app.get("/admin/reports")
 async def get_reports(db:Session = Depends(get_db), current_user: dict = Depends(admin_required)):
     print(f"Admin:{current_user['email']}")
     reports = db.query(Report).all()
     return {"reports": [report.__dict__ for report in reports]}
 
-#Function to give admin users usage reports
+#Function to give admin users usage reports/counts of everything
 @app.get("/admin/usage", status_code=200)
 async def view_usage_reports(db: Session = Depends(get_db), current_user: dict =Depends(admin_required)):
     print(f"Admin: {current_user['email']}")
@@ -585,3 +589,4 @@ async def respond_support_message(message_id: int, response_text: str, db: Sessi
     db.commit()
     db.refresh(db_message)
     return db_message
+
