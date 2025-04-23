@@ -110,7 +110,6 @@ const Admin = () => {
             >
               <h3>Total Reports</h3>
               <p>{usageReports.total_reports}</p>
-              <small>Click to view</small>
             </div>
           </div>
 
@@ -131,7 +130,7 @@ const Admin = () => {
           </div>
 
           
-          {showReports && (
+          {showReports && !selectedReport && (
             <div className="report-box">
               <h2>All Reports</h2>
               {reports.length === 0 ? (
