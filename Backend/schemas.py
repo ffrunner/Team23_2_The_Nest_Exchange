@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from typing import List, Optional 
+from enum import Enum 
 
 #Pydantic Models used for data management (requests and responses) 
 
@@ -51,7 +52,7 @@ class ItemUpdate(BaseModel):
 
 class ClaimCreate(BaseModel):
     pickup_details: Optional[str] = None
-    claim_status: str
+    claim_status: Optional[str] = "claimed"
 
 class ListingPhotoCreate(BaseModel):
     item_id: int
@@ -89,12 +90,27 @@ class CategoryResponse(BaseModel):
     class Config:
         orm_mode = True
 
+#Data to add to the activity log for admin users
 class CreateActivityLog(BaseModel):
     user_id: int
     action: str
 
     class Config:
         orm_mode = True
-        
+
+#Data to get from user when they report a listing
 class ReportReason(BaseModel):
     reason: str
+
+#Admin user will select which action to resolve report 
+class ResolveAction(str, Enum):
+    reject = "reject"
+    delete_listing = "delete_listing"
+
+#Data to get from admin user when resolving report
+class ResolveReport(BaseModel):
+    report_id :int
+    action: ResolveAction
+
+    class Config: 
+        orm_mode=True

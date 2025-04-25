@@ -1,3 +1,4 @@
+
 from config import Base
 from sqlalchemy import Column, Integer, Text, VARCHAR, TIMESTAMP, Boolean, ForeignKey, String, UniqueConstraint, CheckConstraint, Enum 
 from sqlalchemy.orm import relationship 

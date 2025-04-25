@@ -84,3 +84,63 @@ body {
   font-size: 1em;
   color: #666;
 }
+
+.card {
+  background: #f7f7f7;
+  padding: 16px;
+  margin: 12px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.02);
+  background: #eaeaea;
+}
+
+.report-box {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+}
+
+.report-list {
+  list-style: none;
+  padding: 0;
+}
+
+.report-item {
+  padding: 10px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.report-item:hover {
+  background-color: #eaeaea;
+}
+
+.report-detail-box {
+  margin-top: 20px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border: 1px solid #360cf0;
+  border-radius: 6px;
+}
+
+.resolve-buttons button {
+  margin-right: 10px;
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.resolve-buttons button:hover {
+  background-color: #0056b3;
+}
