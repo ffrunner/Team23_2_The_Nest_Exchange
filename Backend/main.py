@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Query, Request, Response
-from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ReportReason, ItemResponse, CreateActivityLog, ClaimCreate
+from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ReportReason, ItemResponse, CreateActivityLog, UpdateUser, ResolveReport, ResolveAction
 from config import get_db 
 from model import User, Item, ListingPhoto, Claim, Listing, Report, Category, SupportMessage, ActivityLog
 from sqlalchemy.orm import Session 
@@ -118,6 +118,22 @@ async def login(response: Response, user:LoginUser, db: Session = Depends(get_db
     else: 
         raise HTTPException(status_code=404, detail="User not found")
 
+#Function to change user info from settings page 
+@app.patch("/update/user")
+async def update_user(user:UpdateUser, db : Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
+    if not isinstance(current_user, dict) or "id" not in current_user:
+        raise HTTPException(status_code=401, detail="You do not have permission to update the user's account")
+    user_id = current_user["id"]
+    db_user = db.query(User).filter(User.id == user_id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    for key, value in user.dict(exclude_unset=True).items():
+        setattr(db_user, key, value)
+
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+    
 #Function to get first and last name on the profile page
 @app.get("/name")
 async def get_name(db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
@@ -160,11 +176,14 @@ async def delete_account(db: Session = Depends(get_db), current_user: dict = Dep
         raise HTTPException(status_code=401, detail="You do not have permission to delete the user's account")
     db_user = db.query(User).filter(User.id == current_user["id"]).first()
     if db_user:
-        db.query(User).filter(User.id == current_user["id"]).delete()
+        
         db.query(Claim).filter(Claim.claimer_id == current_user["id"]).delete()
         db.query(Listing).filter(Listing.lister_id == current_user["id"]).delete()
-        #db.query(ListingPhoto).filter(ListingPhoto.)
+        db.query(ListingPhoto).filter(ListingPhoto.item_id.in_(
+            db.query(Item.id).filter(Item.lister_id == current_user["id"])
+        )).delete()
         db.query(Item).filter(Item.lister_id == current_user["id"]).delete()
+        db.query(User).filter(User.id == current_user["id"]).delete()
         db.commit()
         response = JSONResponse(content= "Your account has been deleted")
         response.delete_cookie("session_id")
@@ -337,6 +356,7 @@ async def get_listing(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Listing not found")
     
     return listing.to_dict()
+
 #Function to create report
 @app.post("/listings/{listing_id}/report")
 def report_listing(listing_id: int,report:ReportReason, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
@@ -356,6 +376,15 @@ def report_listing(listing_id: int,report:ReportReason, db: Session = Depends(ge
     db.commit()
     db.refresh(new_report)
     
+     #For activity log
+    add_activity(
+        CreateActivityLog(
+            user_id=current_user["id"],
+            action= "reported a listing"
+        ),
+        db
+    )
+
     return new_report
 # Claimer Functionalities
 
@@ -390,10 +419,9 @@ def filter_items(category_id: int, db: Session = Depends(get_db), current_user: 
     return items
 
 #Function to claim a listing
-@app.post("/items/{item_id}/claims/")
+@app.post("/items/{listing_id}/claims/")
 def create_claim(
-    item_id: int,
-    claim: ClaimCreate,
+    listing_id: int,
     db: Session = Depends(get_db),
     current_user: dict = Depends(get_current_user)
 ):
@@ -402,10 +430,13 @@ def create_claim(
         raise HTTPException(status_code=401, detail="You do not have permission to claim")
 
     #Check to see if the selected item is in the database
-    db_item = db.query(Item).filter(Item.id == item_id).first()
-    if not db_item:
+    db_listing = db.query(Listing).filter(Listing.id == listing_id).first()
+    if not db_listing:
         raise HTTPException(status_code=404, detail="Item not found")
 
+    db_item = db_listing.item
+    if not db_item: 
+        raise HTTPException(status_code=404, detail="Item not found")
     #The item's lister (owner) can't claim their own item
     if db_item.lister_id == current_user["id"]:
         raise HTTPException(status_code=403, detail="You cannot claim your own item")
@@ -413,22 +444,31 @@ def create_claim(
     #Check to see if the item is claimable (active and not already claimed)
     if not db_item.is_active or db_item.is_claimed:
         raise HTTPException(status_code=400, detail="Item is already claimed or inactive")
+    pickup_details = db_item.pickup_details
     db_claim = Claim(
-        item_id=item_id,
+        item_id=db_item.id,
+        lister_id = db_item.lister_id,
         claimer_id=current_user["id"],  
-        message=claim.message,
-        status="pending"  
+        pickup_details = pickup_details,
+        claim_status = "claimed"
     )
     db.add(db_claim)
 
     db_item.is_claimed = True
     db_item.is_active = False
     db_item.claimer_id = current_user["id"]
-    db_listing = db.query(Listing).filter(Listing.item_id == item_id).first()
-    if db_listing:
-        db_listing.is_active = False
+    db_listing.is_active = False
     db.commit()
     db.refresh(db_claim)
+
+     #For activity log
+    add_activity(
+        CreateActivityLog(
+            user_id=current_user["id"],
+            action= "claimed a listing"
+        ),
+        db
+    )
 
     return db_claim
 
@@ -459,17 +499,35 @@ async def view_activity_log(db: Session = Depends(get_db), current_user: dict = 
     activities = db.query(ActivityLog).order_by(ActivityLog.created_at.desc()).all()
     return activities 
 
-#Function to have admin report
-@app.put("/admin/reports/{report_id}", status_code=200)
-async def respond_report(report_id: int, action: str, db: Session = Depends(get_db), current_user: dict =Depends(admin_required)):
+#Function to let admin users take care of reports
+@app.post("/admin/reports/resolve")
+async def resolve_report(resolve:ResolveReport, db: Session = Depends(get_db), current_user: dict =Depends(admin_required)):
     print(f"Admin: {current_user['email']}")
-    db_report = db.query(Report).filter(Report.id == report_id).first()
+    db_report = db.query(Report).filter(Report.id == resolve.report_id).first()
     if not db_report:
         raise HTTPException(status_code=404, detail="Report not found")
-    db_report.status = action
+    if db_report.resolved: 
+        raise HTTPException(status_code=400, detail="Report has already been resolved")
+    
+    listing = db.query(Listing).filter(Listing.id == db_report.listing_id).first()
+    
+    if resolve.action == ResolveAction.delete_listing:
+        if not listing: 
+            raise HTTPException(status_code=404, detail="Listing has already been deleted")
+        db.delete(listing)
+        db_report.resolved = True
+    
+    if resolve.action == ResolveAction.reject:
+        db_report.resolved = True
+
     db.commit()
-    db.refresh(db_report)
     return {"msg": "Report status updated", "report": db_report.__dict__}
+#Function to give admin users all the reports
+@app.get("/admin/reports")
+async def get_reports(db:Session = Depends(get_db), current_user: dict = Depends(admin_required)):
+    print(f"Admin:{current_user['email']}")
+    reports = db.query(Report).all()
+    return {"reports": [report.__dict__ for report in reports]}
 
 #Function to give admin users usage reports
 @app.get("/admin/usage", status_code=200)
