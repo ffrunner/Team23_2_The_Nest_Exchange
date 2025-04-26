@@ -589,3 +589,14 @@ async def respond_support_message(message_id: int, response_text: str, db: Sessi
     db.commit()
     db.refresh(db_message)
     return db_message
+
+#Function to allow admin users to create other admin users by promoting 'Student' users to 'Admin'
+@app.put("/admin/users/{user_id}/promote", dependencies=[Depends(admin_required)])
+def promote_user(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(404, "User not found")
+    user.role = "Admin"
+    db.commit()
+    db.refresh(user)
+    return {"msg": f"User {user_id} promoted to Admin"}
