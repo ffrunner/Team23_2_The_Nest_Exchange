@@ -8,7 +8,6 @@ const SignUp = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [userName, setUserName] = useState('');
-    const [role, setRole] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phone, setPhone] = useState('');
@@ -34,7 +33,7 @@ const SignUp = () => {
           email, 
           username: userName, 
           password_hash: password,           
-          role, 
+          role: 'student', // Force new user's role to 'student' 
           first_name: firstName, 
           last_name: lastName, 
           phone 
@@ -120,16 +119,6 @@ const SignUp = () => {
                     onChange={(e) => setPhone(e.target.value)}
                     required
                 />
-                <select
-                    id="role"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                    required
-                >
-                    <option value="" disabled>Select Role</option> {/* Placeholder Option */}
-                    <option value="student">Student</option>
-                    <option value="admin">Admin</option>
-                </select>
                 <button type="submit" disabled={isLoading}>
                     {isLoading ? 'Signing up...' : 'Sign up'}
                 </button>
