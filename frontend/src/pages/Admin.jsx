@@ -13,6 +13,7 @@ const Admin = () => {
   const [reports, setReports] = useState([]);
   const [showReports, setShowReports] = useState(false);
   const [selectedReport, setSelectedReport] = useState(null);
+  const [users, setUsers] = useState([]);
 
   //Function to get counts of users, listings, etc
   useEffect(() => {
@@ -41,8 +42,21 @@ const Admin = () => {
       }
     };
 
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/admin/users`,
+          { withCredentials: true }
+        );
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
     fetchUsageReports();
     fetchActivityLog();
+    fetchUsers();
   }, []);
 
   //Function to get all reports when report box is clicked
@@ -84,6 +98,36 @@ const Admin = () => {
       alert("Failed to resolve report");
     }
   };
+
+  const promoteUser = async (userId) => {
+  try {
+    await axios.post(
+      `${import.meta.env.VITE_API_URL}/admin/promote`,
+      { user_id: userId },
+      { withCredentials: true }
+    );
+    alert("User promoted to Admin successfully!");
+    fetchUsers();
+  } catch (error) {
+    console.error("Error promoting user:", error);
+    alert("Failed to promote user.");
+  }
+};
+
+const unpromoteUser = async (userId) => {
+  try {
+    await axios.post(
+      `${import.meta.env.VITE_API_URL}/admin/unpromote`,
+      { user_id: userId },
+      { withCredentials: true }
+    );
+    alert("User unpromoted successfully");
+    fetchUsers(); // Refresh users
+  } catch (error) {
+    console.error("There was an error unpromoting the user:", error);
+    alert("Failed to unpromote user");
+  }
+};
 
   return (
     <div className="admin-page">
@@ -133,6 +177,35 @@ const Admin = () => {
             )}
           </div>
 
+          <h2>Manage Users</h2>
+          <div className="manage-users">
+            {users.length === 0 ? (
+              <p>No users found</p>
+            ) : (
+              <ul className="user-list">
+                {users.map((user) => (
+                  <li key={user.id} className="user-item">
+                    {user.username} ({user.role})
+                    {user.role !== "admin" ? (
+                      <button
+                        onClick={() => promoteUser(user.id)}
+                        style={{ marginLeft: '10px' }}
+                      >
+                        Promote to Admin
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => unpromoteUser(user.id)}
+                        style={{ marginLeft: '10px' }}
+                      >
+                        Unpromote to Student
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           
           {showReports && !selectedReport && (
             <div className="report-box">
