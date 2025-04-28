@@ -1,12 +1,74 @@
-# React + Vite
+# The Nest Exchange Backend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the backend codebase for **The Nest Exchange**, a community-driven platform designed to facilitate item sharing among users. The backend is built using **FastAPI** and **SQLAlchemy**, with a PostgreSQL database for data storage.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **User Management**: Registration, login, and role-based access control.
+- **Listings**: Create, update, and delete item listings.
+- **Claims**: Claim items listed by other users.
+- **Reports**: Report inappropriate listings.
+- **Support Messages**: Submit support requests to administrators.
 
-## Expanding the ESLint configuration
+## How to Run
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Follow these steps to set up and run the project locally:
+
+### Prerequisites
+
+- Python 3.10+
+- Node.js and npm
+- PostgreSQL
+- Redis (optional, if caching is implemented)
+
+### Backend Setup
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/your-repo-url.git
+   cd Backend
+   ```
+
+2. **Install Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Set Up the Database**:
+   - Create a PostgreSQL database.
+   - Update the database connection string in `config.py`:
+     ```python
+     DATABASE_URL = "postgresql://username:password@localhost:5432/your_database_name"
+     ```
+
+4. **Run the Backend**:
+   Start the FastAPI server using `uvicorn`:
+   ```bash
+   uvicorn main:app --reload
+   ```
+
+5. **Access the Backend API**:
+   Open your browser and navigate to:
+   - Swagger UI: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+   - ReDoc: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+
+### Frontend Setup
+
+1. **Navigate to the Frontend Directory**:
+   ```bash
+   cd ../frontend
+   ```
+
+2. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Run the Frontend**:
+   Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+4. **Access the Frontend**:
+   Open your browser and navigate to [http://localhost:3000](http://localhost:3000).
