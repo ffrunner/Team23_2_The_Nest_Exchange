@@ -264,7 +264,18 @@ const unpromoteUser = async (userId) => {
         )}
 
         {selectedReport && (
-          <div className="report-detail-box">
+          <div 
+            className="report-detail-box"
+              style={{
+                  maxHeight: '400px',
+                  overflowY: 'auto',
+                  marginTop: '20px',
+                  padding: '16px',
+                  backgroundColor: '#f9f9f9',
+                  border: '1px solid #360cf0',
+                  borderRadius: '6px'
+                }}
+            >
             <h3>Report #{selectedReport.id} Details</h3>
             <p>
               <strong>Listing ID:</strong> {selectedReport.listing_id}
