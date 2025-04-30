@@ -15,9 +15,8 @@ const Admin = () => {
   const [selectedReport, setSelectedReport] = useState(null);
   const [users, setUsers] = useState([]);
   const [showUsers, setShowUsers] = useState(false);
-  const [showModal, setShowModal] = useState(false); 
+  const [showModal, setShowModal] = useState(false);
 
-  // Function to get counts of users, listings, etc
   useEffect(() => {
     const fetchUsageReports = async () => {
       try {
@@ -31,7 +30,6 @@ const Admin = () => {
       }
     };
 
-    // Function to fill activity log
     const fetchActivityLog = async () => {
       try {
         const response = await axios.get(
@@ -48,7 +46,6 @@ const Admin = () => {
     fetchActivityLog();
   }, []);
 
-  // Function to get all reports when report box is clicked
   const handleReportsClick = async () => {
     try {
       const response = await axios.get(
@@ -63,7 +60,6 @@ const Admin = () => {
     }
   };
 
-  // Function to call backend to resolve reports
   const resolveReport = async (action) => {
     try {
       await axios.post(
@@ -88,7 +84,6 @@ const Admin = () => {
     }
   };
 
-  // Function to load all users from database when the users tab is clicked
   const handleUsersClick = async () => {
     try {
       const response = await axios.get(
@@ -140,16 +135,14 @@ const Admin = () => {
     }
   };
 
- 
   const openModal = (report) => {
     setSelectedReport(report);
-    setShowModal(true); 
+    setShowModal(true);
   };
 
-  
   const closeModal = () => {
     setShowModal(false);
-    setSelectedReport(null); 
+    setSelectedReport(null);
   };
 
   return (
@@ -257,7 +250,7 @@ const Admin = () => {
                     <li
                       key={report.id}
                       className="report-item"
-                      onClick={() => openModal(report)} // Open modal on click
+                      onClick={() => openModal(report)}
                     >
                       <strong>Report #{report.id}</strong> — Listing: {report.listing_id} —{" "}
                       <span
@@ -275,7 +268,6 @@ const Admin = () => {
             </div>
           )}
 
-          {/* Modal for report details */}
           {showModal && selectedReport && (
             <div className="modal" onClick={closeModal}>
               <div className="modal-content" onClick={(e) => e.stopPropagation()}>
