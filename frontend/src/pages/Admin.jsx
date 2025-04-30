@@ -287,5 +287,5 @@ const unpromoteUser = async (userId) => {
     </div>
   </div>
 );
-
+};
 export default Admin;
