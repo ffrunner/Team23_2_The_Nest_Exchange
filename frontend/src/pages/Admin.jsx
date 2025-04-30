@@ -113,16 +113,13 @@ const Admin = () => {
         <div className="admin-dashboard">
           <h2>Manage Listings</h2>
           <div className="admin-cards">
-            <div className="card">
-              <h3>Total Users</h3>
-              <p>{usageReports.total_users}</p>
-            </div>
             <div
                 className="card"
                 onClick={handleUsersClick}
                 style={{ cursor: "pointer" }}
               >
                 <h3>Total Users</h3>
+                <p>{usageReports.total_users}</p>
               </div>
 
             <div className="card">
