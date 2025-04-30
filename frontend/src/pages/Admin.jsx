@@ -155,7 +155,7 @@ const Admin = () => {
               </ul>
             )}
           </div>
-//When all users is clicked on, all users in db load along with their id, email, and role. 
+
           {showUsers && (
             <div
               className="users-list"
