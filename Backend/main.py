@@ -331,20 +331,25 @@ def get_items(db: Session = Depends(get_db), current_user:dict=Depends(get_curre
 @app.get("/listings", response_model=dict)
 async def get_listings(category: str = Query(None), db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     print(current_user)
-    print(f"Received category: {category}")  
+    print(f"Received category: {category}") 
     if category:
         category_obj = db.query(Category).filter(Category.name == category).first()
-        print(f"Category object: {category_obj}") 
+        print(f"Category object: {category_obj}")
         if not category_obj:
             raise HTTPException(status_code=422, detail="Not a category")
 
-        # Fetch all listings in database for chosen category
-        listings = db.query(Listing).filter(Listing.category_id == category_obj.id).all()
+        # Fetch all listings in database for chosen category (Unless listing is inactive/claimed)
+        listings = (db.query(Listing).filter(
+                  Listing.category_id == category_obj.id,
+                  Listing.is_active == True
+              )
+              .all()
+        )
         print(f"Listings for category: {listings}")  
     else:
         #Can also just get all listings in database not based on the category if category not chosen
-        listings = db.query(Listing).all()
-        print(f"All listings: {listings}")  
+        listings = db.query(Listing).filter(Listing.is_active == True).all()
+        print(f"All listings: {listings}")
 
     return {"listings": [listing.to_dict() for listing in listings]}
 
