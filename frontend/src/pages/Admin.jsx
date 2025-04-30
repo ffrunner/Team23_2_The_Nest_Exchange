@@ -109,7 +109,7 @@ const promoteUser = async (userId) => {
       { withCredentials: true }
     );
     alert("User promoted to Admin successfully!");
-    fetchUsers();
+    handleUsersClick();
   } catch (error) {
     console.error("Error promoting user:", error);
     alert("Failed to promote user.");
@@ -124,7 +124,7 @@ const unpromoteUser = async (userId) => {
       { withCredentials: true }
     );
     alert("User unpromoted successfully");
-    fetchUsers(); // Refresh users
+    handleUsersClick(); // Refresh users
   } catch (error) {
     console.error("There was an error unpromoting the user:", error);
     alert("Failed to unpromote user");
