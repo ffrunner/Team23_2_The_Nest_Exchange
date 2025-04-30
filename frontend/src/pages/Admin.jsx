@@ -13,6 +13,9 @@ const Admin = () => {
   const [reports, setReports] = useState([]);
   const [showReports, setShowReports] = useState(false);
   const [selectedReport, setSelectedReport] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [showUsers, setShowUsers] = useState(false);
+
 
   //Function to get counts of users, listings, etc
   useEffect(() => {
@@ -85,6 +88,21 @@ const Admin = () => {
     }
   };
 
+  //Function to load all users from database when the users tab is clicked 
+  const handleUsersClick = async () => {
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/admin/users`,
+      { withCredentials: true }
+    );
+    setUsers(response.data.users);
+    setShowUsers(true);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+  }
+};
+
+
   return (
     <div className="admin-page">
       <div className="main-content">
@@ -99,6 +117,14 @@ const Admin = () => {
               <h3>Total Users</h3>
               <p>{usageReports.total_users}</p>
             </div>
+            <div
+                className="card"
+                onClick={handleUsersClick}
+                style={{ cursor: "pointer" }}
+              >
+                <h3>Total Users</h3>
+              </div>
+
             <div className="card">
               <h3>Total Listings</h3>
               <p>{usageReports.total_listings}</p>
@@ -133,6 +159,7 @@ const Admin = () => {
             )}
           </div>
 
+          
           
           {showReports && !selectedReport && (
             <div className="report-box">
