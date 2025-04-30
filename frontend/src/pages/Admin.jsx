@@ -109,7 +109,11 @@ const promoteUser = async (userId) => {
       { withCredentials: true }
     );
     alert("User promoted to Admin successfully!");
-    handleUsersClick();
+      setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === userId ? { ...user, role: "Admin" } : user
+      )
+    );
   } catch (error) {
     console.error("Error promoting user:", error);
     alert("Failed to promote user.");
@@ -124,7 +128,11 @@ const unpromoteUser = async (userId) => {
       { withCredentials: true }
     );
     alert("User unpromoted successfully");
-    handleUsersClick(); // Refresh users
+      setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === userId ? { ...user, role: "Student" } : user
+      )
+    );
   } catch (error) {
     console.error("There was an error unpromoting the user:", error);
     alert("Failed to unpromote user");
