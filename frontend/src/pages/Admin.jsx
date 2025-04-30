@@ -155,24 +155,32 @@ const Admin = () => {
               </ul>
             )}
           </div>
-
-            {showUsers && (
-            <div className="users-list">
+//When all users is clicked on, all users in db load along with their id, email, and role. 
+          {showUsers && (
+            <div
+              className="users-list"
+              style={{
+                maxHeight: "300px",
+                overflowY: "auto",
+                border: "1px solid #ccc",
+                padding: "10px",
+                marginTop: "20px",
+              }}
+            >
               <h2>All Users</h2>
               {users.length === 0 ? (
-                <p>No users were found</p>
+                <p>No users found</p>
               ) : (
-                <ul>
+                <ul style={{ listStyle: "none", padding: 0 }}>
                   {users.map((user) => (
-                    <li key={user.id}>
-                      {user.email} — ID: {user.id}
+                    <li key={user.id} style={{ marginBottom: "8px" }}>
+                      ID: {user.id} | Email: {user.email} | Role: {user.role}
                     </li>
                   ))}
                 </ul>
               )}
             </div>
-          )}
-                    
+          )}                    
           
           {showReports && !selectedReport && (
             <div className="report-box">
