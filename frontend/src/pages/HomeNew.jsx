@@ -10,6 +10,8 @@ const NestExchange = () => {
     const [isContainerOpen, setIsContainerOpen] = useState(false);
     const [selectedListing, setSelectedListing] = useState(null); // State for selected listing
     const [isListItemOpen, setIsListItemOpen] = useState(false);
+    const [isReporting, setIsReporting] = useState(false); // State for reporting modal
+    const [reportReason, setReportReason] = useState(""); // State for report reason
 
     const backendBaseUrl = import.meta.env.VITE_API_URL;
 
@@ -66,6 +68,27 @@ const NestExchange = () => {
         } catch (err) {
             console.error(err);
             alert("Failed to claim the item. Please try again.");
+        }
+    };
+
+    const handleReport = async (listingId) => {
+        if (!reportReason.trim()) {
+            alert("Please provide a reason for reporting this listing.");
+            return;
+        }
+
+        try {
+            const response = await axios.post(
+                `${backendBaseUrl}/listings/${listingId}/report`,
+                { reason: reportReason },
+                { withCredentials: true }
+            );
+            alert(response.data.message || "The listing has been reported successfully.");
+            setIsReporting(false); // Close the reporting container
+            setReportReason(""); // Clear the reason
+        } catch (err) {
+            console.error("Error reporting the listing:", err);
+            alert("Failed to report the listing. Please try again.");
         }
     };
 
@@ -171,31 +194,47 @@ const NestExchange = () => {
                             <button className="closeButton" onClick={closeListingDetails}>
                                 Close
                             </button>
-                    <div className="listingDetailsContent">
-                        <img
-                            src={selectedListing.photos && selectedListing.photos[0] ? `${backendBaseUrl}${selectedListing.photos[0]}` : "/static/images/placeholder.jpg"}
-                            alt={selectedListing.title}
-                            className="listingPhoto"
-                        />
-                        <div className="listingInfo">
-                            <h2>{selectedListing.title}</h2>
-                            <p><strong>Description:</strong> {selectedListing.description}</p>
-                            <p><strong>Pick up information:</strong> {selectedListing.pickup_details}</p>
+                            <div className="listingDetailsContent">
+                                <img
+                                    src={selectedListing.photos && selectedListing.photos[0] ? `${backendBaseUrl}${selectedListing.photos[0]}` : "/static/images/placeholder.jpg"}
+                                    alt={selectedListing.title}
+                                    className="listingPhoto"
+                                />
+                                <div className="listingInfo">
+                                    <h2>{selectedListing.title}</h2>
+                                    <p><strong>Description:</strong> {selectedListing.description}</p>
+                                    
+                                </div>
+                                <div className="listerInfo">
+                                    
+                                    
+                                </div>
+                                <button className="claimButton" onClick={() => handleClaim(selectedListing.id)}>
+                                    Claim
+                                </button>
+                                <button className="reportButton" onClick={() => setIsReporting(true)}>
+                                    Report
+                                </button>
+                            </div>
                         </div>
-                        <div className="listerInfo">
-                            <h3>Lister</h3>
-                            <img
-                                src={selectedListing.listerPhoto || "/static/images/user-placeholder.jpg"}
-                                alt="Lister"
-                                className="listerPhoto"
-                            />
+                    )}
+
+                    {isReporting && (
+                        <div className="reportContainer">
+                            <h3>Report Listing</h3>
+                            <p>Please provide a reason for reporting this listing:</p>
+                            <textarea
+                                value={reportReason}
+                                onChange={(e) => setReportReason(e.target.value)}
+                                placeholder="Enter your reason here..."
+                                required
+                            ></textarea>
+                            <div className="reportButtons">
+                                <button onClick={() => handleReport(selectedListing.id)}>Submit Report</button>
+                                <button onClick={() => setIsReporting(false)}>Cancel</button>
+                            </div>
                         </div>
-                        <button className="claimButton" onClick={() => handleClaim(selectedListing.id)}>
-                            Claim
-                        </button>
-                    </div>
-                </div>
-            )}
+                    )}
 
                     <button className="list-item-button" onClick={toggleListItemContainer}>
                         List an Item
