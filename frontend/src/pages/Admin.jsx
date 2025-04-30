@@ -143,7 +143,7 @@ const Admin = () => {
  
   const openModal = (report) => {
     setSelectedReport(report);
-    setShowModal(true); // Show the modal
+    setShowModal(true); 
   };
 
   
@@ -257,10 +257,9 @@ const Admin = () => {
                     <li
                       key={report.id}
                       className="report-item"
-                      onClick={() => openModal(report)} 
+                      onClick={() => openModal(report)} // Open modal on click
                     >
-                      <strong>Report #{report.id}</strong> — Listing:{" "}
-                      {report.listing_id} —{" "}
+                      <strong>Report #{report.id}</strong> — Listing: {report.listing_id} —{" "}
                       <span
                         style={{
                           color: report.resolved ? "blue" : "red",
@@ -276,7 +275,7 @@ const Admin = () => {
             </div>
           )}
 
-          {/* Report details */}
+          {/* Modal for report details */}
           {showModal && selectedReport && (
             <div className="modal" onClick={closeModal}>
               <div className="modal-content" onClick={(e) => e.stopPropagation()}>
