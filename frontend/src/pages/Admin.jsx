@@ -211,7 +211,7 @@ const unpromoteUser = async (userId) => {
                 {users.map((user) => (
                   <li key={user.id} className="user-item">
                     {user.username} ({user.role})
-                    {user.role !== "admin" ? (
+                    {user.role.toLowerCase() !== "admin" ? (
                       <button
                         onClick={() => promoteUser(user.id)}
                         style={{ marginLeft: '10px' }}
