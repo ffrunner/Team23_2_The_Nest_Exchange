@@ -114,3 +114,10 @@ class ResolveReport(BaseModel):
 
     class Config: 
         orm_mode=True
+        
+#Data to get for promoting and unpromoting users
+class Promote(BaseModel):
+    user_id: int
+
+class Unpromote(BaseModel):
+    user_id: int
