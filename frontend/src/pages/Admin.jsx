@@ -101,7 +101,35 @@ const Admin = () => {
     console.error("Error fetching users:", error);
   }
 };
+const promoteUser = async (userId) => {
+  try {
+    await axios.post(
+      `${import.meta.env.VITE_API_URL}/admin/promote`,
+      { user_id: userId },
+      { withCredentials: true }
+    );
+    alert("User promoted to Admin successfully!");
+    fetchUsers();
+  } catch (error) {
+    console.error("Error promoting user:", error);
+    alert("Failed to promote user.");
+  }
+};
 
+const unpromoteUser = async (userId) => {
+  try {
+    await axios.post(
+      `${import.meta.env.VITE_API_URL}/admin/unpromote`,
+      { user_id: userId },
+      { withCredentials: true }
+    );
+    alert("User unpromoted successfully");
+    fetchUsers(); // Refresh users
+  } catch (error) {
+    console.error("There was an error unpromoting the user:", error);
+    alert("Failed to unpromote user");
+  }
+};
 
   return (
     <div className="admin-page">
