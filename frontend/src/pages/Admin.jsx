@@ -197,18 +197,32 @@ const unpromoteUser = async (userId) => {
             >
               <h2>All Users</h2>
               {users.length === 0 ? (
-                <p>No users found</p>
+                <p>No users were found</p>
               ) : (
                 <ul style={{ listStyle: "none", padding: 0 }}>
                   {users.map((user) => (
-                    <li key={user.id} style={{ marginBottom: "8px" }}>
-                      ID: {user.id} | Email: {user.email} | Role: {user.role}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}                    
+                  <li key={user.id} className="user-item">
+                    {user.username} ({user.role})
+                    {user.role !== "admin" ? (
+                      <button
+                        onClick={() => promoteUser(user.id)}
+                        style={{ marginLeft: '10px' }}
+                      >
+                        Promote to Admin
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => unpromoteUser(user.id)}
+                        style={{ marginLeft: '10px' }}
+                      >
+                        Unpromote to Student
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>        
           
           {showReports && !selectedReport && (
             <div className="report-box">
