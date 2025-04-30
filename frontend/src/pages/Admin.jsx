@@ -267,7 +267,7 @@ const unpromoteUser = async (userId) => {
           <div 
             className="report-detail-box"
               style={{
-                  height: '300px',
+                  height: '500px',
                   overflowY: 'auto',
                   marginTop: '20px',
                   padding: '16px',
