@@ -156,7 +156,23 @@ const Admin = () => {
             )}
           </div>
 
-          
+            {showUsers && (
+            <div className="users-list">
+              <h2>All Users</h2>
+              {users.length === 0 ? (
+                <p>No users were found</p>
+              ) : (
+                <ul>
+                  {users.map((user) => (
+                    <li key={user.id}>
+                      {user.email} — ID: {user.id}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+                    
           
           {showReports && !selectedReport && (
             <div className="report-box">
