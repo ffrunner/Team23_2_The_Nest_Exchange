@@ -13,7 +13,7 @@ import os
 from uuid import uuid4
 from fastapi.staticfiles import StaticFiles
 
-#IMPORTANT: AI tools (GitHub Copilot and Chatgpt) were used for debugging purposes
+#IMPORTANT: AI tools (GitHub Copilot and Open AI) were used for debugging purposes
 
 #Setting up application with FastAPI
 app = FastAPI()
