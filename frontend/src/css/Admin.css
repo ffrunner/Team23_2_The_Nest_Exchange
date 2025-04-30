@@ -1,4 +1,3 @@
-/* Global Styles */
 body {
   margin: auto;
   padding: 0;
@@ -34,7 +33,71 @@ body {
   color: #333;
 }
 
-/* Report Box */
+/* Admin Dashboard */
+.admin-page .admin-dashboard h2 {
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: left;
+}
+
+.admin-page .admin-cards {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.admin-page .card {
+  flex: 1;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: left;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-page .card h3 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.admin-page .card p {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* Activity Log */
+.admin-page .activity-log {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-page .activity-log p {
+  margin: 10px 0;
+  font-size: 1em;
+  color: #666;
+}
+
+.card {
+  background: #f7f7f7;
+  padding: 16px;
+  margin: 12px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.02);
+  background: #eaeaea;
+}
+
 .report-box {
   margin-top: 20px;
   padding: 16px;
@@ -78,7 +141,7 @@ body {
 
 .modal.show {
   visibility: visible;
-  opacity: 1; /* Show the modal when showModal is true */
+  opacity: 1; /* Show the modal */
 }
 
 .modal-content {
