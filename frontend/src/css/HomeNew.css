@@ -1,6 +1,5 @@
 html, body {
     margin: 0;
-    
     font-family: 'Montserrat', sans-serif;
     background-color: #f4f4f9;
     color: #333;
@@ -15,11 +14,9 @@ html, body {
     padding: 50px 20px;
     height: 50vh;
     display: flex;
-    flex-direction: column; /* Keep content stacked vertically */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
     border-radius: 10px;
 }
 
@@ -66,17 +63,16 @@ html, body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 800px;
-    text-align: center; /* Center the text inside the section */
+    text-align: center;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center the content horizontally */
-    font-family: 'Montserrat', sans-serif;
+    align-items: center;
 }
 
 .how-it-works ol {
-    padding-left: 0; /* Remove default padding */
-    list-style-position: inside; /* Ensure list numbers are inside the container */
-    text-align: center; /* Center the text */
+    padding-left: 0;
+    list-style-position: inside;
+    text-align: center;
 }
 
 .how-it-works li {
@@ -117,7 +113,7 @@ html, body {
 
 .categoryCard:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2)
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .categoryCard img {
@@ -134,6 +130,7 @@ html, body {
     color: #000;
 }
 
+/* Listings Section */
 .listingsContainer {
     position: fixed;
     top: 10%;
@@ -150,75 +147,123 @@ html, body {
 }
 
 .listingCard {
-    width: 80%; /* Reduce the width of the card */
-  max-width: 400px; /* Set a maximum width */
-  margin: 10px auto; /* Center the card and reduce the margin */
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 10px; /* Reduce padding */
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+    width: 80%;
+    max-width: 400px;
+    margin: 10px auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
 .listingCard h3 {
     margin: 0 0 10px;
     font-size: 1.5em;
     color: #333;
-  }
-
-.listingPhoto {
-    width: 100%;
-    height: auto;
-    border-radius: 5px;
-    margin-bottom: 10px;
 }
 
 .listingCard p {
     margin: 0;
     font-size: 1em;
     color: #666;
-  }
-  
-  .closeButton {
+}
+
+/* Listing Details Section */
+.listingDetailsContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #f4f4f9;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 90%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* Pushes content apart */
+    height: auto;
+}
+
+.listingDetailsContent {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    align-items: start;
+}
+
+.listingPhoto {
+    width: 80%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+}
+
+.listingInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.listerInfo h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.listerName {
+    font-size: 1.2em;
+    color: #555;
+    margin-top: 5px;
+}
+
+.claimButton {
+    background-color: #ffc107;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-top: auto; 
+    align-self: center; 
+    transition: background-color 0.3s;
+    display: block; 
+    text-align: center; 
+    grid-column: span 2;
+}
+
+.claimButton:hover {
+    background-color: #e08d00;
+}
+
+.closeButton {
     position: absolute;
     top: 10px;
     right: 10px;
-    background-color: red;
+    background: red;
     color: white;
     border: none;
-    padding: 10px;
+    padding: 10px 15px;
+    font-size: 1em;
     cursor: pointer;
-  }
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
 
 .closeButton:hover {
     background-color: #c0392b;
 }
-
-
-/* Testimonials Section */
-.testimonials {
-    background-color: #ffffff;
-    padding: 30px;
-    margin: 20px auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    text-align: center;
-}
-
-.testimonials h2 {
-    font-size: 2em;
-    margin-bottom: 20px;
-}
-
-.testimonials blockquote {
-    font-style: italic;
-    font-size: 1.2em;
-    color: #555;
-    margin-bottom: 20px;
-}
-
 
 /* Footer */
 footer {
@@ -226,9 +271,9 @@ footer {
     color: white;
     text-align: center;
     padding: 20px;
-    width: auto; /* Ensure the footer spans the full width */
+    width: auto;
     box-sizing: border-box;
-    margin-top: auto; /* Push the footer to the bottom when content is short */
+    margin-top: auto;
 }
 
 footer a {
@@ -323,4 +368,64 @@ footer a:hover {
 
 .list-item-container button[type="button"]:hover {
     background-color: #c0392b;
+}
+
+.reportContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    width: 90%;
+    max-width: 400px;
+}
+
+.reportContainer h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.reportContainer textarea {
+    width: 100%;
+    height: 100px;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.reportButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.reportButtons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.reportButtons button:first-child {
+    background-color: #dc3545;
+    color: white;
+}
+
+.reportButtons button:first-child:hover {
+    background-color: #c82333;
+}
+
+.reportButtons button:last-child {
+    background-color: #6c757d;
+    color: white;
+}
+
+.reportButtons button:last-child:hover {
+    background-color: #5a6268;
 }
