@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Query, Request, Response
-from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ReportReason, ItemResponse, CreateActivityLog, UpdateUser, ResolveReport, ResolveAction
+from schemas import CreateUser, LoginUser, ChangePassword, ItemCreate, ItemUpdate, ReportReason, ItemResponse, CreateActivityLog, UpdateUser, ResolveReport, ResolveAction, Promote, Unpromote
 from config import get_db 
 from model import User, Item, ListingPhoto, Claim, Listing, Report, Category, SupportMessage, ActivityLog
 from sqlalchemy.orm import Session 
@@ -13,7 +13,7 @@ import os
 from uuid import uuid4
 from fastapi.staticfiles import StaticFiles
 
-#AI tools (GitHub Copilot and Chatgpt) were used for debugging purposes
+#IMPORTANT: AI tools (GitHub Copilot and Chatgpt) were used for debugging purposes
 
 #Setting up application with FastAPI
 app = FastAPI()
@@ -84,7 +84,7 @@ async def sign_up(user:CreateUser, db: Session = Depends(get_db)):
         else:
             password_hash = pwd_context.hash(user.password_hash)
             user.password_hash = password_hash 
-            db_user = User(email=user.email, username=user.username, password_hash=user.password_hash, role=user.role, first_name=user.first_name, last_name=user.last_name, phone=user.phone)
+            db_user = User(email=user.email, username=user.username, password_hash=user.password_hash, role="Student", first_name=user.first_name, last_name=user.last_name)
             db.add(db_user)
             db.commit()
             db.refresh(db_user)
@@ -201,7 +201,7 @@ async def create_item(item: ItemCreate, db: Session = Depends(get_db),current_us
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
-    #redis_client.delete("items")  
+    redis_client.delete("items")  
     db_listing = Listing(
         title=item.title,
         description=item.description,
@@ -247,8 +247,8 @@ def update_item(item_id: int, item: ItemUpdate, db: Session = Depends(get_db), c
     db.refresh(db_item)
     
    
-    #redis_client.delete(f"item:{item_id}")
-    #redis_client.delete("items")
+    redis_client.delete(f"item:{item_id}")
+    redis_client.delete("items")
     
     return db_item
 
@@ -533,6 +533,13 @@ async def get_reports(db:Session = Depends(get_db), current_user: dict = Depends
     reports = db.query(Report).all()
     return {"reports": [report.__dict__ for report in reports]}
 
+#Function to give admin users all the users from database
+@app.get("/admin/users")
+async def get_users(db:Session = Depends(get_db), current_user: dict = Depends(admin_required)):
+    print(f"Admin:{current_user['email']}")
+    users = db.query(User).all()
+    return {"users": [user.__dict__ for user in users]}
+
 #Function to give admin users usage reports/counts of everything
 @app.get("/admin/usage", status_code=200)
 async def view_usage_reports(db: Session = Depends(get_db), current_user: dict =Depends(admin_required)):
@@ -548,45 +555,24 @@ async def view_usage_reports(db: Session = Depends(get_db), current_user: dict =
         "total_reports": total_reports
     }
 
-#Function to let admin users create a category
-@app.post("/admin/categories")
-async def add_category(name: str, db: Session = Depends(get_db),current_user: dict =Depends(admin_required)):
-    print(f"Admin: {current_user['email']}")
-    new_category = Category(name=name)
-    db.add(new_category)
+#Function to allow admin users to create other admin users by promoting 'Student' users to 'Admin'
+@app.post("/admin/promote", dependencies=[Depends(admin_required)])
+def promote_user(request: Promote, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.id == request.user_id).first()
+    if not user:
+        raise HTTPException(404, "User not found")
+    user.role = "Admin"
     db.commit()
-    db.refresh(new_category)
-    return new_category
+    db.refresh(user)
+    return {"msg": f"User {request.user_id} promoted to Admin"}
 
-#Function to let amdin users edit categories 
-@app.put("/admin/categories/{category_id}")
-async def edit_category(category_id: int, name: str, db: Session = Depends(get_db),current_user: dict =Depends(admin_required)):
-    print(f"Admin: {current_user['email']}")
-    db_category = db.query(Category).filter(Category.id == category_id).first()
-    if not db_category:
-        raise HTTPException(status_code=404, detail="Category not found")
-    db_category.name = name
+#Function just in case admin users accidentally promote the wrong user to admin. They can unpromote back to student
+@app.post("/admin/unpromote", dependencies=[Depends(admin_required)])
+def unpromote_user(request: Unpromote, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.id == request.user_id).first()
+    if not user:
+        raise HTTPException(404, "User not found")
+    user.role = "Student"
     db.commit()
-    db.refresh(db_category)
-    return db_category
-
-#Function to give admin users support messages
-@app.get("/admin/support", status_code=200)
-async def view_support_messages(db: Session = Depends(get_db),current_user: dict =Depends(admin_required)):
-    print(f"Admin: {current_user['email']}")
-    messages = db.query(SupportMessage).all()
-    return messages
-
-#Function to let admin users respond to support messages
-@app.put("/admin/support/{message_id}", status_code=200)
-async def respond_support_message(message_id: int, response_text: str, db: Session = Depends(get_db),current_user: dict =Depends(admin_required)):
-    print(f"Admin: {current_user['email']}")
-    db_message = db.query(SupportMessage).filter(SupportMessage.id == message_id).first()
-    if not db_message:
-        raise HTTPException(status_code=404, detail="Support message not found")
-    db_message.response = response_text
-    db_message.status = "responded"
-    db.commit()
-    db.refresh(db_message)
-    return db_message
-
+    db.refresh(user)
+    return {"msg": f"User {request.user_id} changed back to Student"}
