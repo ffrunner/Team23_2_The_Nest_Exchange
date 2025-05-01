@@ -29,7 +29,8 @@ app.mount("/uploads",StaticFiles(directory=UPLOAD_DIRECTORY),name="uploads")
 origins = [
     "http://localhost:8000",
     "http://localhost:5173",
-]
+    "https://frontdeployment.dldllkwwny6on.amplifyapp.com/",
+    ]
 app.add_middleware(
     CORSMiddleware, 
     allow_origins=origins,
