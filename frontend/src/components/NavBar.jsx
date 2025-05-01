@@ -7,7 +7,8 @@ import axios from "axios";
 const NavBar = () => {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+    const [searchResult, setSearchResult] = useState([]);
+    
     const handleSearchToggle = () => {
         setIsSearchOpen(!isSearchOpen);
     };
@@ -16,12 +17,24 @@ const NavBar = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
-    const handleSearch = (event) => {
+    const handleSearch = async (event) => {
         event.preventDefault();
         const query = event.target.search.value;
-        console.log('Search query:', query); // Replace with actual search logic
-        setIsSearchOpen(false); // Optionally close the search bar after submission
-    };
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/items/search/`, 
+                {
+                     params: { keyword : query}, 
+                     withCredentials: true,
+                }
+            ); 
+            setSearchResults(response.data);
+            console.log('Search query:', response.data); 
+            setIsSearchOpen(false); // Optionally close the search bar after submission
+        } catch (error) {
+        console.error('Search failed:', error);
+        alert("There was an error searching");
+    }
+};
     const navigate = useNavigate();
     const handleLogout = async () => {
         try{
@@ -57,6 +70,18 @@ const NavBar = () => {
                             />
                         </form>
                     )}
+                    {searchResults.length > 0 && (
+                            <div className="search-results">
+                                {searchResults.map(item => (
+                                    <div key={item.id} className="search-item">
+                                        <h3>{item.title}</h3>
+                                        <p>{item.description}</p>
+                                        <p>{item.pickup_details}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
                 </div>
                 <button className="menuButton" onClick={handleMenuToggle}>
                     <div className="menuIcon">
