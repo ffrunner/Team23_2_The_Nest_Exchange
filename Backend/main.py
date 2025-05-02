@@ -29,6 +29,7 @@ app.mount("/uploads",StaticFiles(directory=UPLOAD_DIRECTORY),name="uploads")
 origins = [
     "http://localhost:5173",
     "https://thenestexchange.com"
+    "http://thenestexchange.us-east-2.elasticbeanstalk.com"
 ]
 app.add_middleware(
     CORSMiddleware, 
