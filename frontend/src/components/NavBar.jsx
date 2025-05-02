@@ -16,12 +16,34 @@ const NavBar = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
-    const handleSearch = (event) => {
+   const handleSearch = async (event) => {
         event.preventDefault();
         const query = event.target.search.value;
-        console.log('Search query:', query); // Replace with actual search logic
+        // console.log('Search query:', query); // Replace with actual search logic
+        
+        if (!query) {
+            alert("Please enter a search query.");
+            return;
+        }
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/items/search/`, {
+                params: { keyword: query },
+                withCredentials: true,
+            }); // Send the search query to the backend
+    
+            if (response.status === 200) {
+                console.log("Search results:", response.data);
+                
+                navigate(`/items/search/?query=${encodeURIComponent(query)}`);
+            } // Navigate to a search results page with the query as a parameter
+        } 
+        catch (error) {
+            console.error("Search failed:", error.message);
+            alert("An error occurred while searching. Please try again.");
+        }
         setIsSearchOpen(false); // Optionally close the search bar after submission
     };
+    
     const navigate = useNavigate();
     const handleLogout = async () => {
         try{
