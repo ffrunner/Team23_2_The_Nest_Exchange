@@ -339,7 +339,7 @@ async def get_listings(category: str = Query(None), db: Session = Depends(get_db
             raise HTTPException(status_code=422, detail="Not a category")
 
         # Fetch all listings in database for chosen category
-        listings = db.query(Listing).filter(Listing.category_id == category_obj.id).all()
+        listings = db.query(Listing).filter(Listing.category_id == category_obj.id, Listing.is_active == True).all()
         print(f"Listings for category: {listings}")  
     else:
         #Can also just get all listings in database not based on the category if category not chosen
