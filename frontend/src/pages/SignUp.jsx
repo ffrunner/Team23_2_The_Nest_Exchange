@@ -10,7 +10,6 @@ const SignUp = () => {
     const [userName, setUserName] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [phone, setPhone] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false); // Loading state
     const navigate = useNavigate();
@@ -33,10 +32,8 @@ const SignUp = () => {
           email, 
           username: userName, 
           password_hash: password,           
-          role: 'student', // Force new user's role to 'student' 
           first_name: firstName, 
           last_name: lastName, 
-          phone 
         };
       
         console.log('Submitting user data:', userData);
@@ -112,13 +109,7 @@ const SignUp = () => {
                     onChange={(e) => setLastName(e.target.value)}
                     required
                 />
-                <input
-                    type="text"
-                    placeholder="Phone"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    required
-                />
+            
                 <button type="submit" disabled={isLoading}>
                     {isLoading ? 'Signing up...' : 'Sign up'}
                 </button>

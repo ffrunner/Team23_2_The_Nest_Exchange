@@ -12,7 +12,6 @@ const Settings = () => {
             first_name: '',
             last_name: '',
             username: '',
-            phone: '',
             email: '',
           });
     const [passwordData, setPasswordData] = useState({
@@ -209,16 +208,6 @@ const handleDeleteAccount = async () => {
                                             id="username" 
                                             name="username" 
                                             value={formData.username}
-                                            onChange={handleChange}
-                                            required />
-                                    </div>
-                                    <div className="field">
-                                        <label htmlFor="phone">Phone Number</label> <br></br>
-                                        <input 
-                                            type="text" 
-                                            id="phone" 
-                                            name="phone" 
-                                            value={formData.phone}
                                             onChange={handleChange}
                                             required />
                                     </div>
