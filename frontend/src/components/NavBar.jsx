@@ -27,7 +27,7 @@ const NavBar = () => {
         }
         try {
             const response = await axios.get(`${import.meta.env.VITE_API_URL}/items/search/`, {
-                params: { query },
+                params: { keyword: query },
                 withCredentials: true,
             }); // Send the search query to the backend
     
