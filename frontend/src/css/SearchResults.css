@@ -1,0 +1,47 @@
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* main container */
+.search-results-container {
+    display: flex;
+    height: 90vh; 
+    width: 95vw; 
+    overflow: hidden;
+    position: relative; /* Ensure it is positioned correctly */
+    background-color: white;
+}
+
+/* Sidebar styling */
+.filter-bar {
+    width: 190px;
+    background-color:white; /* Dark background for sidebar */
+    color: black;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.filter-bar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.filter-bar ul li {
+    margin: 15px 0;
+}
+
+.filter-bar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    text-align: left;
+    transition: color 0.3s ease;
+}
+
+

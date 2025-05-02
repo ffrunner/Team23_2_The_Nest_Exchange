@@ -12,6 +12,7 @@ import HomeNew from './pages/HomeNew'; // Import the new Home page`
 import Landing from './pages/Landing';
 import Settings from './pages/Settings'; // Import the Settings page
 import SettingsHelpSupport from './pages/SettingsHelpSupport'; // Import the Help and Support page
+import SearchResults from './pages/SearchResults'; // Import the Search Results page
 import './css/App.css';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
                     <Route path="/admin" element={<Admin />} /> 
                     <Route path="/settings" element={<Settings />} />
                     <Route path="/settings-help-support" element={<SettingsHelpSupport />} />
+                    <Route path="/search-results" element={<SearchResults />} />
                 </Routes>
             </main>
         </div> 
