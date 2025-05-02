@@ -39,7 +39,10 @@ const SearchResults = () => {
             <h2>Search Results for "{query}"</h2>
             <ul>
                 {results.map((result, index) => (
-                    <li key={index}>{result.title}</li>
+                    <li key={index}>
+                        <strong>{result.title}</strong>
+                        <p>{result.description}</p>
+                    </li>
                 ))}
             </ul>
         </div>
