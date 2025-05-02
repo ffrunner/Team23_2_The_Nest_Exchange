@@ -12,13 +12,14 @@ class CreateUser(BaseModel):
     first_name: str
     last_name: str
 
+
 #Data to get from user when updating their info. Will be on settings page
 class UpdateUser(BaseModel):
     first_name: Optional[str]
     last_name: Optional[str]
     username: Optional[str]
     email: Optional[str]
-
+    
 
 #Data to get from user when logging them in   
 class LoginUser(BaseModel):
@@ -107,12 +108,11 @@ class ResolveAction(str, Enum):
 
 #Data to get from admin user when resolving report
 class ResolveReport(BaseModel):
-    report_id :int
+    report_id: int
     action: ResolveAction
 
     class Config: 
         orm_mode=True
-        
 #Data to get for promoting and unpromoting users
 class Promote(BaseModel):
     user_id: int
