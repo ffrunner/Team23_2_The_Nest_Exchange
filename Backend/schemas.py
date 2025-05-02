@@ -9,10 +9,8 @@ class CreateUser(BaseModel):
     email: str
     username: str 
     password_hash: str
-    role: str
     first_name: str
     last_name: str
-    phone: str
 
 #Data to get from user when updating their info. Will be on settings page
 class UpdateUser(BaseModel):
@@ -20,7 +18,7 @@ class UpdateUser(BaseModel):
     last_name: Optional[str]
     username: Optional[str]
     email: Optional[str]
-    phone: Optional[str] 
+
 
 #Data to get from user when logging them in   
 class LoginUser(BaseModel):
@@ -114,3 +112,10 @@ class ResolveReport(BaseModel):
 
     class Config: 
         orm_mode=True
+        
+#Data to get for promoting and unpromoting users
+class Promote(BaseModel):
+    user_id: int
+
+class Unpromote(BaseModel):
+    user_id: int
