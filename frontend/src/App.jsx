@@ -38,7 +38,7 @@ function App() {
                     <Route path="/admin" element={<Admin />} /> 
                     <Route path="/settings" element={<Settings />} />
                     <Route path="/settings-help-support" element={<SettingsHelpSupport />} />
-                    <Route path="/search-results" element={<SearchResults />} />
+                    <Route path="/items/search/" element={<SearchResults />} />
                 </Routes>
             </main>
         </div> 
