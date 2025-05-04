@@ -10,6 +10,14 @@
       "StackName": "amplify-nestexchange-dev-82c6d",
       "StackId": "arn:aws:cloudformation:us-east-2:533266971762:stack/amplify-nestexchange-dev-82c6d/901cf230-291a-11f0-b064-06a83a2996b7",
       "AmplifyAppId": "d1cbphj3b3qeax"
+    },
+    "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1cbphj3b3qeax",
+          "type": "manual"
+        }
+      }
     }
   }
 }
