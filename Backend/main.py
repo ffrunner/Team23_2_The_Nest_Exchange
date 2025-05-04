@@ -27,9 +27,8 @@ app.mount("/uploads",StaticFiles(directory=UPLOAD_DIRECTORY),name="uploads")
 
 #Setting up CORS for security. Only backend and frontend can access. We'll need to add the actual link to nestexchange
 origins = [
+    "http://localhost:8000",
     "http://localhost:5173",
-    "https://thenestexchange.com"
-    "http://thenestexchange.us-east-2.elasticbeanstalk.com"
 ]
 app.add_middleware(
     CORSMiddleware, 

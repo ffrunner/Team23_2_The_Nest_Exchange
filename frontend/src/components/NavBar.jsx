@@ -16,7 +16,7 @@ const NavBar = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
-   const handleSearch = async (event) => {
+    const handleSearch = async (event) => {
         event.preventDefault();
         const query = event.target.search.value;
         // console.log('Search query:', query); // Replace with actual search logic
@@ -43,7 +43,7 @@ const NavBar = () => {
         }
         setIsSearchOpen(false); // Optionally close the search bar after submission
     };
-    
+
     const navigate = useNavigate();
     const handleLogout = async () => {
         try{

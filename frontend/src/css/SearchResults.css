@@ -1,4 +1,4 @@
-body {
+html, body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
     background-color: #f4f4f9;
@@ -7,40 +7,425 @@ body {
     overflow-x: hidden;
 }
 
-/* main container */
-.search-results-container {
+/* Hero Section */
+.hero {
+    background-color: #eaeaea;
+    text-align: center;
+    padding: 50px 20px;
+    height: 50vh;
     display: flex;
-    height: 90vh; 
-    width: 95vw; 
-    overflow: hidden;
-    position: relative; /* Ensure it is positioned correctly */
-    background-color: white;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
 }
 
-/* Sidebar styling */
-.filter-bar {
-    width: 190px;
-    background-color:white; /* Dark background for sidebar */
-    color: black;
+.hero h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.hero p {
+    font-size: 1.5em;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+
+
+/* About Section */
+.about {
+    background-color: #ffffff;
+    padding: 30px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.about p {
+    font-size: 1.2em;
+    color: #555;
+}
+
+/* How It Works Section */
+.how-it-works {
+    background-color: #ffffff;
+    padding: 30px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.how-it-works ol {
+    padding-left: 0;
+    list-style-position: inside;
+    text-align: center;
+}
+
+.how-it-works li {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    color: #555;
+}
+
+/* Featured Items Section */
+.featured-items {
+    background-color: #ffffff;
+    padding: 30px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    text-align: center;
+}
+
+.categoriesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.categoryCard {
+    background-color: #ffc107;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    cursor: pointer;
+    width: 200px;
+    transition: transform 0.3s;
 }
 
-.filter-bar ul {
-    list-style: none;
-    padding: 0;
+.categoryCard:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.categoryCard img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-bottom: 2px solid #fff;
+}
+
+.categoryCard h3 {
+    margin: 10px 0;
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #000;
+}
+
+/* Listings Section */
+.listingsContainer {
+    position: fixed;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+    background-color: #D9D9D9;
+    border: 2px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    padding: 20px;
+    z-index: 1000;
+    border-radius: 12px;
+}
+
+.listingCard {
+    width: 80%;
+    max-width: 400px;
+    margin: 10px auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.listingCard h3 {
+    margin: 0 0 10px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.listingCard p {
     margin: 0;
+    font-size: 1em;
+    color: #666;
 }
 
-.filter-bar ul li {
-    margin: 15px 0;
+/* Listing Details Section */
+.listingDetailsContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #f4f4f9;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 90%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* Pushes content apart */
+    height: auto;
 }
 
-.filter-bar ul li a {
+.listingDetailsContent {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    align-items: start;
+}
+
+.listingPhoto {
+    width: 80%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+}
+
+.listingInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.listerInfo h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.listerName {
+    font-size: 1.2em;
+    color: #555;
+    margin-top: 5px;
+}
+
+.claimButton {
+    background-color: #ffc107;
     color: white;
-    text-decoration: none;
-    font-size: 16px;
-    text-align: left;
-    transition: color 0.3s ease;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-top: auto; 
+    align-self: center; 
+    transition: background-color 0.3s;
+    display: block; 
+    text-align: center; 
+    grid-column: span 2;
 }
 
+.claimButton:hover {
+    background-color: #e08d00;
+}
+
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.closeButton:hover {
+    background-color: #c0392b;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    width: auto;
+    box-sizing: border-box;
+    margin-top: auto;
+}
+
+footer a {
+    color: #f9a826;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+.list-item-button {
+    display: inline-block;
+    background-color: #303AB2; /* Yellow background */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px; /* Add spacing above the button */
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.list-item-button:hover {
+    background-color: #e08d00; /* Darker yellow on hover */
+}
+
+.list-item-button a {
+    text-decoration: none;
+    color: white;
+}
+
+.list-item-container {
+    background-color: #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.list-item-container h3 {
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.list-item-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.list-item-container label {
+    display: flex;
+    font-size: 1em;
+    color: #555;
+}
+
+.list-item-container input,
+.list-item-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    background-color: #ffffff; /* Set the background color to white */
+    color: #333; 
+}
+
+.list-item-container button {
+    background-color: #ffc107;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.list-item-container button:hover {
+    background-color: #e08d00;
+}
+
+.list-item-container button[type="button"] {
+    background-color: #e74c3c;
+}
+
+.list-item-container button[type="button"]:hover {
+    background-color: #c0392b;
+}
+
+.reportContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    width: 90%;
+    max-width: 400px;
+}
+
+.reportContainer h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.reportContainer textarea {
+    width: 100%;
+    height: 100px;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.reportButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.reportButtons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.reportButtons button:first-child {
+    background-color: #dc3545;
+    color: white;
+}
+
+.reportButtons button:first-child:hover {
+    background-color: #c82333;
+}
+
+.reportButtons button:last-child {
+    background-color: #6c757d;
+    color: white;
+}
+
+.reportButtons button:last-child:hover {
+    background-color: #5a6268;
+}
